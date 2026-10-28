@@ -2,6 +2,8 @@
   "name": "flotech",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
-  "assets": { "directory": "./site", "binding": "ASSETS" },
+  // Demo/preview copy for Darren and Louise. The live site is GitHub Pages; this copy is noindex (see worker.js).
+  "routes": [{ "pattern": "flotech.vouchdigital.co.uk", "custom_domain": true }],
+  "assets": { "directory": "./site", "binding": "ASSETS", "run_worker_first": true },
   "observability": { "enabled": true }
 }

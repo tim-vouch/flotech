@@ -1873,7 +1873,7 @@ near(Array.prototype.map.call(document.querySelectorAll('[data-template-id^="tru
 f.addEventListener('submit',function(e){e.preventDefault();if(!f.reportValidity())return;
 var b=f.querySelector('button[type=submit]'),err=f.querySelector('.flotech-form-error');err.hidden=true;b.disabled=true;b.textContent='Sending...';
 var v=function(n){return f.querySelector('[name="'+n+'"]').value};var d={name:v('name'),phone:v('phone'),email:v('email'),message:v('message'),company:v('company'),started:started,page:location.href};
-fetch(f.action,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(r){
+fetch(/flotechheating\.co\.uk$/.test(location.hostname)?f.action:'/api/enquiry',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(r){
 if(!r.ok)throw 0;f.innerHTML='<div role="status" style="padding:28px 0"><h3 style="margin:0 0 10px">Thank you, we have your message</h3><p style="margin:0 0 8px">We will be in touch shortly.</p><p style="margin:0">Need us sooner? Call <a href="tel:+441279598972">01279 598972</a>.</p></div>';
 }).catch(function(){err.hidden=false;b.disabled=false;b.textContent='Submit';});});})();
 </script>

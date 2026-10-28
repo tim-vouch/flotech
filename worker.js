@@ -5,7 +5,7 @@
 
 const ALLOWED = ["https://flotechheating.co.uk", "https://www.flotechheating.co.uk"];
 const cors = (origin) => ({
-  "access-control-allow-origin": ALLOWED.includes(origin) || /\.workers\.dev$/.test(origin) ? origin : ALLOWED[0],
+  "access-control-allow-origin": ALLOWED.includes(origin) || /\.workers\.dev$|^https:\/\/flotech\.vouchdigital\.co\.uk$/.test(origin) ? origin : ALLOWED[0],
   "access-control-allow-methods": "POST, OPTIONS",
   "access-control-allow-headers": "content-type",
   "vary": "origin",
@@ -59,6 +59,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/enquiry") return handleEnquiry(request, env);
-    return env.ASSETS.fetch(request);
+    // This Worker only serves preview copies (flotech.vouchdigital.co.uk, workers.dev). Keep them out of Google
+    // so they never compete with the real site: block crawlers and send noindex on every response.
+    if (url.pathname === "/robots.txt") {
+      return new Response("User-agent: *\nDisallow: /\n", { headers: { "content-type": "text/plain", "x-robots-tag": "noindex" } });
+    }
+    const res = await env.ASSETS.fetch(request);
+    const out = new Response(res.body, res);
+    out.headers.set("x-robots-tag", "noindex, nofollow");
+    return out;
   },
 };
