@@ -13,6 +13,7 @@ Managed by Vouch Digital. Public repo: never commit secrets, client documents or
 ## Google reviews
 - `data/google-reviews.json`: every review (first 214 from the GHL export, Oct 2026; new ones added daily). `data/rating.json`: rating and count.
 - `scripts/build_reviews.py` builds the reviews band at the top of every page's footer (replaced Trustindex) and the /reviews/ page.
+  Service pages show reviews of their own job first (`PAGE_SERVICES` in build_reviews.py), topped up with the general carousel.
   Carousel = five-star reviews that name a job, newest first, boiler installations in two of every three slots (`scripts/reviews_lib.py`).
 - `.github/workflows/update-reviews.yml` runs `scripts/update_reviews.py` every morning (needs repo secret `GOOGLE_PLACES_API_KEY`
   and variable `GOOGLE_PLACE_ID`), commits any change, and the Pages workflow republishes.

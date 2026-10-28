@@ -16,6 +16,28 @@ SITE = ROOT / "site"
 sys.path.insert(0, str(ROOT / "scripts"))
 from reviews_lib import carousel  # noqa: E402
 
+# Service pages show reviews of that job first (newest first), topped up with the usual carousel if there are few.
+PAGE_SERVICES = {
+    "gas-boiler-installations": ["Boiler installation"], "combi-boiler-installation": ["Boiler installation"],
+    "system-boiler-installation": ["Boiler installation"], "regular-boiler-installation": ["Boiler installation"],
+    "boiler-conversions": ["Boiler installation"], "boiler-finance": ["Boiler installation"],
+    "boiler-servicing-repairs": ["Boiler service", "Boiler repair"],
+    "powerflush": ["Power flush", "Central heating", "Radiators"],
+    "unvented-cylinders": ["Hot water cylinder"],
+}
+
+
+def selection(page_slug, size=15):
+    wanted = PAGE_SERVICES.get(page_slug)
+    general = carousel(REVIEWS, size)
+    if not wanted:
+        return general
+    rel = [r for r in REVIEWS if r["stars"] == 5 and r.get("service") in wanted and 30 <= len(r["text"]) <= 600]
+    rel.sort(key=lambda r: r.get("published", ""), reverse=True)
+    rel.sort(key=lambda r: wanted.index(r["service"]))   # the page's main job first, each group newest first
+    rel = rel[:size]
+    return rel + [r for r in general if r not in rel][:max(0, size - len(rel))]
+
 REVIEWS = json.loads((ROOT / "data" / "google-reviews.json").read_text())
 RATING = json.loads((ROOT / "data" / "rating.json").read_text())
 GOOGLE_URL = "https://www.google.com/search?q=Flotech+Heating+and+Plumbing+Ltd+reviews"
@@ -78,12 +100,12 @@ CSS = """<style>
 .fr-more{align-self:flex-start;background:none;border:0;padding:0;color:#777;font:inherit;font-size:14px;cursor:pointer}
 .fr-more:hover{color:#111;background:none}
 .fr-more[hidden]{display:none!important}
-.fr-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.16);cursor:pointer;display:grid;place-items:center;color:#333;z-index:2}
-.fr-arrow svg{width:18px;height:18px}
+.fr .fr-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;min-width:0;border-radius:50%;border:0;padding:0;margin:0;line-height:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.16);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;z-index:2}
+.fr .fr-arrow:hover,.fr .fr-arrow:focus{background:#fff;color:#111}
+.fr .fr-arrow svg{display:block;width:18px;height:18px;margin:0;flex:none}
 .fr-prev{left:0}.fr-next{right:0}
-.fr-arrow[disabled]{opacity:0;pointer-events:none}
 @media (max-width:1024px){.fr-track{grid-auto-columns:calc((100% - 16px)/2)}}
-@media (max-width:767px){.fr{padding:48px 0}.fr-wrap{grid-template-columns:minmax(0,1fr);gap:20px}.fr-track{grid-auto-columns:86%}.fr-car{padding:0}.fr-arrow{display:none}}
+@media (max-width:767px){.fr{padding:48px 0}.fr-wrap{grid-template-columns:minmax(0,1fr);gap:20px}.fr-track{grid-auto-columns:86%}.fr-car{padding:0}.fr .fr-arrow{display:none}}
 .fr-page{padding:56px 0 80px}
 .fr-page .fr-wrap{display:block}
 .fr-page h1{font-size:clamp(32px,4vw,46px);margin:0 0 12px;color:#111}
@@ -110,10 +132,10 @@ JS = """<script>
     c.classList.toggle('fr-open');b.textContent=c.classList.contains('fr-open')?'Show less':'Read more';});
   document.querySelectorAll('.fr-car').forEach(function(car){var t=car.querySelector('.fr-track'),p=car.querySelector('.fr-prev'),n=car.querySelector('.fr-next');
     function step(){var c=t.querySelector('.fr-card');return c?c.getBoundingClientRect().width+16:300;}
-    function upd(){p.disabled=t.scrollLeft<4;n.disabled=t.scrollLeft+t.clientWidth>=t.scrollWidth-4;}
-    p.addEventListener('click',function(){t.scrollBy({left:-step(),behavior:'smooth'});});
-    n.addEventListener('click',function(){t.scrollBy({left:step(),behavior:'smooth'});});
-    t.addEventListener('scroll',upd,{passive:true});upd();});
+    var atStart=function(){return t.scrollLeft<12;},atEnd=function(){return t.scrollLeft+t.clientWidth>=t.scrollWidth-12;};
+    // Endless: past the last card goes back to the first, and before the first jumps to the end.
+    p.addEventListener('click',function(){if(atStart())t.scrollTo({left:t.scrollWidth-t.clientWidth,behavior:'smooth'});else t.scrollBy({left:-step(),behavior:'smooth'});});
+    n.addEventListener('click',function(){if(atEnd())t.scrollTo({left:0,behavior:'smooth'});else t.scrollBy({left:step(),behavior:'smooth'});});});
   var load=document.querySelector('.fr-load');if(load)load.addEventListener('click',function(){
     var h=document.querySelectorAll('.fr-grid .fr-hide');for(var i=0;i<24&&i<h.length;i++)h[i].classList.remove('fr-hide');
     if(h.length<=24)load.remove();clampCheck();});
@@ -131,8 +153,8 @@ def summary(link=True):
             f'<span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></div>{btn}</div>')
 
 
-def band():
-    cards = "".join(card(r, i) for i, r in enumerate(carousel(REVIEWS)))
+def band(page_slug=""):
+    cards = "".join(card(r, i) for i, r in enumerate(selection(page_slug)))
     return (f'{START}<section class="fr" aria-label="Customer reviews"><div class="fr-wrap">{summary()}'
             f'<div class="fr-car"><button type="button" class="fr-arrow fr-prev" aria-label="Previous reviews">{ARROW.format(d="M15 18l-6-6 6-6")}</button>'
             f'<div class="fr-track">{cards}</div>'
@@ -170,11 +192,12 @@ def replace_block(page, new):
 
 
 def main():
-    b = band()
+    b = band()   # home, about, contact and the /reviews/ page header
     pages = [p for p in SITE.rglob("index.html") if p.parent.name != "reviews"]
     for p in pages:
         s = p.read_text()
-        t = replace_block(s, b)
+        slug = p.parent.name if p.parent != SITE else ""
+        t = replace_block(s, band(slug) if slug in PAGE_SERVICES else b)
         # Trustindex loader script, no longer needed
         t = re.sub(r'<script[^>]*cdn\.trustindex\.io[^>]*>\s*</script>', "", t)
         if t != s:

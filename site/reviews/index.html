@@ -1148,12 +1148,12 @@ body.ftm-open { overflow: hidden; }
 .fr-more{align-self:flex-start;background:none;border:0;padding:0;color:#777;font:inherit;font-size:14px;cursor:pointer}
 .fr-more:hover{color:#111;background:none}
 .fr-more[hidden]{display:none!important}
-.fr-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.16);cursor:pointer;display:grid;place-items:center;color:#333;z-index:2}
-.fr-arrow svg{width:18px;height:18px}
+.fr .fr-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;min-width:0;border-radius:50%;border:0;padding:0;margin:0;line-height:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.16);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;z-index:2}
+.fr .fr-arrow:hover,.fr .fr-arrow:focus{background:#fff;color:#111}
+.fr .fr-arrow svg{display:block;width:18px;height:18px;margin:0;flex:none}
 .fr-prev{left:0}.fr-next{right:0}
-.fr-arrow[disabled]{opacity:0;pointer-events:none}
 @media (max-width:1024px){.fr-track{grid-auto-columns:calc((100% - 16px)/2)}}
-@media (max-width:767px){.fr{padding:48px 0}.fr-wrap{grid-template-columns:minmax(0,1fr);gap:20px}.fr-track{grid-auto-columns:86%}.fr-car{padding:0}.fr-arrow{display:none}}
+@media (max-width:767px){.fr{padding:48px 0}.fr-wrap{grid-template-columns:minmax(0,1fr);gap:20px}.fr-track{grid-auto-columns:86%}.fr-car{padding:0}.fr .fr-arrow{display:none}}
 .fr-page{padding:56px 0 80px}
 .fr-page .fr-wrap{display:block}
 .fr-page h1{font-size:clamp(32px,4vw,46px);margin:0 0 12px;color:#111}
@@ -1178,10 +1178,10 @@ body.ftm-open { overflow: hidden; }
     c.classList.toggle('fr-open');b.textContent=c.classList.contains('fr-open')?'Show less':'Read more';});
   document.querySelectorAll('.fr-car').forEach(function(car){var t=car.querySelector('.fr-track'),p=car.querySelector('.fr-prev'),n=car.querySelector('.fr-next');
     function step(){var c=t.querySelector('.fr-card');return c?c.getBoundingClientRect().width+16:300;}
-    function upd(){p.disabled=t.scrollLeft<4;n.disabled=t.scrollLeft+t.clientWidth>=t.scrollWidth-4;}
-    p.addEventListener('click',function(){t.scrollBy({left:-step(),behavior:'smooth'});});
-    n.addEventListener('click',function(){t.scrollBy({left:step(),behavior:'smooth'});});
-    t.addEventListener('scroll',upd,{passive:true});upd();});
+    var atStart=function(){return t.scrollLeft<12;},atEnd=function(){return t.scrollLeft+t.clientWidth>=t.scrollWidth-12;};
+    // Endless: past the last card goes back to the first, and before the first jumps to the end.
+    p.addEventListener('click',function(){if(atStart())t.scrollTo({left:t.scrollWidth-t.clientWidth,behavior:'smooth'});else t.scrollBy({left:-step(),behavior:'smooth'});});
+    n.addEventListener('click',function(){if(atEnd())t.scrollTo({left:0,behavior:'smooth'});else t.scrollBy({left:step(),behavior:'smooth'});});});
   var load=document.querySelector('.fr-load');if(load)load.addEventListener('click',function(){
     var h=document.querySelectorAll('.fr-grid .fr-hide');for(var i=0;i<24&&i<h.length;i++)h[i].classList.remove('fr-hide');
     if(h.length<=24)load.remove();clampCheck();});
