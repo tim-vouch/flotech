@@ -1,5 +1,7 @@
 {
   "name": "flotech",
+  "main": "worker.js",
   "compatibility_date": "2026-10-01",
-  "assets": { "directory": "./site" }
+  "assets": { "directory": "./site", "binding": "ASSETS" },
+  "observability": { "enabled": true }
 }
