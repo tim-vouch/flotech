@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Pushes made by the daily reviews job don't trigger other workflows, so publish after it runs too.
+  workflow_run:
+    workflows: ["Update reviews"]
+    types: [completed]
 permissions:
   contents: read
   pages: write
