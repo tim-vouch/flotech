@@ -65,8 +65,22 @@ export default {
       return new Response("User-agent: *\nDisallow: /\n", { headers: { "content-type": "text/plain", "x-robots-tag": "noindex" } });
     }
     const res = await env.ASSETS.fetch(request);
-    const out = new Response(res.body, res);
+    let out = new Response(res.body, res);
     out.headers.set("x-robots-tag", "noindex, nofollow");
+    // Preview only (Nov 2026): the homepage "Care Plans" card opens the boiler care plans demo instead of /contact/.
+    // The live site (GitHub Pages) is untouched, because this Worker only serves the preview.
+    if ((url.pathname === "/" || url.pathname === "/home/") && (out.headers.get("content-type") || "").includes("text/html")) {
+      const CARE = "/boiler-care-plans/";
+      out = new HTMLRewriter()
+        .on("a.fti-care", { element(el) { el.setAttribute("href", CARE); el.setAttribute("aria-label", "See our boiler care plans"); } })
+        .on(".elementor-element-5d097383 h3", {
+          element(el) {
+            el.prepend('<a href="' + CARE + '" style="color:inherit;text-decoration:none">', { html: true });
+            el.append("</a>", { html: true });
+          },
+        })
+        .transform(out);
+    }
     return out;
   },
 };

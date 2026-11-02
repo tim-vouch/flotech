@@ -1278,6 +1278,27 @@ body.ftm-open { overflow: hidden; }
 .cp-faq summary::after{content:"+";font-size:22px;line-height:1;color:var(--p)}
 .cp-faq details[open] summary::after{content:"–"}
 .cp-faq details p,.cp-faq details ul{color:var(--soft);line-height:1.6;margin:12px 0 0;font-size:15.5px}
+.cp-plans-detail{display:grid;gap:14px;max-width:1000px;margin:0 auto}
+.cp-plan{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.cp-plan summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px}
+.cp-plan summary::-webkit-details-marker{display:none}
+.cp-plan summary b{font-size:17px}
+.cp-plan summary::after{content:"+";font-size:24px;color:var(--p);font-weight:700;margin-left:8px}
+.cp-plan[open] summary::after{content:"–"}
+.cp-plan summary .cp-tier{font-size:16px;flex:1}
+.cp-plan-body{padding:0 22px 22px}
+.cp-about p{margin:0 0 10px;color:var(--soft);line-height:1.6;font-size:15.5px}
+.cp h4{font-size:16px;font-weight:800;margin:14px 0 10px}
+.cp-cols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.cp-cols ul{margin:0;padding-left:20px;display:grid;gap:7px;color:var(--ink);font-size:15px;line-height:1.5}
+.cp-not ul{color:var(--soft)}
+.cp-not ul li::marker{color:#c9c4d6}
+.cp-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:8px 28px 26px}
+.cp-note{background:var(--bg);border-radius:14px;padding:16px 18px;margin-top:20px}
+.cp-note b{display:block;margin-bottom:6px}.cp-note p{margin:0 0 8px;color:var(--soft);font-size:15px;line-height:1.55}
+.cp a{color:var(--p)}
+.cp a.cp-btn{color:inherit}.cp a.cp-btn.main{color:#fff}
+@media (max-width:760px){.cp-cols{grid-template-columns:1fr;gap:6px}.cp-box{padding:4px 18px 20px}}
 @media (max-width:960px){.cp-plans,.cp-steps{grid-template-columns:1fr}.cp-why{grid-template-columns:1fr 1fr}.cp-signup{grid-template-columns:1fr}.cp-for{min-height:0}}
 @media (max-width:560px){.cp-why{grid-template-columns:1fr}.cp-row{grid-template-columns:1fr}.cp-sec{padding:48px 0}.cp-pick{grid-template-columns:1fr}}
 </style>
@@ -1369,7 +1390,30 @@ body.ftm-open { overflow: hidden; }
           </tbody>
         </table>
       </div>
-      <p class="cp-small">Pay monthly by Direct Debit or once a year. Plans run for 12 months, then roll on monthly until you cancel. Full terms and exclusions apply.</p>
+      <p class="cp-small">Pay monthly by Direct Debit or once a year. Plans run for 12 months, then roll on monthly until you cancel. See <a href="#plan-details">plan details</a> and <a href="#terms">terms</a>.</p>
+    </div>
+  </section>
+
+
+  <!-- PLAN DETAILS -->
+  <section class="cp-sec" id="plan-details">
+    <div class="cp-wrap">
+      <div class="cp-center"><span class="cp-eyebrow">Plan details</span><h2>Exactly what you get</h2>
+      <p class="cp-lead">Tap a plan to see everything it includes, and what it doesn't. No small print surprises.</p></div>
+      <div class="cp-plans-detail"><details class="cp-plan" open><summary><span class="cp-tier bronze">Bronze</span><b>£10 a month (including VAT)</b></summary>
+<div class="cp-plan-body"><div class="cp-about"><h4>About this plan</h4><p>A simple, cost-effective way to keep your boiler running safely and efficiently all year round. Ideal if you want the essentials (your annual service, efficiency checks and ongoing support) while keeping monthly costs low.</p><p>You also get priority access if anything goes wrong, without committing to Silver or Gold. A great entry-level option for staying on top of maintenance and avoiding unexpected problems.</p></div>
+<div class="cp-cols"><div><h4>Included in your plan</h4><ul><li>Annual boiler service</li><li>Boiler efficiency check</li><li>Digital service record</li><li>Phone and remote support</li><li>Help with your boiler controls at the time of your service</li><li>Priority breakdown call-out to your boiler or controls (call-out and repairs are charged)</li></ul></div><div class="cp-not"><h4>Not included</h4><ul><li>Boilers over 15 years old, or beyond economical repair (in exceptional cases we may still help, at Flotech's discretion)</li><li>Removing sludge or hard-water scale from the boiler or heating system</li><li>Damage caused by you or other people</li><li>Cosmetic damage that affects how it looks but not how it works</li><li>Consequential loss and normal insured risks</li><li>Repairs caused by freezing, subsidence, structural repairs, explosion, fire, lightning, accident, flood or storm</li><li>Damage caused by utility companies (gas, electricity and water)</li><li>Improvement work needed to bring the boiler or system up to current standards</li><li>Re-setting controls (clocks, thermostats and wireless devices) unless done at your annual service, and changing batteries unless done at your service</li><li>Any central heating work</li><li>Any repairs to the boiler</li><li>Any cylinders or plumbing work</li><li>Any below-ground drainage</li></ul></div></div></div></details><details class="cp-plan"><summary><span class="cp-tier silver">Silver</span><b>£20 a month (including VAT)</b></summary>
+<div class="cp-plan-body"><div class="cp-about"><h4>About this plan</h4><p>Everything in Bronze, plus full breakdown support when you need it most. Alongside your annual service and maintenance checks, Silver includes call-outs, parts and labour, so unexpected boiler problems get fixed promptly without worrying about the cost.</p><p>The ideal step up if you want preventative maintenance and reliable support all year round.</p></div>
+<div class="cp-cols"><div><h4>Included in your plan</h4><ul><li>Everything in the Bronze plan</li><li>Free call-out when your boiler breaks down</li><li>Boiler parts and labour included</li><li>Thermostats, timers and controls</li><li>Unlimited call-outs</li></ul></div><div class="cp-not"><h4>Not included</h4><ul><li>Boilers over 15 years old, or beyond economical repair (in exceptional cases we may still help, at Flotech's discretion)</li><li>Removing sludge or hard-water scale from the boiler or heating system</li><li>Damage caused by you or other people</li><li>Cosmetic damage that affects how it looks but not how it works</li><li>Consequential loss and normal insured risks</li><li>Repairs caused by freezing, subsidence, structural repairs, explosion, fire, lightning, accident, flood or storm</li><li>Damage caused by utility companies (gas, electricity and water)</li><li>Improvement work needed to bring the boiler or system up to current standards</li><li>Re-setting controls (clocks, thermostats and wireless devices) unless done at your annual service, and changing batteries unless done at your service</li><li>Any cylinders or plumbing work</li><li>Any below-ground drainage</li><li>Smart controls (for example Nest, Hive and Tado)</li></ul></div></div></div></details><details class="cp-plan"><summary><span class="cp-tier gold">Gold</span><b>£25 a month (including VAT)</b></summary>
+<div class="cp-plan-body"><div class="cp-about"><h4>About this plan</h4><p>Our most comprehensive plan. On top of full boiler breakdown support, Gold covers your wider central heating system, including radiators, valves and pipework, with unlimited call-outs.</p><p>The ideal choice for total peace of mind, knowing your boiler and your whole heating system are looked after all year round.</p></div>
+<div class="cp-cols"><div><h4>Included in your plan</h4><ul><li>Everything in the Bronze and Silver plans</li><li>Radiators and fittings</li><li>Thermostatic radiator valves</li><li>Central heating pipework</li><li>Unlimited call-outs</li><li>Customer helpline</li></ul></div><div class="cp-not"><h4>Not included</h4><ul><li>Boilers over 15 years old, or beyond economical repair (in exceptional cases we may still help, at Flotech's discretion)</li><li>Removing sludge or hard-water scale from the boiler or heating system</li><li>Damage caused by you or other people</li><li>Cosmetic damage that affects how it looks but not how it works</li><li>Consequential loss and normal insured risks</li><li>Repairs caused by freezing, subsidence, structural repairs, explosion, fire, lightning, accident, flood or storm</li><li>Damage caused by utility companies (gas, electricity and water)</li><li>Improvement work needed to bring the boiler or system up to current standards</li><li>Re-setting controls (clocks, thermostats and wireless devices) unless done at your annual service, and changing batteries unless done at your service</li><li>Any cylinders or plumbing work</li><li>Any below-ground drainage</li><li>Smart controls (for example Nest, Hive and Tado)</li></ul></div></div></div></details><details class="cp-plan"><summary><span class="cp-tier ">In-Warranty Plan</span><b>£20 a month (including VAT)</b></summary>
+<div class="cp-plan-body"><div class="cp-about"><h4>About this plan</h4><p>Designed for boilers still under the manufacturer's guarantee. It works alongside your warranty to give you extra support, priority service and fast response times, keeping your heating system safe, efficient and well maintained.</p></div>
+<div class="cp-cols"><div><h4>Included in your plan</h4><ul><li>Annual boiler service and full system safety inspection</li><li>Unlimited call-outs for your boiler, controls and heating system</li><li>Emergency helpline with expert advice</li><li>Same-day call-out if reported before 10am</li><li>Priority service all year</li><li>Most repairs completed the same day thanks to stocked parts</li><li>Manufacturer visits arranged for you if needed</li><li>Support for your boiler, radiators, controls and pipework</li><li>Option to upgrade to a full plan when your warranty ends</li></ul></div><div class="cp-not"><h4>Not included</h4><ul><li>Damage caused by accidents or misuse</li><li>Work carried out or altered by other engineers</li><li>General plumbing problems outside the heating system</li><li>Designer radiators and non-standard systems</li><li>Unvented cylinders (unless installed by Flotech)</li></ul></div></div></div></details>
+      </div>
+      <div class="cp-extra">
+        <div class="cp-chip"><b>Pay monthly or yearly</b>Pay once a year, or spread the cost over 12 monthly Direct Debit payments.</div>
+        <div class="cp-chip"><b>Extra appliances</b>Need a second appliance serviced at the same visit, like a gas fire or cylinder? It's £50 per appliance, including VAT.</div>
+      </div>
     </div>
   </section>
 
@@ -1379,7 +1423,7 @@ body.ftm-open { overflow: hidden; }
       <div class="cp-center"><span class="cp-eyebrow">Why join</span><h2>No more surprise boiler bills</h2>
       <p class="cp-lead">Boilers tend to break on the coldest day of the year. A care plan means it's looked after before it fails, and fixed fast if it does.</p></div>
       <div class="cp-why">
-        <div><b>Spread the cost</b><p>One small monthly payment instead of a big bill when something goes wrong.</p></div>
+        <div><b>Repairs aren't cheap</b><p>A boiler repair can cost around £150 for something minor, and up to £1,000 for a major fault like a new heat exchanger.</p></div>
         <div><b>Keep your warranty</b><p>Most manufacturer warranties need a yearly service. It's booked for you, every year.</p></div>
         <div><b>Jump the queue</b><p>Members get priority call-outs, so you're back to hot water and heating sooner.</p></div>
         <div><b>Stay safe</b><p>A yearly check by our Gas Safe engineers spots problems early, including carbon monoxide risks.</p></div>
@@ -1390,11 +1434,11 @@ body.ftm-open { overflow: hidden; }
   <!-- HOW -->
   <section class="cp-sec alt">
     <div class="cp-wrap">
-      <div class="cp-center"><span class="cp-eyebrow">How it works</span><h2>Covered in three simple steps</h2></div>
+      <div class="cp-center"><span class="cp-eyebrow">How it works</span><h2>Covered in three simple steps</h2><p class="cp-lead">We recommend joining in spring or early summer, so any extra work your system needs can be done before winter.</p></div>
       <div class="cp-steps">
-        <div class="cp-step"><i>1</i><h3>Choose your plan</h3><p>Pick Bronze, Silver or Gold and fill in your details below. It takes about two minutes.</p></div>
-        <div class="cp-step"><i>2</i><h3>Quick boiler check</h3><p>Our Gas Safe engineer checks your boiler is in good shape, and you set up your Direct Debit.</p></div>
-        <div class="cp-step"><i>3</i><h3>You're covered</h3><p>We'll remind you when your service is due and book it in. If anything goes wrong, you're top of the list.</p></div>
+        <div class="cp-step"><i>1</i><h3>Survey</h3><p>Choose your plan below, then one of our Gas Safe engineers visits to survey your boiler and heating system.</p></div>
+        <div class="cp-step"><i>2</i><h3>Agreement</h3><p>We send your agreement to sign, with a secure Direct Debit set-up. After the first 12 months it rolls on monthly until you or we cancel.</p></div>
+        <div class="cp-step"><i>3</i><h3>Annual service</h3><p>Our office contacts you to arrange a convenient time for your boiler service, then every year after that.</p></div>
       </div>
     </div>
   </section>
@@ -1444,14 +1488,40 @@ body.ftm-open { overflow: hidden; }
     </div>
   </section>
 
+
+  <!-- SERVICE -->
+  <section class="cp-sec" id="service">
+    <div class="cp-wrap">
+      <div class="cp-center"><span class="cp-eyebrow">Your annual service</span><h2>What's included in your boiler service</h2>
+      <p class="cp-lead">Every plan includes an annual gas boiler service by Flotech, carried out in line with the current Gas Safety (Installation and Use) Regulations and your boiler manufacturer's instructions.</p></div>
+      <div class="cp-cols cp-box">
+        <div><h4>Included</h4><ul><li>A visual inspection of the flue</li><li>Inspecting and, where needed, cleaning the burner, combustion chamber, injectors and heat exchanger</li><li>Inspecting ignition devices (pilot lights, spark and flame-sensing electrodes)</li><li>Checking all seals and gaskets</li><li>Making sure condensate traps and drains are clear</li><li>Testing the boiler to the manufacturer's instructions: correct heat input and operating pressure, the flue working properly, ventilation to current standards, and all safety devices working so the boiler is safe for continuous use</li><li>A final combustion analysis against the manufacturer's tolerances</li><li>Testing any gas connections we've disturbed</li><li>Functional testing of your heating and hot water</li><li>A visual inspection of any other gas appliances we come across</li><li>Written notice of any gas safety defects that could affect your appliances</li><li>Advice on your heating controls and using energy efficiently</li><li>Servicing your system filter, if you already have one (we won't repair or replace it)</li></ul></div>
+        <div class="cp-not"><h4>Not included</h4><ul><li>Any maintenance or remedial work that isn't part of the boiler service</li><li>Testing the gas pipework, unless there's a known or suspected gas escape</li></ul>
+          <div class="cp-note"><b>Good to know</b><p>To keep up with demand, annual services are usually carried out in spring, summer and autumn. In winter we sometimes have to move service appointments, because our priority is getting people without heating or hot water warm and safe again.</p><p>Please have your boiler's manufacturer instructions to hand for the engineer, and clear any items around the boiler and pipework.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMS -->
+  <section class="cp-sec alt" id="terms">
+    <div class="cp-wrap">
+      <div class="cp-center"><span class="cp-eyebrow">Standard terms, all plans</span><h2>The important details</h2>
+      <p class="cp-lead">Please read these before joining. They explain what's included and excluded, so everything is clear from day one.</p></div>
+      <div class="cp-faq"><details><summary>Your safety comes first</summary><p>If our engineer finds your boiler is unsafe and it can't be repaired or made safe straight away, they'll label it with a warning notice. It must not be used again until the fault is fixed. This is for the safety of everyone in your home.</p></details><details><summary>Home visits</summary><p>When a visit is needed, we'll send an engineer during our normal working hours (Monday to Friday, except public holidays). On every plan, as a priority customer, if you report a breakdown before 10am we'll always aim to be with you the same day, or the next working day if that isn't possible. In an emergency our on-call engineers may visit in the evening or at the weekend.</p><p>We'll need access to the relevant areas and a safe place to work. Our engineers will always identify themselves as Flotech and carry their Gas Safe card.</p></details><details><summary>Remote support</summary><p>If something goes wrong, our team may first try to fix it with you over the phone, talking you through it step by step. If that doesn't solve it, we'll book an engineer to visit.</p></details><details><summary>How long the agreement lasts</summary><p>Your plan starts with a minimum 12-month term from the date your first payment is taken. After that it continues on a rolling monthly basis until you tell us you'd like to cancel, or we cancel it. We'll tell you by email or in writing about any changes to the terms or prices.</p></details><details><summary>Cancelling your plan</summary><p>You can cancel at any time. Once your plan is on its rolling monthly basis, just give us two months' notice, starting from the day we receive your request in writing. If we've carried out a service or repairs in the previous 12 months, a cancellation charge may apply to cover that work, and it will never be more than 12 monthly payments. Call or email us and we'll guide you through it.</p></details><details><summary>Spare parts</summary><p>If we don't have the part your repair needs on the day, we'll do everything we reasonably can to get it from our suppliers quickly. We can't be responsible for supplier delays, and we may use an approved alternative part, or a part reconditioned by the original manufacturer.</p></details><details><summary>What happens when something goes wrong?</summary><p>Getting help is simple: call or contact us online. We'll try to fix it remotely first where possible, then arrange a priority visit if needed. In most cases we carry the parts to fix it on the same visit, and if extra parts or manufacturer support are needed, we'll handle it all for you.</p></details><details><summary>What we need from you</summary><ul><li>All information you give us must be honest and accurate.</li><li>Your boiler must have been installed, maintained and used in line with the manufacturer's instructions.</li><li>If your boiler breaks down, take reasonable steps to limit any damage, for example stop using it if that could cause more damage.</li><li>Monthly payments must be paid on time. Repeated failed payments will end your plan.</li><li>Someone aged 18 or over must be home when our engineer arrives. If we can't complete a visit because no one is in, our standard call-out fee may apply.</li></ul></details><details><summary>Moving home</summary><p>Let us know as soon as you know you're moving, so we can update our records. If you'd like your plan to continue at your new home, we'll survey it and agree the most suitable plan.</p></details><details><summary>Complaints</summary><p>If you're unhappy with our service, please call us on 01279 598 972 or email office@flotechheating.co.uk. We'll look into it properly and aim to reply within 3 to 5 days.</p></details><details><summary>What's not included in any plan</summary><ul><li>Removing sludge or hard-water scale from the boiler or system</li><li>Replacing your hot water cylinder</li><li>Repairing or replacing vertical flues or appliance flues that aren't part of your boiler</li><li>Unfreezing condensate pipes on condensing boilers</li><li>Re-setting programmers or timers after power cuts or the clocks changing</li><li>Topping up the pressure on combi or system boilers</li><li>Tracing water leaks under solid floors</li><li>Lifting and replacing laminate, wood, carpet or other fixed floor coverings</li><li>Replacing appliances, bathroom fixtures, showers and sanitary ware</li><li>Removing asbestos</li><li>Replacing lead or steel pipes where a repair isn't possible</li><li>Below-ground drainage</li><li>Making good walls, ceilings, floors, tiles or finishes damaged while tracing or repairing a fault</li></ul></details><details><summary>General exclusions</summary><ul><li><b>Design or existing faults:</b> repairs needed because of design faults (unless we're responsible), or faults that existed before you joined and couldn't reasonably be found at the first inspection.</li><li><b>Third-party or accidental damage:</b> damage caused by you or someone else.</li><li><b>Consequential loss:</b> unless we're responsible, loss or damage to property caused by a breakdown (for example water damage to furniture). If we dig on your property we'll fill any holes and leave the surface level, but won't necessarily replace the original surface. Redecorating is your responsibility unless we've been negligent.</li><li><b>Normal insured risks:</b> faults or damage caused by freezing weather, subsidence, structural repairs, accident, fire, lightning, explosion, flood or storm, or problems with the gas, electricity or water supply. Please check your home insurance covers these.</li><li><b>Improvements:</b> work needed to bring your system up to current standards, such as system upgrades, adding thermostatic radiator valves, replacing flues that don't meet current standards, or replacing working radiators.</li><li>Replacing or repairing decorative parts that don't affect how the system works, and resetting controls when the clocks change.</li><li>Repairing faults or clearing blockages (such as rubble, sludge and scale) if we've told you permanent repairs or improvements are needed.</li><li>Repairing damage caused by our work, or redecorating, unless we've been negligent.</li></ul></details>
+      </div>
+      <p class="cp-small cp-center" style="max-width:820px;margin:22px auto 0">Our boiler care plans are maintenance and service agreements provided directly by Flotech Heating and Plumbing Ltd, with all work carried out by our own qualified engineers. They are not insurance policies. By joining, you confirm you've read and accepted these terms.</p>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="cp-sec alt">
     <div class="cp-wrap">
       <div class="cp-center"><span class="cp-eyebrow">Questions</span><h2>Care plan FAQs</h2></div>
       <div class="cp-faq">
-        <details><summary>Can I cancel?</summary><p>Plans run for an initial 12 months, then roll on monthly. After the first 12 months you can cancel any time.</p></details>
+        <details><summary>Can I cancel?</summary><p>Plans run for a minimum of 12 months, then roll on monthly. You can cancel any time with two months' notice once your plan is rolling. A cancellation charge may apply if we've done work in the last 12 months (see the terms above).</p></details>
         <details><summary>Is my boiler eligible?</summary><p>Most gas boilers under 15 years old are eligible. Boilers over 15 years old, or that are beyond economical repair, aren't covered. If you're not sure, send us the make and age and we'll let you know.</p></details>
-        <details><summary>What isn't covered?</summary><ul><li>Boilers over 15 years old or beyond economical repair</li><li>Removing sludge or hard-water scale</li><li>Accidental damage, or damage from freezing, flood, fire or storm</li><li>Improvement work to bring a system up to current standards</li><li>Smart controls (Nest, Hive, Tado) on Silver and Gold</li><li>Cylinders, general plumbing and below-ground drainage</li></ul><p>Full terms are provided before you join.</p></details>
+        <details><summary>What isn't covered?</summary><p>Each plan lists exactly what's included and not included under <a href="#plan-details">Plan details</a>, and the exclusions that apply to every plan are under <a href="#terms">The important details</a>.</p></details>
         <details><summary>Can I pay once a year instead?</summary><p>Yes. You can pay the full year upfront or spread it over 12 monthly Direct Debit payments.</p></details>
         <details><summary>When will my service be booked?</summary><p>We'll contact you to book your first service once your plan starts, then remind you every year when it's due.</p></details>
         <details><summary>My boiler was fitted by Flotech. Which plan should I choose?</summary><p>If it's still under the manufacturer's warranty, our In-Warranty Plan is designed to sit alongside it. Ask us and we'll recommend the right one.</p></details>
