@@ -1556,7 +1556,7 @@ body.ftm-open { overflow: hidden; }
     if(pay){ document.querySelector('#cpDone h3').textContent='Next: set up your Direct Debit';
       document.querySelector('#cpDone p').innerHTML='In the live version you now go straight to the secure payment page (GoCardless or Stripe) to set up your <b>'+((f.querySelector('input[name=plan]:checked')||{}).value||'Silver')+'</b> plan Direct Debit. We then book your first visit.';
       document.getElementById('cpDemoNote').textContent='(Preview: no payment page in this demo.)'; }
-    var cpP=document.getElementById('cpPlan'); if(cpP) cpP.textContent=(f.querySelector('input[name=plan]:checked')||{}).value||'Silver';
+    document.getElementById('cpPlan').textContent=(f.querySelector('input[name=plan]:checked')||{}).value||'Silver';
     f.querySelector('.cp-fields').style.display='none';
     document.getElementById('cpDone').style.display='block';
   });
