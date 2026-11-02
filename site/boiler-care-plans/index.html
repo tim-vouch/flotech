@@ -1265,6 +1265,13 @@ body.ftm-open { overflow: hidden; }
 .cp-dd{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--soft);margin-top:12px}
 .cp-dd svg{flex:none}
 .cp-done{display:none;text-align:center;padding:20px 6px}
+.cp-how{display:grid;gap:8px;margin-bottom:14px}
+.cp-how input{display:none}
+.cp-how label{margin:0;border:1.5px solid #d9d5e4;border-radius:12px;padding:12px 14px;cursor:pointer}
+.cp-how label b{display:block;font-size:15.5px}.cp-how label small{display:block;font-weight:500;color:var(--soft);font-size:13.5px;margin-top:2px}
+.cp-how input:checked+label{border-color:var(--p);background:#f6f0ff;box-shadow:0 0 0 3px rgba(155,81,255,.12)}
+.cp-tc{display:flex!important;gap:10px;align-items:center;font-weight:600!important;margin:0 0 14px!important}
+.cp-tc input{width:18px!important;height:18px;margin:0!important;accent-color:#9B51FF}
 .cp-done h3{font-size:24px;margin:0 0 8px}
 .cp-done p{color:var(--soft);line-height:1.6;margin:0 0 6px}
 .cp-points{display:grid;gap:14px;margin:0;padding:0;list-style:none}
@@ -1476,13 +1483,19 @@ body.ftm-open { overflow: hidden; }
             <div><label for="cpm">Boiler make</label><select id="cpm" name="make"><option>Worcester Bosch</option><option>Vaillant</option><option>Ideal</option><option>Baxi</option><option>Viessmann</option><option>Other / not sure</option></select></div>
             <div><label for="cpa">Boiler age</label><select id="cpa" name="age"><option>Under 5 years</option><option>5 to 10 years</option><option>10 to 15 years</option><option>Over 15 years</option><option>Not sure</option></select></div>
           </div>
-          <button class="cp-btn main" type="submit" style="width:100%">Join the plan</button>
+          <label>How would you like to join?</label>
+          <div class="cp-how">
+            <input type="radio" name="how" id="hpay" value="pay" checked><label for="hpay"><b>Join and pay online now</b><small>Set up your Direct Debit in 2 minutes. Cover starts after your first visit.</small></label>
+            <input type="radio" name="how" id="hcall" value="call"><label for="hcall"><b>Call me first</b><small>Got a question? We'll ring you back to talk it through.</small></label>
+          </div>
+          <label class="cp-tc"><input type="checkbox" id="cptc"> I've read and accept the <a href="#terms">plan terms</a></label>
+          <button class="cp-btn main" type="submit" style="width:100%" id="cpGo">Continue to secure payment</button>
           <div class="cp-dd"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Payments by Direct Debit, protected by the Direct Debit Guarantee.</div>
         </div>
         <div class="cp-done" id="cpDone">
           <h3>Thanks, you're nearly covered!</h3>
           <p>We'll be in touch shortly to confirm your <b id="cpPlan">Silver</b> plan and send your secure Direct Debit link.</p>
-          <p style="font-size:13px;margin-top:14px">(Preview: in the live version this sends the details to Flotech's inbox and the secure Direct Debit link is sent automatically.)</p>
+          <p style="font-size:13px;margin-top:14px" id="cpDemoNote">(Preview: in the live version this sends the details to Flotech's inbox and the secure Direct Debit link is sent automatically.)</p>
         </div>
       </form>
     </div>
@@ -1533,10 +1546,16 @@ body.ftm-open { overflow: hidden; }
 (function(){
   var f=document.getElementById('cpForm'); if(!f) return;
   document.querySelectorAll('[data-plan]').forEach(function(a){a.addEventListener('click',function(){var r=document.querySelector('input[name=plan][value="'+a.dataset.plan.charAt(0).toUpperCase()+a.dataset.plan.slice(1)+'"]'); if(r) r.checked=true;});});
+  f.querySelectorAll('input[name=how]').forEach(function(r){r.addEventListener('change',function(){document.getElementById('cpGo').textContent=r.value==='pay'?'Continue to secure payment':'Request a call back';});});
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var ok=true; f.querySelectorAll('input[required]').forEach(function(i){ if(!i.value.trim()){ ok=false; i.style.borderColor='#e5484d'; } else i.style.borderColor=''; });
+    var pay=(f.querySelector('input[name=how]:checked')||{}).value==='pay';
+    var tc=document.getElementById('cptc'); if(pay&&!tc.checked){ ok=false; tc.parentNode.style.color='#e5484d'; } else tc.parentNode.style.color='';
     if(!ok) return;
+    if(pay){ document.querySelector('#cpDone h3').textContent='Next: set up your Direct Debit';
+      document.querySelector('#cpDone p').innerHTML='In the live version you now go straight to the secure payment page (GoCardless or Stripe) to set up your <b>'+((f.querySelector('input[name=plan]:checked')||{}).value||'Silver')+'</b> plan Direct Debit. We then book your first visit.';
+      document.getElementById('cpDemoNote').textContent='(Preview: no payment page in this demo.)'; }
     document.getElementById('cpPlan').textContent=(f.querySelector('input[name=plan]:checked')||{}).value||'Silver';
     f.querySelector('.cp-fields').style.display='none';
     document.getElementById('cpDone').style.display='block';
