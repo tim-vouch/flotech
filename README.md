@@ -18,3 +18,6 @@ Managed by Vouch Digital. Public repo: never commit secrets, client documents or
 - `.github/workflows/update-reviews.yml` runs `scripts/update_reviews.py` every morning (needs repo secret `GOOGLE_PLACES_API_KEY`
   and variable `GOOGLE_PLACE_ID`), commits any change, and the Pages workflow republishes.
 - A deleted Google review must be removed from `data/google-reviews.json` by hand, then run `python3 scripts/build_reviews.py`.
+
+## Preview-only pages
+- `site/boiler-care-plans/` (Nov 2026): boiler care plan demo for Darren. Served only on the preview (flotech.vouchdigital.co.uk); `pages.yml` deletes it before publishing to GitHub Pages, so it never reaches flotechheating.co.uk. Its sign-up form is a demo (shows a thank-you, sends nothing). To make it live: remove that step, wire the form to `/api/enquiry`, add it to the nav and sitemap, and have the plan terms checked.
