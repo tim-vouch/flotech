@@ -3,7 +3,7 @@
 // of the site on workers.dev. The contact form on both posts here: POST /api/enquiry -> spam checks -> GHL webhook.
 // GHL_WEBHOOK_URL is a Cloudflare Secret (Settings > Variables and Secrets). Never commit it: this repo is public.
 
-const ALLOWED = ["https://flotechheating.co.uk", "https://www.flotechheating.co.uk"];
+const ALLOWED = ["https://flotechheating.co.uk", "https://www.flotechheating.co.uk", "https://flotech-live.vouchdigital.co.uk"];
 const cors = (origin) => ({
   "access-control-allow-origin": ALLOWED.includes(origin) || /\.workers\.dev$|^https:\/\/flotech\.vouchdigital\.co\.uk$/.test(origin) ? origin : ALLOWED[0],
   "access-control-allow-methods": "POST, OPTIONS",
