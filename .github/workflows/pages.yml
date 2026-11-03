@@ -24,9 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      # Preview-only pages (shown to Darren on flotech.vouchdigital.co.uk, not live yet): keep them off the real site.
+      # Preview-only page (boiler care plans, shown to Darren on flotech.vouchdigital.co.uk, not live yet): keep it off the real site.
       - name: Remove preview-only pages
-        run: rm -rf site/boiler-care-plans site/blog
+        run: rm -rf site/boiler-care-plans
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

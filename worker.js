@@ -81,8 +81,7 @@ export default {
 // This Worker only serves the preview (flotech.vouchdigital.co.uk). The live site on GitHub Pages is untouched,
 // so these edits are made here on the fly instead of in site/ (whose pages also go live).
 //  - Boiler care plans: menu items and the homepage card link to /boiler-care-plans/ instead of "Coming soon"
-//  - Top menu: "Testimonials" (/reviews/) and "Blog" (/blog/) added before Contact
-//  - /reviews/ is titled Testimonials, with buttons to filter reviews by service
+// (Testimonials, Blog and the review filter moved into site/ on 3 Nov 2026, so they are live too.)
 const CARE = "/boiler-care-plans/";
 function previewOverlay(html, path) {
   html = html
@@ -99,46 +98,6 @@ function previewOverlay(html, path) {
     .replace('href="/contact/" class="fti-care" aria-label="Ask about boiler care plans (coming soon)"', 'href="' + CARE + '" class="fti-care" aria-label="See our boiler care plans"')
     .replace('<h3 class="elementor-heading-title elementor-size-default">Care Plans</h3>',
       '<h3 class="elementor-heading-title elementor-size-default"><a href="' + CARE + '" style="color:inherit;text-decoration:none">Care Plans</a></h3>');
-  // Testimonials + Blog in all three menus
-  for (const cls of ["ft-nav__link", "ft-mobile__link", "ftm-link"]) {
-    html = html.replace('<li><a href="/contact/" class="' + cls + '">Contact</a></li>',
-      '<li><a href="/reviews/" class="' + cls + '">Testimonials</a></li><li><a href="/blog/" class="' + cls + '">Blog</a></li>' +
-      '<li><a href="/contact/" class="' + cls + '">Contact</a></li>');
-  }
-  if (path === "/reviews/" || path === "/reviews") {
-    html = html.replace("<h1>Customer reviews</h1>", "<h1>Testimonials</h1>")
-      .replace('<div class="fr-grid">', REVIEW_FILTER + '<div class="fr-grid">');
-  }
   return html;
 }
 
-const REVIEW_FILTER = `<style>
-.frf{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 22px}
-.frf button{font-family:inherit;font-size:14px;font-weight:700;border:1.5px solid #ddd6ee;background:#fff;color:#1a1a1a;border-radius:999px;padding:8px 14px;cursor:pointer}
-.frf button small{font-weight:600;color:#7a7a88;margin-left:4px}
-.frf button[aria-pressed="true"]{background:linear-gradient(90deg,#9B51FF,#1BA5FF);border-color:transparent;color:#fff}
-.frf button[aria-pressed="true"] small{color:#eef}
-</style>
-<div class="frf" role="group" aria-label="Filter reviews by service"></div>
-<script>
-(function(){
-  var GROUPS=[["Boiler installation",["Boiler installation"]],["Boiler servicing",["Boiler service"]],["Boiler repairs",["Boiler repair"]],
-    ["Heating and radiators",["Radiators","Central heating","Underfloor heating","Power flush"]],["Hot water cylinders",["Hot water cylinder"]],
-    ["Bathrooms and showers",["Bathroom","Shower"]],["Plumbing repairs",["Taps and sinks","Leak repair","Toilet"]],["Water softeners",["Water softener"]]];
-  function init(){
-    var bar=document.querySelector(".frf"), grid=document.querySelector(".fr-grid"); if(!bar||!grid) return;
-    var cards=[].slice.call(grid.querySelectorAll(".fr-card")), more=document.querySelector(".fr-load");
-    var hidden=cards.filter(function(c){return c.classList.contains("fr-hide");});
-    var tag=function(c){var t=c.querySelector(".fr-tag");return t?t.textContent.trim():"";};
-    function make(label,test,n){var b=document.createElement("button");b.type="button";b.innerHTML=label+"<small>"+n+"</small>";b.setAttribute("aria-pressed","false");
-      b.addEventListener("click",function(){[].forEach.call(bar.children,function(x){x.setAttribute("aria-pressed","false");});b.setAttribute("aria-pressed","true");apply(test);});bar.appendChild(b);return b;}
-    function apply(test){
-      if(!test){cards.forEach(function(c){c.style.display="";});hidden.forEach(function(c){c.classList.add("fr-hide");});if(more)more.style.display="";return;}
-      cards.forEach(function(c){var ok=test(c);c.classList.remove("fr-hide");c.style.display=ok?"":"none";});if(more)more.style.display="none";
-    }
-    make("All reviews",null,cards.length).setAttribute("aria-pressed","true");
-    GROUPS.forEach(function(g){var t=function(c){return g[1].indexOf(tag(c))>-1;};var n=cards.filter(t).length;if(n)make(g[0],t,n);});
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
-})();
-</script>`;

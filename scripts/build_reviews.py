@@ -168,10 +168,10 @@ def reviews_page_main():
     cards = "".join(card(r, i).replace('class="fr-card"', 'class="fr-card fr-hide"', 1) if i >= 24 else card(r, i)
                     for i, r in enumerate(shown))
     load = '<button type="button" class="fr-all fr-load">Show more reviews</button>' if len(shown) > 24 else ""
-    return (f'<section class="fr fr-page"><div class="fr-wrap"><h1>Customer reviews</h1>'
+    return (f'<section class="fr fr-page"><div class="fr-wrap"><h1>Testimonials</h1>'
             f'<div class="fr-intro">{stars(5)}<span><b>{esc(RATING["rating"])}</b> from <b>{esc(RATING["count"])}</b> Google reviews.</span>'
             f'<a href="{GOOGLE_URL}" target="_blank" rel="noopener">Read them on Google</a></div>'
-            f'<div class="fr-grid">{cards}</div>{load}</div></section>{END}')
+            + FILTER + f'<div class="fr-grid">{cards}</div>{load}</div></section>{END}')
 
 
 def replace_block(page, new):
@@ -191,6 +191,20 @@ def replace_block(page, new):
     return page[:start] + new + page[j:]
 
 
+FILTER = (ROOT / "scripts" / "review_filter.html").read_text()   # service filter buttons on /reviews/
+
+
+def add_menus(page):
+    """Testimonials (/reviews/) and Blog (/blog/) before Contact in all three menus. Safe to run again."""
+    if 'href="/reviews/" class="ft-nav__link">Testimonials' in page:
+        return page
+    for cls in ("ft-nav__link", "ft-mobile__link", "ftm-link"):
+        page = page.replace(f'<li><a href="/contact/" class="{cls}">Contact</a></li>',
+                            f'<li><a href="/reviews/" class="{cls}">Testimonials</a></li><li><a href="/blog/" class="{cls}">Blog</a></li>'
+                            f'<li><a href="/contact/" class="{cls}">Contact</a></li>')
+    return page
+
+
 def main():
     b = band()   # home, about, contact and the /reviews/ page header
     pages = [p for p in SITE.rglob("index.html") if p.parent.name != "reviews"]
@@ -200,6 +214,7 @@ def main():
         t = replace_block(s, band(slug) if slug in PAGE_SERVICES else b)
         # Trustindex loader script, no longer needed
         t = re.sub(r'<script[^>]*cdn\.trustindex\.io[^>]*>\s*</script>', "", t)
+        t = add_menus(t)
         if t != s:
             p.write_text(t)
 
@@ -215,6 +230,7 @@ def main():
     s = re.sub(r'<script type="application/ld\+json"[^>]*>.*?</script>', "", s, flags=re.S)
     s = re.sub(r"(<main\b[^>]*>).*?(</main>)", lambda m: m.group(1) + reviews_page_main() + m.group(2), s, flags=re.S)
     s = replace_block(s, START + CSS + JS + END)   # no carousel on the page that already lists every review
+    s = add_menus(s)
     (SITE / "reviews").mkdir(exist_ok=True)
     (SITE / "reviews" / "index.html").write_text(s)
 
