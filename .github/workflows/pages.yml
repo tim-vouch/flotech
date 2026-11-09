@@ -26,7 +26,7 @@ jobs:
       - uses: actions/configure-pages@v5
       # Preview-only page (boiler care plans, shown to Darren on flotech.vouchdigital.co.uk, not live yet): keep it off the real site.
       - name: Remove preview-only pages
-        run: rm -rf site/boiler-care-plans
+        run: rm -rf site/boiler-care-plans site/_finance-preview
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

@@ -64,7 +64,15 @@ export default {
     if (url.pathname === "/robots.txt") {
       return new Response("User-agent: *\nDisallow: /\n", { headers: { "content-type": "text/plain", "x-robots-tag": "noindex" } });
     }
-    const res = await env.ASSETS.fetch(request);
+    // Finance compliance preview (Phoenix, Nov 2026): fixed copies of pages live in site/_finance-preview/ and are shown
+    // here first, for Louise to approve. pages.yml strips that folder from the live site. Approve with
+    // `python3 scripts/finance_fix.py apply` and delete site/_finance-preview.
+    let res = null;
+    if (request.method === "GET" && url.pathname.endsWith("/") && !url.pathname.startsWith("/_finance-preview")) {
+      const alt = await env.ASSETS.fetch(new Request(new URL("/_finance-preview" + url.pathname, url), request));
+      if (alt.ok && (alt.headers.get("content-type") || "").includes("text/html")) res = alt;
+    }
+    if (!res) res = await env.ASSETS.fetch(request);
     let out = new Response(res.body, res);
     out.headers.set("x-robots-tag", "noindex, nofollow");
     if ((out.headers.get("content-type") || "").includes("text/html")) {
