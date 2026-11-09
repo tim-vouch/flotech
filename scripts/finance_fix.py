@@ -49,7 +49,7 @@ def fix(t, rel):
     t = sub(t, r'(<li class="elementor-icon-list-item">\s*<a href="/boiler-finance/">(?:(?!</li>).)*?)Boiler Finance(</span>\s*</a>\s*</li>)', r"\1" + MENU_LABEL + r"\2")
     # 3. Approved line above the status disclosure (footer, every page)
     t = t.replace("<p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative",
-                  f"<p><strong>{APPROVED}</strong></p><p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative")
+                  "<p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative")
     # 4. Homepage
     t = t.replace("from new installations and annual servicing to finance plans and ongoing care.",
                   "from new installations and annual servicing to repairs and ongoing care.")
