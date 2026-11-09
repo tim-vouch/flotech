@@ -29,3 +29,6 @@ Flotech is an Introducer Appointed Representative (IAR) of Phoenix Financial Con
 - Applied to the live site on 9 Nov 2026 (menu label "Boiler Finance via Phoenix", approved line on the homepage, boiler pages and footer, /boiler-finance/ with a "Continue to Phoenix" button to Flotech's Phoenix referral link). The script now skips pages that are already fixed.
 - `scripts/finance_fix.py preview` writes fixed copies to `site/_finance-preview/`; the Worker shows them on the preview only (pages.yml deletes the folder before publishing). `scripts/finance_fix.py apply` writes the fixes into `site/` (live on push); then delete `site/_finance-preview/`.
 - While the fixed copies sit in `_finance-preview`, the daily reviews update only refreshes the originals, so re-run `preview` if the preview needs today's reviews.
+
+## Service areas
+One list in `scripts/areas.py` (`AREAS`, from Darren via Tim, 9 Nov 2026). Run `python3 scripts/areas.py` after changing it: it updates the area lists and chips on the pages, the schema `areaServed`, the Areas dropdown (desktop), the Areas group (tablet and phone menus) and the Areas we cover band in the footer. Safe to re-run.
