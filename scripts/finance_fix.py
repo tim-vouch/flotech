@@ -12,6 +12,14 @@ import re, sys, glob, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APPROVED = "Boiler installation finance available through Phoenix Financial Consultants Ltd."
 
+STRIP = ('<div class="ffs" style="max-width:1200px;margin:0 auto;padding:0 20px 10px">'
+         '<a href="/boiler-finance/" style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;'
+         'font-family:Urbanist,sans-serif;font-weight:700;font-size:17px;color:#0A0A0A;text-decoration:none;'
+         'background:#F4F2FB;border:1px solid #E4DEF7;border-radius:14px;padding:18px 22px;text-align:center">'
+         '<span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#9B51FF,#1BA5FF);flex:none"></span>'
+         f'{APPROVED}</a></div>')
+WHY_LINE = (f'<p style="margin:18px 0 0;font-size:15px;font-weight:600"><a href="/boiler-finance/" style="color:#FFFFFF;text-decoration:underline;text-underline-offset:3px">{APPROVED}</a></p>')
+
 
 def balanced_div(t, start):
     """End index of the <div> that opens at `start`."""
@@ -33,7 +41,7 @@ def fix(t, rel):
     t = sub(t, r'<a href="/boiler-finance/" class="ftm-card">.*?</a>', "")
     t = t.replace('<li><a href="/boiler-finance/">Boiler Finance</a></li>', "")
     # 2. Footer services list
-    t = sub(t, r'<li class="elementor-icon-list-item">\s*<a href="/boiler-finance/">(?:(?!</li>).)*?Boiler Finance</span>\s*</a>\s*</li>', "")
+    t = sub(t, r'(<li class="elementor-icon-list-item">\s*<a href="/boiler-finance/">(?:(?!</li>).)*?)Boiler Finance(</span>\s*</a>\s*</li>)', r"\1Finance available through Phoenix\2")
     # 3. Approved line above the status disclosure (footer, every page)
     t = t.replace("<p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative",
                   f"<p><strong>{APPROVED}</strong></p><p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative")
@@ -41,6 +49,8 @@ def fix(t, rel):
     t = t.replace("from new installations and annual servicing to finance plans and ongoing care.",
                   "from new installations and annual servicing to repairs and ongoing care.")
     t = t.replace("Flexible boiler finance available</li>", "Free quotes</li>")
+    if rel == "index.html" or rel == "home/index.html":
+        t = re.sub(r'(<ul class="ft-why-list">.*?</ul>)', lambda m: m.group(1) + WHY_LINE, t, count=1, flags=re.S)
     m = re.search(r'<div class="elementor-element elementor-element-724c26b5 ', t)
     if m:  # Boiler Finance card becomes Boiler Conversions
         e = balanced_div(t, m.start())
@@ -57,7 +67,7 @@ def fix(t, rel):
         s = t.rfind('<div class="elementor-element', 0, t.rfind("e-parent", 0, i) + 20)
         while "e-parent" not in t[s:s + 200]:
             s = t.rfind('<div class="elementor-element', 0, s)
-        t = t[:s] + t[balanced_div(t, s):]
+        t = t[:s] + STRIP + t[balanced_div(t, s):]
     # 6. Servicing page: "Learn more" in the warning-signs section pointed at the finance page
     if rel.startswith("boiler-servicing"):
         t = sub(t, r'href="/boiler-finance/">(\s*<span class="elementor-button-content-wrapper">)', r'href="/contact/">\1')
