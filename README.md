@@ -38,3 +38,6 @@ One list in `scripts/areas.py` (`AREAS`, from Darren via Tim, 9 Nov 2026). Run `
 `/terms-and-conditions/` is Flotech's own Boiler Terms and Conditions (Louise, 9 Nov 2026), copied word for word in `scripts/build_terms.py` (numbering tidied only). Linked from Quick Links in the footer. Rebuild: `python3 scripts/build_terms.py && python3 scripts/areas.py`.
 
 Footer: `scripts/areas.py` adds the Areas We Cover column (after Quick Links) and the Terms & Conditions link, and sets the five column widths.
+
+## Phone header
+`scripts/mobile_header.py` keeps the phone header on screen while scrolling (the thin Call us bar scrolls away; logo, call button, menu and Get Quote stay), like MJ Services. Safe to re-run; run it after `build_areas.py` or `build_terms.py`.
