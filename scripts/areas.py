@@ -10,6 +10,20 @@ import glob, json, os, re
 AREAS = ["Bishop's Stortford", "Sawbridgeworth", "Dunmow", "Takeley", "Stansted", "Saffron Walden",
          "Harlow", "Chelmsford", "Cambridge", "Hertfordshire", "Essex"]
 
+SLUGS = {"Bishop's Stortford": "bishops-stortford", "Sawbridgeworth": "sawbridgeworth", "Dunmow": "dunmow", "Takeley": "takeley",
+         "Stansted": "stansted", "Saffron Walden": "saffron-walden", "Harlow": "harlow", "Chelmsford": "chelmsford",
+         "Cambridge": "cambridge", "Hertfordshire": "#hertfordshire", "Essex": "#essex"}
+
+
+def href(a):
+    s = SLUGS[a]
+    return "/areas/" + (s if s.startswith("#") else s + "/")
+
+
+def link(a, inner):
+    return f'<a href="{href(a)}">{inner}</a>'
+
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PIN = ('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" '
        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>'
@@ -20,28 +34,33 @@ ARROW = ('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="cu
 CSS = """<style id="ft-areas-css">
 .ft-nav .ft-mega.ft-mega--areas{width:600px}
 .ft-areas-mega{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}
-.ft-areas-mega li{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:600;color:#0A0A0A}
+.ft-areas-mega a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:600;color:#0A0A0A;text-decoration:none;transition:background .2s}
+.ft-areas-mega a:hover{background:#F4F4F4;color:#9B51FF}
 .ft-areas-mega li svg{color:#9B51FF;flex-shrink:0}
 .ft-mobile__sub.ft-mobile__areas{display:grid;grid-template-columns:1fr 1fr;column-gap:12px}
-.ft-mobile__sub.ft-mobile__areas li span{display:block;padding:10px 4px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:500;color:#4A4A4A}
 .ftm-areas{list-style:none;margin:0;padding:4px 0 8px;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
-.ftm-areas li{display:flex;align-items:center;gap:8px;padding:9px 4px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:500;color:#4A4A4A}
+.ftm-areas a{display:flex;align-items:center;gap:8px;padding:9px 4px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:500;color:#4A4A4A !important;text-decoration:none !important}
 .ftm-areas li svg{color:#9B51FF;flex-shrink:0}
 .ft-footer-areas{background:#FAFAFA;padding:0 32px 36px}
 .ft-footer-areas__inner{max-width:1280px;margin:0 auto;padding-top:28px;border-top:1px solid #E5E5E5;text-align:center}
 .ft-footer-areas h2{margin:0 0 14px;font-family:'Urbanist',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0A0A0A}
 .ft-footer-areas ul{list-style:none;margin:0 auto;max-width:980px;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px}
-.ft-footer-areas li{display:flex;align-items:center;gap:6px;font-family:'Urbanist',sans-serif;font-size:15px;color:#4A4A4A}
+.ft-footer-areas a{display:flex;align-items:center;gap:6px;font-family:'Urbanist',sans-serif;font-size:15px;color:#4A4A4A;text-decoration:none}
+.ft-footer-areas a:hover{color:#9B51FF}
+.ft-areas-list a{color:inherit;text-decoration:none}
+.ft-areas-list a:hover{text-decoration:underline;text-underline-offset:3px}
+.fx-areas li a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.fx-areas li:hover{border-color:#9B51FF}
 .ft-footer-areas li svg{color:#9B51FF}
 @media (max-width:767px){.ft-footer-areas{padding:0 20px 28px}}
 </style>"""
 
 
 def desktop_item():
-    items = "".join(f"<li>{PIN}{a}</li>" for a in AREAS)
+    items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
     return (
         '\n    <li class="ft-nav__item ft-nav__item--mega ft-nav__item--areas">\n'
-        '      <a href="/#areas" class="ft-nav__link ft-nav__link--has-mega" aria-haspopup="true" aria-expanded="false">\n'
+        '      <a href="/areas/" class="ft-nav__link ft-nav__link--has-mega" aria-haspopup="true" aria-expanded="false">\n'
         '        Areas\n        CHEV\n      </a>\n'
         '      <div class="ft-mega ft-mega--areas">\n'
         f'        <ul class="ft-areas-mega">{items}</ul>\n'
@@ -52,7 +71,7 @@ def desktop_item():
 
 
 def mobile_group():
-    items = "".join(f"<li><span>{a}</span></li>" for a in AREAS)
+    items = "".join(f"<li>{link(a, a)}</li>" for a in AREAS)
     return (
         '\n      <li class="ft-mobile__group">\n'
         '        <button type="button" class="ft-mobile__toggle" aria-expanded="false">Areas\n          CHEV\n        </button>\n'
@@ -60,7 +79,7 @@ def mobile_group():
 
 
 def phone_group():
-    items = "".join(f"<li>{PIN}{a}</li>" for a in AREAS)
+    items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
     return (
         '\n      <li class="ftm-group ftm-group--areas">\n'
         '        <button type="button" class="ftm-toggle" aria-expanded="false">Areas\n          CHEV\n        </button>\n'
@@ -68,7 +87,7 @@ def phone_group():
 
 
 def footer_band():
-    items = "".join(f"<li>{PIN}{a}</li>" for a in AREAS)
+    items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
     return (f'<div class="ft-footer-areas"><div class="ft-footer-areas__inner"><h2>Areas we cover</h2>'
             f'<ul>{items}</ul></div></div>\n')
 
@@ -77,13 +96,13 @@ def update(t, rel):
     # Area lists already on the pages
     def pins(m):
         pin = re.search(r'<span class="ft-area-pin">.*?</span>', m.group(0), re.S).group(0)
-        return '<ul class="ft-areas-list">\n' + "".join(f"  <li>{pin}{a}</li>\n" for a in AREAS) + "</ul>"
+        return '<ul class="ft-areas-list">\n' + "".join(f"  <li>{pin}{link(a, a)}</li>\n" for a in AREAS) + "</ul>"
     t = re.sub(r'<ul class="ft-areas-list">.*?</ul>', pins, t, flags=re.S)
 
     def chips(m):
         pin = re.search(r"<svg.*?</svg>", m.group(2), re.S)
         pin = pin.group(0) if pin else ""
-        return m.group(1) + "".join(f"<li>{pin}{a}</li>" for a in AREAS) + "</ul>"
+        return m.group(1) + "".join(f"<li>{link(a, pin + a)}</li>" for a in AREAS) + "</ul>"
     t = re.sub(r'(<ul class="fx-areas"[^>]*>)((?:(?!</ul>).)*?)</ul>', chips, t, flags=re.S)
     t = re.sub(r'"areaServed":\s*\[[^\]]*\]',
                lambda m: '"areaServed": ' + json.dumps([{"@type": "Place", "name": a} for a in AREAS]), t)

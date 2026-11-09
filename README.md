@@ -31,4 +31,5 @@ Flotech is an Introducer Appointed Representative (IAR) of Phoenix Financial Con
 - While the fixed copies sit in `_finance-preview`, the daily reviews update only refreshes the originals, so re-run `preview` if the preview needs today's reviews.
 
 ## Service areas
+Area pages: `/areas/` (hub, grouped Hertfordshire, Essex, Cambridgeshire) and `/areas/<slug>/` for each town. Wording in `scripts/area_content.py` (real districts, housing and postcodes only; reviews quoted word for word by reviewer name). Build with `python3 scripts/build_areas.py && python3 scripts/areas.py` (the shell is copied from the combi boiler page; also adds the pages to sitemap.xml).
 One list in `scripts/areas.py` (`AREAS`, from Darren via Tim, 9 Nov 2026). Run `python3 scripts/areas.py` after changing it: it updates the area lists and chips on the pages, the schema `areaServed`, the Areas dropdown (desktop), the Areas group (tablet and phone menus) and the Areas we cover band in the footer. Safe to re-run.
