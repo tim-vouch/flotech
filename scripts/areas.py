@@ -5,7 +5,8 @@ Updates the homepage/About/Power Flushing area list, the area chips on the boile
 pages, the schema areaServed, the "Areas" dropdown in the desktop menu, the "Areas"
 group in the mobile menu, and the "Areas we cover" band in the footer.
 """
-import glob, json, os, re
+import glob, json, os, re, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 AREAS = ["Bishop's Stortford", "Sawbridgeworth", "Dunmow", "Takeley", "Stansted", "Saffron Walden",
          "Harlow", "Chelmsford", "Cambridge", "Hertfordshire", "Essex"]
@@ -98,6 +99,36 @@ def phone_group():
         f'        <div class="ftm-sub"><div class="ftm-sub__inner"><ul class="ftm-areas">{items}</ul><a href="/areas/" class="ftm-areas-all">All Areas We Cover {ARROW}</a></div></div>\n      </li>')
 
 
+TOWNS_ONLY = [a for a in AREAS if not SLUGS[a].startswith("#")]
+FOOT_CSS = """<style id="ft-footcol-css">
+@media (min-width:1025px){
+.elementor-element-1c1907bf{--width:22% !important}
+.elementor-element-393059ae{--width:18% !important}
+.elementor-element-5990f8be{--width:14% !important}
+.elementor-element-5990f8be.ft-col-areas{--width:15% !important}
+.elementor-element-1f64f320{--width:20% !important}
+}
+@media (min-width:768px) and (max-width:1024px){
+.elementor-element-393059ae,.elementor-element-5990f8be,.elementor-element-5990f8be.ft-col-areas,.elementor-element-1f64f320{--width:45% !important}
+}
+</style>"""
+
+
+def footer_li(href, text, icon):
+    return (f'<li class="elementor-icon-list-item"><a href="{href}"><span class="elementor-icon-list-icon">{icon}</span>'
+            f'<span class="elementor-icon-list-text">{text}</span></a></li>')
+
+
+def footer_column(icon):
+    items = "".join(footer_li(href(a), a, icon) for a in TOWNS_ONLY) + footer_li("/areas/", "All areas we cover", icon)
+    return ('<div class="elementor-element elementor-element-5990f8be ft-col-areas e-con-full e-flex e-con e-child">'
+            '<div class="elementor-element elementor-element-20ed6dd1 elementor-widget elementor-widget-heading">'
+            '<div class="elementor-heading-title elementor-size-default">AREAS WE COVER</div></div>'
+            '<div class="elementor-element elementor-element-94c94b1 elementor-align-start elementor-mobile-align-start '
+            'elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list">'
+            f'<ul class="elementor-icon-list-items">{items}</ul></div></div>')
+
+
 def footer_band():
     items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
     return (f'<div class="ft-footer-areas"><div class="ft-footer-areas__inner"><h2>Areas we cover</h2>'
@@ -144,9 +175,21 @@ def update(t, rel):
     pc = re.search(r'class="ftm-toggle" aria-expanded="false">Services\s*(<svg.*?</svg>)', t, re.S)
     if panchor in t and pc:
         t = t.replace(panchor, phone_group().replace("CHEV", pc.group(1)) + panchor, 1)
-    fanchor = '<div class="elementor-element elementor-element-2587413 '
-    if fanchor in t:
-        t = t.replace(fanchor, footer_band() + "\t\t" + fanchor, 1)
+    # Footer: an "Areas we cover" column after Quick Links, and Terms & Conditions in Quick Links
+    t = re.sub(r'<div class="elementor-element elementor-element-5990f8be ft-col-areas .*?</ul></div></div>', "", t, flags=re.S)
+    t = re.sub(r'<style id="ft-footcol-css">.*?</style>\n', "", t, flags=re.S)
+    q = t.find('<div class="elementor-element elementor-element-5990f8be e-con-full')
+    if q >= 0:
+        from finance_fix import balanced_div
+        e = balanced_div(t, q)
+        col = t[q:e]
+        icon = re.search(r'<span class="elementor-icon-list-icon">\s*(<svg.*?</svg>)', col, re.S).group(1)
+        if 'href="/terms-and-conditions/"' not in col:
+            col2 = re.sub(r'(<a href="/contact/">(?:(?!</li>).)*?</li>)', lambda m: m.group(1) + footer_li("/terms-and-conditions/", "Terms &amp; Conditions", icon), col, count=1, flags=re.S)
+            t = t[:q] + col2 + t[e:]
+            e = q + len(col2)
+        t = t[:e] + footer_column(icon) + t[e:]
+        t = t.replace("</head>", FOOT_CSS + "\n</head>", 1)
     if "</head>" in t and ("ft-nav__item--areas" in t or "ft-footer-areas" in t):
         t = t.replace("</head>", CSS + "\n</head>", 1)
     return t

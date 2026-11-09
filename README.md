@@ -33,3 +33,8 @@ Flotech is an Introducer Appointed Representative (IAR) of Phoenix Financial Con
 ## Service areas
 Area pages: `/areas/` (hub, grouped Hertfordshire, Essex, Cambridgeshire) and `/areas/<slug>/` for each town. Wording in `scripts/area_content.py` (real districts, housing and postcodes only; reviews quoted word for word by reviewer name). Build with `python3 scripts/build_areas.py && python3 scripts/areas.py` (the shell is copied from the combi boiler page; also adds the pages to sitemap.xml).
 One list in `scripts/areas.py` (`AREAS`, from Darren via Tim, 9 Nov 2026). Run `python3 scripts/areas.py` after changing it: it updates the area lists and chips on the pages, the schema `areaServed`, the Areas dropdown (desktop), the Areas group (tablet and phone menus) and the Areas we cover band in the footer. Safe to re-run.
+
+## Terms and conditions
+`/terms-and-conditions/` is Flotech's own Boiler Terms and Conditions (Louise, 9 Nov 2026), copied word for word in `scripts/build_terms.py` (numbering tidied only). Linked from Quick Links in the footer. Rebuild: `python3 scripts/build_terms.py && python3 scripts/areas.py`.
+
+Footer: `scripts/areas.py` adds the Areas We Cover column (after Quick Links) and the Terms & Conditions link, and sets the five column widths.
