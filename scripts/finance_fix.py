@@ -38,6 +38,8 @@ def sub(t, pat, rep, flags=re.S, count=0):
 
 
 def fix(t, rel):
+    if MENU_LABEL in t:  # already fixed (applied to live 9 Nov 2026); running again must not add duplicates
+        return t
     # 1. Menus: keep the item, relabel it with Phoenix's name and no sales wording
     for cls in ("ft-mega", "ftm-card"):
         t = sub(t, r'(<a href="/boiler-finance/" class="' + cls + r'[^"]*"[^>]*>.*?<strong>)Boiler Finance(</strong><span>)Spread the cost in monthly payments(</span>)',
