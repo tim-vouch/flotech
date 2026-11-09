@@ -10,6 +10,7 @@ the status disclosure, Phoenix's own banner and calculator, and a simple line su
 import re, sys, glob, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MENU_LABEL = "Boiler Finance via Phoenix"
 APPROVED = "Boiler installation finance available through Phoenix Financial Consultants Ltd."
 
 STRIP = ('<div class="ffs" style="max-width:1200px;margin:0 auto;padding:0 20px 10px">'
@@ -36,12 +37,13 @@ def sub(t, pat, rep, flags=re.S, count=0):
 
 
 def fix(t, rel):
-    # 1. Menus: drop the Boiler Finance item (desktop mega menu, mobile list, mobile cards)
-    t = sub(t, r'<a href="/boiler-finance/" class="ft-mega__item"[^>]*>.*?</a>', "")
-    t = sub(t, r'<a href="/boiler-finance/" class="ftm-card">.*?</a>', "")
-    t = t.replace('<li><a href="/boiler-finance/">Boiler Finance</a></li>', "")
+    # 1. Menus: keep the item, relabel it with Phoenix's name and no sales wording
+    for cls in ("ft-mega", "ftm-card"):
+        t = sub(t, r'(<a href="/boiler-finance/" class="' + cls + r'[^"]*"[^>]*>.*?<strong>)Boiler Finance(</strong><span>)Spread the cost in monthly payments(</span>)',
+                r"\1" + MENU_LABEL + r"\2Phoenix Financial Consultants Ltd\3")
+    t = t.replace('<li><a href="/boiler-finance/">Boiler Finance</a></li>', f'<li><a href="/boiler-finance/">{MENU_LABEL}</a></li>')
     # 2. Footer services list
-    t = sub(t, r'(<li class="elementor-icon-list-item">\s*<a href="/boiler-finance/">(?:(?!</li>).)*?)Boiler Finance(</span>\s*</a>\s*</li>)', r"\1Finance available through Phoenix\2")
+    t = sub(t, r'(<li class="elementor-icon-list-item">\s*<a href="/boiler-finance/">(?:(?!</li>).)*?)Boiler Finance(</span>\s*</a>\s*</li>)', r"\1" + MENU_LABEL + r"\2")
     # 3. Approved line above the status disclosure (footer, every page)
     t = t.replace("<p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative",
                   f"<p><strong>{APPROVED}</strong></p><p>Flotech Heating and Plumbing ltd is an Introducer Appointed Representative")
