@@ -221,8 +221,8 @@ def main():
     # /reviews/ page, built from the About page's header and footer
     src = (SITE / "about-us" / "index.html").read_text()
     head_title = "Customer Reviews | Flotech Heating and Plumbing"
-    desc = (f"Read {RATING['count']} Google reviews of Flotech Heating and Plumbing: boiler installations, servicing, "
-            f"repairs and bathrooms across Bishop's Stortford and the surrounding areas.")
+    desc = (f"Read {RATING['count']} Google reviews of Flotech Heating and Plumbing: boiler installations, servicing "
+            f"and repairs across Bishop's Stortford and the surrounding areas.")
     s = re.sub(r"<title>.*?</title>", f"<title>{esc(head_title)}</title>", src, flags=re.S)
     s = re.sub(r'(<meta (?:name="description"|property="og:description") content=")[^"]*"', lambda m: m.group(1) + esc(desc) + '"', s)
     s = re.sub(r'(<meta property="og:title" content=")[^"]*"', lambda m: m.group(1) + esc(head_title) + '"', s)

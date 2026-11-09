@@ -41,3 +41,6 @@ Footer: `scripts/areas.py` adds the Areas We Cover column (after Quick Links) an
 
 ## Phone header
 `scripts/mobile_header.py` keeps the phone header on screen while scrolling (the thin Call us bar scrolls away; logo, call button, menu and Get Quote stay), like MJ Services. Safe to re-run; run it after `build_areas.py` or `build_terms.py`.
+
+## SEO fixes (9 Nov 2026)
+`scripts/seo_fixes.py`: home links go to `/` (not the duplicate `/home/`), alt text on logos and images, titles under 60 and descriptions 140 to 160 where they were off, stock images over 150KB resized and recompressed. `site/llms.txt` added. Safe to re-run.
