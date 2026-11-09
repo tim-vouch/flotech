@@ -32,7 +32,7 @@ ARROW = ('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="cu
          'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>')
 
 CSS = """<style id="ft-areas-css">
-.ft-nav .ft-mega.ft-mega--areas{width:600px}
+.ft-nav .ft-mega.ft-mega--areas{width:660px}
 .ft-areas-mega{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}
 .ft-areas-mega a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:600;color:#0A0A0A;text-decoration:none;transition:background .2s}
 .ft-areas-mega a:hover{background:#F4F4F4;color:#9B51FF}
@@ -45,13 +45,23 @@ CSS = """<style id="ft-areas-css">
 .ft-footer-areas__inner{max-width:1280px;margin:0 auto;padding-top:28px;border-top:1px solid #E5E5E5;text-align:center}
 .ft-footer-areas h2{margin:0 0 14px;font-family:'Urbanist',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0A0A0A}
 .ft-footer-areas ul{list-style:none;margin:0 auto;max-width:980px;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px}
-.ft-footer-areas a{display:flex;align-items:center;gap:6px;font-family:'Urbanist',sans-serif;font-size:15px;color:#4A4A4A;text-decoration:none}
-.ft-footer-areas a:hover{color:#9B51FF}
+.ft-footer-areas li a{display:flex;align-items:center;gap:6px;font-family:'Urbanist',sans-serif;font-size:15px;color:#4A4A4A;text-decoration:none}
+.ft-footer-areas li a:hover{color:#9B51FF}
 .ft-areas-list a{color:inherit;text-decoration:none}
 .ft-areas-list a:hover{text-decoration:underline;text-underline-offset:3px}
 .fx-areas li a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .fx-areas li:hover{border-color:#9B51FF}
 .ft-footer-areas li svg{color:#9B51FF}
+.ft-mega__btns{display:flex;gap:10px;flex-wrap:nowrap;flex-shrink:0}
+.ft-mega--areas .ft-mega__footer-text{flex:1;min-width:0}
+.ft-nav .ft-mega__cta.ft-mega__cta--ghost{background:#fff;color:#7A3FE0;box-shadow:inset 0 0 0 2px #9B51FF}
+.ft-nav .ft-mega__cta.ft-mega__cta--ghost:hover{background:#F4EEFF}
+.ft-mega--areas .ft-mega__cta{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.ft-mobile__sub.ft-mobile__areas .ft-areas-all{grid-column:1/-1}
+.ft-mobile__sub.ft-mobile__areas .ft-areas-all a{display:inline-flex !important;align-items:center;gap:6px;color:#7A3FE0 !important;font-weight:700 !important}
+.ftm-areas-all{display:flex !important;align-items:center;justify-content:center;gap:6px;margin:4px 0 10px;padding:13px 16px;border-radius:12px;border:2px solid #9B51FF;color:#7A3FE0 !important;font-family:'Urbanist',sans-serif;font-weight:700;font-size:15px;text-decoration:none !important}
+.ft-footer-areas .ft-footer-areas__all{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-family:'Urbanist',sans-serif;font-weight:700;font-size:15px;color:#7A3FE0 !important;text-decoration:none}
+.ft-footer-areas__all:hover{text-decoration:underline;text-underline-offset:3px}
 @media (max-width:767px){.ft-footer-areas{padding:0 20px 28px}}
 </style>"""
 
@@ -66,7 +76,9 @@ def desktop_item():
         f'        <ul class="ft-areas-mega">{items}</ul>\n'
         '        <div class="ft-mega__footer">\n'
         '          <div class="ft-mega__footer-text"><strong>Not sure if we cover you?</strong><span>Call 01279 598 972 or ask for a free quote.</span></div>\n'
-        f'          <a href="/contact/" class="ft-mega__cta">Get a Quote\n            {ARROW}\n          </a>\n'
+        '          <div class="ft-mega__btns">'
+        f'<a href="/areas/" class="ft-mega__cta ft-mega__cta--ghost">All Areas We Cover {ARROW}</a>'
+        f'<a href="/contact/" class="ft-mega__cta">Get a Quote {ARROW}</a></div>\n'
         '        </div>\n      </div>\n    </li>')
 
 
@@ -75,7 +87,7 @@ def mobile_group():
     return (
         '\n      <li class="ft-mobile__group">\n'
         '        <button type="button" class="ft-mobile__toggle" aria-expanded="false">Areas\n          CHEV\n        </button>\n'
-        f'        <ul class="ft-mobile__sub ft-mobile__areas">{items}</ul>\n      </li>')
+        f'        <ul class="ft-mobile__sub ft-mobile__areas">{items}<li class="ft-areas-all"><a href="/areas/">All Areas We Cover {ARROW}</a></li></ul>\n      </li>')
 
 
 def phone_group():
@@ -83,13 +95,13 @@ def phone_group():
     return (
         '\n      <li class="ftm-group ftm-group--areas">\n'
         '        <button type="button" class="ftm-toggle" aria-expanded="false">Areas\n          CHEV\n        </button>\n'
-        f'        <div class="ftm-sub"><div class="ftm-sub__inner"><ul class="ftm-areas">{items}</ul></div></div>\n      </li>')
+        f'        <div class="ftm-sub"><div class="ftm-sub__inner"><ul class="ftm-areas">{items}</ul><a href="/areas/" class="ftm-areas-all">All Areas We Cover {ARROW}</a></div></div>\n      </li>')
 
 
 def footer_band():
     items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
     return (f'<div class="ft-footer-areas"><div class="ft-footer-areas__inner"><h2>Areas we cover</h2>'
-            f'<ul>{items}</ul></div></div>\n')
+            f'<ul>{items}</ul><a class="ft-footer-areas__all" href="/areas/">All areas we cover {ARROW}</a></div></div>\n')
 
 
 def update(t, rel):
