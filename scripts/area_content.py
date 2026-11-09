@@ -62,7 +62,7 @@ TOWNS = [
         "nearby": ["bishops-stortford", "harlow", "stansted"],
     },
     {
-        "slug": "dunmow", "name": "Dunmow", "county": "Essex",
+        "slug": "great-dunmow", "name": "Great Dunmow", "county": "Essex",
         "postcode": "CM6", "hero": "system",
         "desc": "Gas Safe heating engineers in Great Dunmow, CM6, near our Little Canfield office. Boilers, servicing and repairs, from the High Street to Woodlands Park.",
         "lead": "Boiler installations, servicing and repairs across Great Dunmow, a few minutes from our registered office in Little Canfield.",
@@ -83,8 +83,8 @@ TOWNS = [
         "faqs": [
             ("Are you local to Great Dunmow?",
              "Yes, our registered office is in Little Canfield, a few minutes west of Great Dunmow. We cover the whole town and the CM6 area around it, including Woodlands Park, Church End, Little Dunmow and Flitch Green."),
-            ("Is Dunmow a hard water area?",
-             "Yes, Dunmow is in a hard water area, which means limescale can build up in boilers, taps and appliances. We supply and fit Monarch water softeners, and can talk you through whether one makes sense for your home."),
+            ("Is Great Dunmow a hard water area?",
+             "Yes, Great Dunmow is in a hard water area, which means limescale can build up in boilers, taps and appliances. We supply and fit Monarch water softeners, and can talk you through whether one makes sense for your home."),
             ("Can you service the unvented cylinder in my Woodlands Park home?",
              "Yes, we service unvented cylinders as well as boilers. An unvented cylinder should be checked every year to make sure its safety valves are working. See <a href=\"/unvented-cylinders/\">unvented cylinders</a>."),
         ],
@@ -116,7 +116,7 @@ TOWNS = [
             ("Do you install water softeners in Takeley?",
              "Yes, we supply and fit Monarch water softeners. Takeley is in a hard water area, so a softener can help protect your boiler, taps and appliances from limescale."),
         ],
-        "nearby": ["dunmow", "stansted", "bishops-stortford"],
+        "nearby": ["great-dunmow", "stansted", "bishops-stortford"],
     },
     {
         "slug": "stansted", "name": "Stansted", "county": "Essex",
@@ -172,7 +172,7 @@ TOWNS = [
             ("Do I need a combi or a system boiler?",
              "It depends on how many bathrooms you have and your mains water pressure. A combi suits homes with one main bathroom; a system boiler with a cylinder suits homes where two showers run at once. See <a href=\"/gas-boiler-installations/\">boiler installation</a> to compare."),
         ],
-        "nearby": ["stansted", "dunmow", "cambridge"],
+        "nearby": ["stansted", "great-dunmow", "cambridge"],
     },
     {
         "slug": "harlow", "name": "Harlow", "county": "Essex",
@@ -228,7 +228,7 @@ TOWNS = [
             ("Do you offer boiler repairs in Chelmsford?",
              "Yes, we repair boilers as well as install and service them. Call us on <a href=\"tel:+441279598972\">01279 598 972</a> and tell us what your boiler is doing. See <a href=\"/boiler-servicing-repairs/\">servicing and repairs</a>."),
         ],
-        "nearby": ["dunmow", "harlow", "takeley"],
+        "nearby": ["great-dunmow", "harlow", "takeley"],
     },
     {
         "slug": "cambridge", "name": "Cambridge", "county": "Cambridgeshire",
@@ -262,6 +262,6 @@ TOWNS = [
 
 GROUPS = [
     ("hertfordshire", "Hertfordshire", ["bishops-stortford", "sawbridgeworth"]),
-    ("essex", "Essex", ["dunmow", "takeley", "stansted", "saffron-walden", "harlow", "chelmsford"]),
+    ("essex", "Essex", ["great-dunmow", "takeley", "stansted", "saffron-walden", "harlow", "chelmsford"]),
     ("cambridgeshire", "Cambridgeshire", ["cambridge"]),
 ]

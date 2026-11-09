@@ -16,7 +16,7 @@ TITLES = {
     "boiler-servicing-repairs/index.html": "Boiler Servicing & Repairs in Bishop's Stortford | Flotech",
 }
 DESCS = {
-    "blog/index.html": "News, tips and advice from Flotech Heating and Plumbing: boiler servicing, new boilers, water softeners and bathrooms in Bishop's Stortford and Dunmow.",
+    "blog/index.html": "News, tips and advice from Flotech Heating and Plumbing: boiler servicing, new boilers, water softeners and bathrooms in Bishop's Stortford and Great Dunmow.",
     "gas-boiler-installations/index.html": "Gas boiler installation in Bishop's Stortford by Gas Safe engineers. Ideal and Vaillant combi, system and regular boilers, honest advice and free quotes.",
 }
 ALTS = {

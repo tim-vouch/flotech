@@ -50,8 +50,16 @@ CALL = ('<a href="tel:+441279598972" class="ftm-call" aria-label="Call 01279 598
 BURGER = '<button type="button" class="ftm-burger"'
 
 
+def put_css(t, css):
+    """Insert or replace a <style id=...> block in place, so re-running keeps the head order stable."""
+    sid = re.search(r'<style id="([^"]+)"', css).group(1)
+    m = re.search(r'<style id="' + re.escape(sid) + r'">.*?</style>\n?', t, re.S)
+    if m:
+        return t[:m.start()] + css + "\n" + t[m.end():]
+    return t.replace("</head>", css + "\n</head>", 1)
+
+
 def update(t):
-    t = re.sub(r'<style id="ft-sticky-m">.*?</style>\n', "", t, flags=re.S)
     t = t.replace(CALL, "")
     if "elementor-element-48963d4" not in t:
         return t
@@ -65,7 +73,7 @@ def update(t):
             t = t[:j] + '<span class="elementor-button-text">Get Free Quote</span>' + t[j + len('<span class="elementor-button-text">Get Quote</span>'):]
     if META not in t:
         t = t.replace('<meta name="viewport"', META + "\n" + '<meta name="viewport"', 1)
-    return t.replace("</head>", CSS + "\n</head>", 1)
+    return put_css(t, CSS)
 
 
 def main():

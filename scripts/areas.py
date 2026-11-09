@@ -8,10 +8,10 @@ group in the mobile menu, and the "Areas we cover" band in the footer.
 import glob, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-AREAS = ["Bishop's Stortford", "Sawbridgeworth", "Dunmow", "Takeley", "Stansted", "Saffron Walden",
+AREAS = ["Bishop's Stortford", "Sawbridgeworth", "Great Dunmow", "Takeley", "Stansted", "Saffron Walden",
          "Harlow", "Chelmsford", "Cambridge", "Hertfordshire", "Essex"]
 
-SLUGS = {"Bishop's Stortford": "bishops-stortford", "Sawbridgeworth": "sawbridgeworth", "Dunmow": "dunmow", "Takeley": "takeley",
+SLUGS = {"Bishop's Stortford": "bishops-stortford", "Sawbridgeworth": "sawbridgeworth", "Great Dunmow": "great-dunmow", "Takeley": "takeley",
          "Stansted": "stansted", "Saffron Walden": "saffron-walden", "Harlow": "harlow", "Chelmsford": "chelmsford",
          "Cambridge": "cambridge", "Hertfordshire": "#hertfordshire", "Essex": "#essex"}
 
@@ -135,6 +135,15 @@ def footer_band():
             f'<ul>{items}</ul><a class="ft-footer-areas__all" href="/areas/">All areas we cover {ARROW}</a></div></div>\n')
 
 
+
+def put_css(t, css):
+    """Insert or replace a <style id=...> block in place, so re-running keeps the head order stable."""
+    sid = re.search(r'<style id="([^"]+)"', css).group(1)
+    m = re.search(r'<style id="' + re.escape(sid) + r'">.*?</style>\n?', t, re.S)
+    if m:
+        return t[:m.start()] + css + "\n" + t[m.end():]
+    return t.replace("</head>", css + "\n</head>", 1)
+
 def update(t, rel):
     # Area lists already on the pages
     def pins(m):
@@ -159,7 +168,6 @@ def update(t, rel):
     t = re.sub(r'\n      <li class="ft-mobile__group">\n        <button type="button" class="ft-mobile__toggle" aria-expanded="false">Areas.*?\n      </li>', "", t, flags=re.S)
     t = re.sub(r'\n      <li class="ftm-group ftm-group--areas">.*?\n      </li>', "", t, flags=re.S)
     t = re.sub(r'<div class="ft-footer-areas">.*?</div></div>\n\t\t', "", t, flags=re.S)
-    t = re.sub(r'<style id="ft-areas-css">.*?</style>\n', "", t, flags=re.S)
 
     chev = re.search(r'Services\s*(<svg.*?</svg>)', t, re.S)
     if chev and '<nav class="ft-nav"' in t:
@@ -177,7 +185,6 @@ def update(t, rel):
         t = t.replace(panchor, phone_group().replace("CHEV", pc.group(1)) + panchor, 1)
     # Footer: an "Areas we cover" column after Quick Links, and Terms & Conditions in Quick Links
     t = re.sub(r'<div class="elementor-element elementor-element-5990f8be ft-col-areas .*?</ul></div></div>', "", t, flags=re.S)
-    t = re.sub(r'<style id="ft-footcol-css">.*?</style>\n', "", t, flags=re.S)
     q = t.find('<div class="elementor-element elementor-element-5990f8be e-con-full')
     if q >= 0:
         from finance_fix import balanced_div
@@ -189,9 +196,9 @@ def update(t, rel):
             t = t[:q] + col2 + t[e:]
             e = q + len(col2)
         t = t[:e] + footer_column(icon) + t[e:]
-        t = t.replace("</head>", FOOT_CSS + "\n</head>", 1)
+        t = put_css(t, FOOT_CSS)
     if "</head>" in t and ("ft-nav__item--areas" in t or "ft-footer-areas" in t):
-        t = t.replace("</head>", CSS + "\n</head>", 1)
+        t = put_css(t, CSS)
     return t
 
 

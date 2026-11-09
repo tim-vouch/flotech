@@ -110,10 +110,10 @@ def hub_main():
                         f'<span>{BY_SLUG[s]["postcode"]}</span><em>See {BY_SLUG[s]["name"]} {ARROW}</em></a>' for s in slugs)
         groups += f'<h3 class="fx-group-h" id="{gid}">{gname}</h3><div class="fx-types">{cards}</div>'
     faqs = [("Do you cover my area?",
-             "We cover Bishop's Stortford, Sawbridgeworth, Dunmow, Takeley, Stansted, Saffron Walden, Harlow, Chelmsford and Cambridge, and the "
+             "We cover Bishop's Stortford, Sawbridgeworth, Great Dunmow, Takeley, Stansted, Saffron Walden, Harlow, Chelmsford and Cambridge, and the "
              "towns and villages around them in Hertfordshire and Essex. If you're not sure, call us on <a href=\"tel:+441279598972\">01279 598 972</a> and we'll tell you."),
             ("Where are you based?",
-             "Our registered office is in Little Canfield, between Takeley and Great Dunmow, which puts Bishop's Stortford, Stansted and Dunmow close by."),
+             "Our registered office is in Little Canfield, between Takeley and Great Dunmow, which puts Bishop's Stortford, Stansted and Great Dunmow close by."),
             ("Do you charge for quotes?",
              "No, our quotes are free and there's no pressure to go ahead. Call us or send the <a href=\"/contact/\">quote form</a> to arrange one.")]
     return ('<div class="fx">' + CSS +
@@ -184,7 +184,7 @@ def main():
         os.makedirs(os.path.join(SITE, "areas", t["slug"]), exist_ok=True)
         open(os.path.join(SITE, "areas", t["slug"], "index.html"), "w", encoding="utf-8").write(out)
         urls.append(url)
-    desc = ("Flotech's Gas Safe engineers cover Bishop's Stortford, Sawbridgeworth, Dunmow, Takeley, Stansted, Saffron Walden, Harlow, Chelmsford and Cambridge.")
+    desc = ("Flotech's Gas Safe engineers cover Bishop's Stortford, Sawbridgeworth, Great Dunmow, Takeley, Stansted, Saffron Walden, Harlow, Chelmsford and Cambridge.")
     assert 140 <= len(desc) <= 160, len(desc)
     title = "Areas We Cover | Flotech Heating and Plumbing"
     area = [{"@type": "Place", "name": f'{t["name"]}, {t["county"]}'} for t in TOWNS]
