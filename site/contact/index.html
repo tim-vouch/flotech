@@ -2,7 +2,8 @@
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="/favicon.ico" sizes="48x48">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -347,10 +348,31 @@ h1.jexi-dhp__heading{margin-top:0}
 header.elementor-location-header{position:-webkit-sticky;position:sticky;top:-60px;z-index:9990}
 .elementor-element-48963d4{--padding-top:8px !important;--padding-bottom:8px !important;box-shadow:0 6px 18px rgba(15,10,40,.08)}
 .elementor-element-48963d4 .elementor-element-5ca6e8a img{width:64px !important;height:auto !important;max-width:none}
-.elementor-element-48963d4 .elementor-element-2f259d3 .elementor-widget-container,.elementor-element-48963d4 .elementor-element-08aa765{display:flex;align-items:center;justify-content:center;gap:10px}
-.ftm-call{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:2px solid #9B51FF;color:#7A3FE0 !important;background:#fff;flex:none}
+.elementor-element-48963d4 > .e-con-inner{display:flex !important;flex-wrap:nowrap !important;align-items:center !important;gap:8px !important}
+.elementor-element-48963d4 .elementor-element-47db4ff{order:1;--width:auto !important;width:auto !important;margin-right:auto !important}
+.elementor-element-48963d4 .elementor-element-2f259d3,.elementor-element-48963d4 .elementor-element-08aa765{display:contents !important}
+.elementor-element-48963d4 .ftm-call{order:2}
+.elementor-element-48963d4 .elementor-element-4a79251{order:3;--width:auto !important;width:auto !important;flex:none !important}
+.elementor-element-48963d4 .ftm-burger{order:4;flex:none}
+.elementor-element-48963d4 .ft-book-btn .elementor-button{padding:0 14px !important;height:46px;display:inline-flex !important;align-items:center;font-size:15px !important;white-space:nowrap}
+.elementor-element-48963d4 .ft-book-btn .elementor-button-icon{display:none !important}
+.ftm-call{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;border:2px solid #9B51FF;color:#7A3FE0 !important;background:#fff;flex:none}
 .ftm-call svg{width:20px;height:20px}
 }
+@media (max-width:400px){
+.elementor-element-48963d4 > .e-con-inner{gap:6px !important}
+.elementor-element-48963d4 .elementor-element-5ca6e8a img{width:56px !important}
+.elementor-element-48963d4 .ftm-call,.elementor-element-48963d4 .ftm-burger{width:42px !important;height:42px !important}
+.elementor-element-48963d4 .ft-book-btn .elementor-button{height:42px;padding:0 12px !important;font-size:14px !important}
+}
+@media (max-width:359px){
+.elementor-element-c8b0c78 .elementor-element-d0c918a{display:none !important}
+.elementor-element-48963d4 .elementor-element-5ca6e8a img{width:48px !important}
+.elementor-element-48963d4 .ftm-call,.elementor-element-48963d4 .ftm-burger{width:40px !important;height:40px !important}
+.elementor-element-48963d4 .ft-book-btn .elementor-button{height:40px;padding:0 10px !important;font-size:13px !important}
+}
+a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important}
+.ft-phone-box .elementor-icon-box-description a{color:inherit !important;text-decoration:none !important}
 </style>
 </head>
 <body class="wp-singular page-template-default page page-id-183 wp-embed-responsive wp-theme-hello-elementor everest-forms-no-js angie-default hello-elementor-default elementor-default elementor-kit-6 elementor-page elementor-page-183">
@@ -764,8 +786,7 @@ body.ft-nav-open { overflow: hidden; }
 							Call us today						</a>
 					</span>
 				
-									<p class="elementor-icon-box-description">
-						01279 598 972					</p>
+									<p class="elementor-icon-box-description"><a href="tel:+441279598972">01279 598 972</a></p>
 				
 			</div>
 			
@@ -801,8 +822,7 @@ body.ft-nav-open { overflow: hidden; }
 							Call us today						</a>
 					</span>
 				
-									<p class="elementor-icon-box-description">
-						01279 598 972					</p>
+									<p class="elementor-icon-box-description"><a href="tel:+441279598972">01279 598 972</a></p>
 				
 			</div>
 			
@@ -1180,7 +1200,7 @@ body.ftm-open { overflow: hidden; }
 						<span class="elementor-button-content-wrapper">
 						<span class="elementor-button-icon">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-arrow-right" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>			</span>
-									<span class="elementor-button-text">Get Quote</span>
+									<span class="elementor-button-text">Get Free Quote</span>
 					</span>
 					</a>
 								</div>
