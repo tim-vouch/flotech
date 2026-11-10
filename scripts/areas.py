@@ -195,6 +195,12 @@ def update(t, rel):
             col2 = re.sub(r'(<a href="/contact/">(?:(?!</li>).)*?</li>)', lambda m: m.group(1) + footer_li("/terms-and-conditions/", "Terms &amp; Conditions", icon), col, count=1, flags=re.S)
             t = t[:q] + col2 + t[e:]
             e = q + len(col2)
+        if 'href="/privacy-policy/"' not in col:
+            col2 = re.sub(r'(<a href="/terms-and-conditions/">(?:(?!</li>).)*?</li>)', lambda m: m.group(1) + footer_li("/privacy-policy/", "Privacy Policy", icon), col, count=1, flags=re.S)
+            if col2 != col:
+                t = t[:q] + col2 + t[e:]
+                e = q + len(col2)
+                col = col2
         t = t[:e] + footer_column(icon) + t[e:]
         t = put_css(t, FOOT_CSS)
     if "</head>" in t and ("ft-nav__item--areas" in t or "ft-footer-areas" in t):

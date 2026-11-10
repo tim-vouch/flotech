@@ -44,3 +44,6 @@ Footer: `scripts/areas.py` adds the Areas We Cover column (after Quick Links) an
 
 ## SEO fixes (9 Nov 2026)
 `scripts/seo_fixes.py`: home links go to `/` (not the duplicate `/home/`), alt text on logos and images, titles under 60 and descriptions 140 to 160 where they were off, stock images over 150KB resized and recompressed. `site/llms.txt` added. Safe to re-run.
+
+## Privacy policy and analytics
+`/privacy-policy/` (built by `scripts/build_privacy.py`, linked in Quick Links) covers enquiries, Ahrefs Web Analytics (cookie-free), cookies, the Phoenix finance link and UK GDPR rights. `scripts/analytics.py` adds the Ahrefs Web Analytics snippet to every page. Run both after rebuilding pages.
