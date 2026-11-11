@@ -36,7 +36,7 @@ One list in `scripts/areas.py` (`AREAS`, from Darren via Tim, 9 Nov 2026). Run `
 
 ## Demo-only changes (site/_preview/)
 `python3 scripts/preview_build.py` runs the area scripts, then moves every page they changed or created into `site/_preview/<same path>` and puts the live original back. `worker.js` serves `site/_preview/<path>` first on the demo (flotech.vouchdigital.co.uk); `pages.yml` deletes the folder before publishing, so flotechheating.co.uk is untouched. The daily reviews job refreshes the copies too.
-- Now in the demo (11 Nov 2026): Darren's postcode list (67 districts, CB6 and CM0 added at Tim's request): 16 new town pages (25 in all), the postcode checker and full postcode list on /areas/, a Suffolk group, the Areas menu and footer column with 12 towns, and every town in the schema areaServed.
+- Now in the demo (11 Nov 2026): Darren's postcode list (67 districts, CB6 and CM0 added at Tim's request): 16 new town pages (25 in all), the full postcode list on /areas/, a Suffolk group, the Areas menus showing the four counties with a "See all towns we cover in ..." button each, the footer column with 12 towns, and every town in the schema areaServed.
 - While `PREVIEW_ONLY = True` in `scripts/area_content.py`, `build_areas.py` and `areas.py` refuse to run on their own, so the new areas can't reach the live site by accident. To go live: set it to `False`, run `python3 scripts/preview_build.py apply`, commit and push.
 
 ## Terms and conditions

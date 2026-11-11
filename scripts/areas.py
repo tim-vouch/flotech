@@ -38,6 +38,11 @@ ARROW = ('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="cu
 CSS = """<style id="ft-areas-css">
 .ft-nav .ft-mega.ft-mega--areas{width:660px}
 .ft-areas-mega{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}
+.ft-areas-mega.ft-areas-counties{grid-template-columns:1fr 1fr;gap:12px}
+.ft-areas-mega .ft-county{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:16px 18px;border:1px solid #ECEAF2;border-radius:14px;background:#FCFBFF}
+.ft-areas-mega .ft-county strong{display:flex;align-items:center;gap:8px;font-family:'Urbanist',sans-serif;font-size:17px;font-weight:800;color:#0A0A0A}
+.ft-areas-mega .ft-county a.ft-county__btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px #9B51FF;color:#7A3FE0;font-size:14px;font-weight:700;white-space:nowrap}
+.ft-areas-mega .ft-county a.ft-county__btn:hover{background:#F4EEFF;color:#7A3FE0}
 .ft-areas-mega a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-family:'Urbanist',sans-serif;font-size:15px;font-weight:600;color:#0A0A0A;text-decoration:none;transition:background .2s}
 .ft-areas-mega a:hover{background:#F4F4F4;color:#9B51FF}
 .ft-areas-mega li svg{color:#9B51FF;flex-shrink:0}
@@ -70,14 +75,21 @@ CSS = """<style id="ft-areas-css">
 </style>"""
 
 
+# The Areas menus show the four counties, each with a button to its towns on /areas/ (Tim, 11 Nov 2026).
+COUNTIES = [(gid, name) for gid, name, _ in _A.GROUPS]
+COUNTY_ORDER = ["essex", "hertfordshire", "cambridgeshire", "suffolk"]
+COUNTIES.sort(key=lambda g: COUNTY_ORDER.index(g[0]) if g[0] in COUNTY_ORDER else 99)
+
+
 def desktop_item():
-    items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
+    items = "".join(f'<li class="ft-county"><strong>{PIN}{name}</strong>'
+                    f'<a href="/areas/#{gid}" class="ft-county__btn">See all towns we cover in {name} {ARROW}</a></li>' for gid, name in COUNTIES)
     return (
         '\n    <li class="ft-nav__item ft-nav__item--mega ft-nav__item--areas">\n'
         '      <a href="/areas/" class="ft-nav__link ft-nav__link--has-mega" aria-haspopup="true" aria-expanded="false">\n'
         '        Areas\n        CHEV\n      </a>\n'
         '      <div class="ft-mega ft-mega--areas">\n'
-        f'        <ul class="ft-areas-mega">{items}</ul>\n'
+        f'        <ul class="ft-areas-mega ft-areas-counties">{items}</ul>\n'
         '        <div class="ft-mega__footer">\n'
         '          <div class="ft-mega__footer-text"><strong>Not sure if we cover you?</strong><span>Call 01279 598 972 or ask for a free quote.</span></div>\n'
         '          <div class="ft-mega__btns">'
@@ -87,7 +99,7 @@ def desktop_item():
 
 
 def mobile_group():
-    items = "".join(f"<li>{link(a, a)}</li>" for a in AREAS)
+    items = "".join(f'<li><a href="/areas/#{gid}">{name}</a></li>' for gid, name in COUNTIES)
     return (
         '\n      <li class="ft-mobile__group">\n'
         '        <button type="button" class="ft-mobile__toggle" aria-expanded="false">Areas\n          CHEV\n        </button>\n'
@@ -95,7 +107,7 @@ def mobile_group():
 
 
 def phone_group():
-    items = "".join(f"<li>{link(a, PIN + a)}</li>" for a in AREAS)
+    items = "".join(f'<li><a href="/areas/#{gid}">{PIN}{name}</a></li>' for gid, name in COUNTIES)
     return (
         '\n      <li class="ftm-group ftm-group--areas">\n'
         '        <button type="button" class="ftm-toggle" aria-expanded="false">Areas\n          CHEV\n        </button>\n'
