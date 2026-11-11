@@ -103,7 +103,7 @@ function previewOverlay(html, path) {
     // second menu variant (cards)
     .replace(/<div class="ftm-card ftm-card--soon" aria-disabled="true">([\s\S]*?)<\/div>(\s*<a href="\/boiler-finance\/" class="ftm-card">)/,
       '<a href="' + CARE + '" class="ftm-card">$1</a>$2')
-    .replaceAll("<strong>Boiler Care Plans</strong><span>Coming soon</span>", "<strong>Boiler Care Plans</strong><span>From &pound;10 a month</span>")
+    .replaceAll("<strong>Boiler Care Plans</strong><span>Coming soon</span>", "<strong>Boiler Care Plans</strong><span>From &pound;9 a month</span>")
     // mobile menu
     .replace('<span class="ft-mobile__soon" aria-disabled="true">Boiler Care Plans <em>Coming soon</em></span>', '<a href="' + CARE + '">Boiler Care Plans</a>')
     // homepage card
