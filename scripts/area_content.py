@@ -5,7 +5,7 @@ hasn't made. Reviews are quoted word for word from data/google-reviews.json (loo
 """
 
 # True while the postcode areas (11 Nov 2026) are on the demo only: build with `python3 scripts/preview_build.py`.
-PREVIEW_ONLY = True
+PREVIEW_ONLY = False
 
 TOWNS = [
     {
