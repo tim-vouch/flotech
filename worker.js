@@ -67,10 +67,14 @@ export default {
     // Finance compliance preview (Phoenix, Nov 2026): fixed copies of pages live in site/_finance-preview/ and are shown
     // here first, for Louise to approve. pages.yml strips that folder from the live site. Approve with
     // `python3 scripts/finance_fix.py apply` and delete site/_finance-preview.
+    // Demo-only pages (site/_preview/, built by scripts/preview_build.py, e.g. Darren's postcode areas, Nov 2026)
+    // are served first in the same way; pages.yml strips that folder from the live site too.
     let res = null;
-    if (request.method === "GET" && url.pathname.endsWith("/") && !url.pathname.startsWith("/_finance-preview")) {
-      const alt = await env.ASSETS.fetch(new Request(new URL("/_finance-preview" + url.pathname, url), request));
-      if (alt.ok && (alt.headers.get("content-type") || "").includes("text/html")) res = alt;
+    if (request.method === "GET" && url.pathname.endsWith("/") && !/^\/_(finance-)?preview\//.test(url.pathname)) {
+      for (const dir of ["/_preview", "/_finance-preview"]) {
+        const alt = await env.ASSETS.fetch(new Request(new URL(dir + url.pathname, url), request));
+        if (alt.ok && (alt.headers.get("content-type") || "").includes("text/html")) { res = alt; break; }
+      }
     }
     if (!res) res = await env.ASSETS.fetch(request);
     let out = new Response(res.body, res);

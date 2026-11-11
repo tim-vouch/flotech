@@ -34,6 +34,11 @@ Flotech is an Introducer Appointed Representative (IAR) of Phoenix Financial Con
 Area pages: `/areas/` (hub, grouped Hertfordshire, Essex, Cambridgeshire) and `/areas/<slug>/` for each town. Wording in `scripts/area_content.py` (real districts, housing and postcodes only; reviews quoted word for word by reviewer name). Build with `python3 scripts/build_areas.py && python3 scripts/areas.py` (the shell is copied from the combi boiler page; also adds the pages to sitemap.xml).
 One list in `scripts/areas.py` (`AREAS`, from Darren via Tim, 9 Nov 2026). Run `python3 scripts/areas.py` after changing it: it updates the area lists and chips on the pages, the schema `areaServed`, the Areas dropdown (desktop), the Areas group (tablet and phone menus) and the Areas we cover band in the footer. Safe to re-run.
 
+## Demo-only changes (site/_preview/)
+`python3 scripts/preview_build.py` runs the area scripts, then moves every page they changed or created into `site/_preview/<same path>` and puts the live original back. `worker.js` serves `site/_preview/<path>` first on the demo (flotech.vouchdigital.co.uk); `pages.yml` deletes the folder before publishing, so flotechheating.co.uk is untouched. The daily reviews job refreshes the copies too.
+- Now in the demo (11 Nov 2026): Darren's postcode list (67 districts, CB6 and CM0 added at Tim's request): 16 new town pages (25 in all), the postcode checker and full postcode list on /areas/, a Suffolk group, the Areas menu and footer column with 12 towns, and every town in the schema areaServed.
+- While `PREVIEW_ONLY = True` in `scripts/area_content.py`, `build_areas.py` and `areas.py` refuse to run on their own, so the new areas can't reach the live site by accident. To go live: set it to `False`, run `python3 scripts/preview_build.py apply`, commit and push.
+
 ## Terms and conditions
 `/terms-and-conditions/` is Flotech's own Boiler Terms and Conditions (Louise, 9 Nov 2026), copied word for word in `scripts/build_terms.py` (numbering tidied only). Linked from Quick Links in the footer. Rebuild: `python3 scripts/build_terms.py && python3 scripts/areas.py`.
 

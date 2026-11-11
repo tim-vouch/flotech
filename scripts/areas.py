@@ -8,12 +8,15 @@ group in the mobile menu, and the "Areas we cover" band in the footer.
 import glob, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-AREAS = ["Bishop's Stortford", "Sawbridgeworth", "Great Dunmow", "Takeley", "Stansted", "Saffron Walden",
-         "Harlow", "Chelmsford", "Cambridge", "Hertfordshire", "Essex"]
+import area_content as _A  # noqa: E402
 
-SLUGS = {"Bishop's Stortford": "bishops-stortford", "Sawbridgeworth": "sawbridgeworth", "Great Dunmow": "great-dunmow", "Takeley": "takeley",
-         "Stansted": "stansted", "Saffron Walden": "saffron-walden", "Harlow": "harlow", "Chelmsford": "chelmsford",
-         "Cambridge": "cambridge", "Hertfordshire": "#hertfordshire", "Essex": "#essex"}
+# Shown in the Areas menus, the footer column and the area lists and chips on the pages (12 = 4 tidy rows of 3).
+AREAS = ["Bishop's Stortford", "Sawbridgeworth", "Great Dunmow", "Takeley", "Stansted", "Saffron Walden",
+         "Harlow", "Chelmsford", "Braintree", "Brentwood", "Cambridge", "Bury St Edmunds"]
+SLUGS = {t["name"]: t["slug"] for t in _A.TOWNS}
+SLUGS.update({"Hertfordshire": "#hertfordshire", "Essex": "#essex", "Cambridgeshire": "#cambridgeshire", "Suffolk": "#suffolk"})
+# Every town page plus the four counties: the schema areaServed on every page (Darren's postcodes, 11 Nov 2026).
+ALL_AREAS = [t["name"] for t in _A.TOWNS] + ["Essex", "Hertfordshire", "Cambridgeshire", "Suffolk"]
 
 
 def href(a):
@@ -157,7 +160,7 @@ def update(t, rel):
         return m.group(1) + "".join(f"<li>{link(a, pin + a)}</li>" for a in AREAS) + "</ul>"
     t = re.sub(r'(<ul class="fx-areas"[^>]*>)((?:(?!</ul>).)*?)</ul>', chips, t, flags=re.S)
     t = re.sub(r'"areaServed":\s*\[[^\]]*\]',
-               lambda m: '"areaServed": ' + json.dumps([{"@type": "Place", "name": a} for a in AREAS]), t)
+               lambda m: '"areaServed": ' + json.dumps([{"@type": "Place", "name": a} for a in ALL_AREAS]), t)
 
     # Anchor for the menu link (homepage areas section)
     t = t.replace('data-id="301a73a7" data-element_type="widget"', 'id="areas" data-id="301a73a7" data-element_type="widget"', 1) \
@@ -209,10 +212,12 @@ def update(t, rel):
 
 
 def main():
+    if _A.PREVIEW_ONLY and not os.environ.get("FLOTECH_PREVIEW_BUILD"):
+        sys.exit("The area lists are demo-only for now (PREVIEW_ONLY in area_content.py). Run: python3 scripts/preview_build.py")
     changed = []
     for f in sorted(glob.glob(os.path.join(ROOT, "site", "**", "index.html"), recursive=True)):
         rel = os.path.relpath(f, os.path.join(ROOT, "site"))
-        if rel.startswith(("_finance-preview", "wp-")):
+        if rel.startswith(("_finance-preview", "_preview", "wp-")):
             continue
         t = open(f, encoding="utf-8").read()
         n = update(t, rel)

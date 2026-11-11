@@ -7,7 +7,7 @@ footer stay identical to the rest of the site. Safe to re-run: pages are rebuilt
 import html, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from area_content import TOWNS, GROUPS  # noqa: E402
+from area_content import TOWNS, GROUPS, PREVIEW_ONLY  # noqa: E402
 from finance_fix import STRIP, balanced_div  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +43,21 @@ CSS = """<style id="fx-area">
 .fx-areas.fx-near svg{color:#7B35E0}
 .fx-group-h{margin:44px 0 0 !important;font-size:22px;font-weight:800;scroll-margin-top:120px}
 .fx-group-h:first-of-type{margin-top:28px !important}
+.fx-pc{max-width:640px;margin:8px 0 6px;background:#fff;border:1px solid #E6E6EE;border-radius:18px;padding:22px 24px;box-shadow:0 10px 30px rgba(10,10,10,.06)}
+.fx-pc label{display:block;font-weight:800;font-size:17px;margin:0 0 10px;color:#0A0A0A}
+.fx-pc form{display:flex;gap:10px;flex-wrap:wrap}
+.fx-pc input{flex:1;min-width:180px;font:600 17px Urbanist,sans-serif;padding:13px 16px;border:1.5px solid #D9D5E4;border-radius:12px;text-transform:uppercase;color:#0A0A0A}
+.fx-pc input:focus{outline:none;border-color:#9B51FF;box-shadow:0 0 0 3px rgba(155,81,255,.15)}
+.fx-pc button{font:800 16px Urbanist,sans-serif;padding:13px 22px;border:0;border-radius:12px;color:#fff;background:linear-gradient(90deg,#9B51FF,#1BA5FF);cursor:pointer}
+.fx-pc-out{margin:12px 0 0;font-size:16px;line-height:1.5;color:#1A1A1A}
+.fx-pc-out:empty{display:none}
+.fx-pc-out.yes{color:#14532d}.fx-pc-out.yes b{color:#15803d}
+.fx-pc-out a{font-weight:700}
+.fx-codes{display:grid;gap:18px;max-width:980px;margin:26px auto 0;text-align:left}
+.fx-codes h3{margin:0 0 8px;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#4A4A4A}
+.fx-codes ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.fx-codes a{display:inline-block;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid #E6E6EE;font-size:14.5px;font-weight:700;color:#1A1A1A;text-decoration:none}
+.fx-codes a:hover{border-color:#9B51FF;color:#7A3FE0}
 </style>"""
 
 SERVICES = [("/gas-boiler-installations/", "Boiler Installation", "Ideal and Vaillant boilers, professionally fitted"),
@@ -103,26 +118,70 @@ def town_main(t):
             + near_block(t["nearby"], "We also cover") + "</div>")
 
 
+AREA_NAMES = [("CM", "Chelmsford"), ("CB", "Cambridge"), ("CO", "Colchester"), ("SS", "Southend"), ("RM", "Romford"),
+              ("IG", "Ilford"), ("EN", "Enfield"), ("SG", "Stevenage"), ("IP", "Ipswich")]
+CHECK_JS = """<script>(function(){var D=__DATA__;
+var f=document.getElementById("fx-pc-form"),i=document.getElementById("fx-pc-in"),o=document.getElementById("fx-pc-out");
+f.addEventListener("submit",function(e){e.preventDefault();var v=i.value.toUpperCase().replace(/[^A-Z0-9 ]/g,"").trim(),c;
+if(!v){o.className="fx-pc-out";o.textContent="Please type your postcode.";return;}
+if(v.indexOf(" ")>0)c=v.split(" ")[0];else c=v.length>4?v.slice(0,-3):v;
+var m=c.match(/^[A-Z]{1,2}[0-9]{1,2}/);c=m?m[0]:c;var hit=D[c];
+if(hit){o.className="fx-pc-out yes";o.innerHTML="<b>Yes, we cover "+c+".</b> See <a href='/areas/"+hit[1]+"/'>"+hit[0]+"</a>, or <a href='/contact/'>get a free quote</a>.";}
+else{o.className="fx-pc-out";o.innerHTML="We don't list "+c+", but we may still be able to help. Call us on <a href='tel:+441279598972'>01279 598 972</a> and we'll tell you.";}});})();</script>"""
+
+
+def code_key(code):
+    m = re.match(r"([A-Z]+)(\d+)", code)
+    return (m.group(1), int(m.group(2)))
+
+
+def checker():
+    data = {code: [t["name"], t["slug"]] for t in TOWNS for code in t["codes"]}
+    return ('<div class="fx-pc"><label for="fx-pc-in">Check your postcode</label>'
+            '<form id="fx-pc-form" novalidate><input id="fx-pc-in" type="text" autocomplete="postal-code" placeholder="e.g. CM7 1AB">'
+            '<button type="submit">Check</button></form><p class="fx-pc-out" id="fx-pc-out" role="status"></p></div>'
+            + CHECK_JS.replace("__DATA__", json.dumps(data, separators=(",", ":"))))
+
+
+def all_codes():
+    by_area = {}
+    for t in TOWNS:
+        for code in t["codes"]:
+            by_area.setdefault(code_key(code)[0], []).append((code, t))
+    rows = ""
+    for prefix, label in AREA_NAMES:
+        items = "".join(f'<li><a href="/areas/{t["slug"]}/" title="{html.escape(t["name"])}">{code}</a></li>'
+                        for code, t in sorted(by_area.get(prefix, []), key=lambda x: code_key(x[0])))
+        if items:
+            rows += f'<div><h3>{prefix} ({label} area)</h3><ul>{items}</ul></div>'
+    n = sum(len(t["codes"]) for t in TOWNS)
+    return (f'<section class="fx-sec fx-sec--tint"><div class="fx-wrap fx-center"><p class="fx-eyebrow">Postcodes</p>'
+            f'<h2>Every postcode <span class="fx-hl">we cover</span></h2><p class="fx-lead">All {n} postcode districts we cover. '
+            f'Tap one to see the local page.</p><div class="fx-codes">{rows}</div></div></section>')
+
+
 def hub_main():
     groups = ""
     for gid, gname, slugs in GROUPS:
         cards = "".join(f'<a href="/areas/{s}/" class="fx-type"><strong>{BY_SLUG[s]["name"]}</strong>'
                         f'<span>{BY_SLUG[s]["postcode"]}</span><em>See {BY_SLUG[s]["name"]} {ARROW}</em></a>' for s in slugs)
         groups += f'<h3 class="fx-group-h" id="{gid}">{gname}</h3><div class="fx-types">{cards}</div>'
+    n = sum(len(t["codes"]) for t in TOWNS)
     faqs = [("Do you cover my area?",
-             "We cover Bishop's Stortford, Sawbridgeworth, Great Dunmow, Takeley, Stansted, Saffron Walden, Harlow, Chelmsford and Cambridge, and the "
-             "towns and villages around them in Hertfordshire and Essex. If you're not sure, call us on <a href=\"tel:+441279598972\">01279 598 972</a> and we'll tell you."),
+             f"We cover {n} postcode districts across Essex, Hertfordshire, Cambridgeshire and Suffolk, from Harlow and Brentwood to "
+             "Cambridge, Ely and Bury St Edmunds. Type your postcode into the checker at the top of this page, or call us on "
+             "<a href=\"tel:+441279598972\">01279 598 972</a> and we'll tell you."),
             ("Where are you based?",
              "Our registered office is in Little Canfield, between Takeley and Great Dunmow, which puts Bishop's Stortford, Stansted and Great Dunmow close by."),
             ("Do you charge for quotes?",
              "No, our quotes are free and there's no pressure to go ahead. Call us or send the <a href=\"/contact/\">quote form</a> to arrange one.")]
     return ('<div class="fx">' + CSS +
             '<section class="fx-sec"><div class="fx-wrap"><p class="fx-eyebrow">Areas we cover</p>'
-            '<h2>Local heating engineers across <span class="fx-hl">Hertfordshire &amp; Essex</span></h2>'
+            '<h2>Local heating engineers across <span class="fx-hl">Essex, Hertfordshire, Cambridgeshire &amp; Suffolk</span></h2>'
             '<p class="fx-lead">From our registered office in Little Canfield, our Gas Safe engineers install, service and repair boilers across '
-            'Hertfordshire and Essex, and as far as Cambridge. Choose your area to see how we can help.</p>'
-            + groups + '<div style="margin-top:32px">' + btns() + '</div></div></section>'
-            + services("your area") + review_block(["Hems"])
+            'Essex and Hertfordshire, and into Cambridgeshire and Suffolk. Check your postcode, or choose your area below.</p>'
+            + checker() + groups + '<div style="margin-top:32px">' + btns() + '</div></div></section>'
+            + all_codes() + services("your area") + review_block(["Hems"])
             + faq_block('Areas we cover: <span class="fx-hl">your questions answered</span>', faqs) + "</div>")
 
 
@@ -168,6 +227,8 @@ def page(tpl, url, title, desc, eyebrow, h1_pre, h1_hl, lead, hero, main_html, s
 
 
 def main():
+    if PREVIEW_ONLY and not os.environ.get("FLOTECH_PREVIEW_BUILD"):
+        sys.exit("The area pages are demo-only for now (PREVIEW_ONLY in area_content.py). Run: python3 scripts/preview_build.py")
     tpl = open(TEMPLATE, encoding="utf-8").read()
     m = re.search(r'<script type="application/ld\+json">(.*?)</script>', tpl, re.S)
     business = next(g for g in json.loads(m.group(1))["@graph"] if g.get("@type") == "HVACBusiness")
@@ -177,21 +238,22 @@ def main():
         url = f'{hub}{t["slug"]}/'
         title = f'Heating Engineers in {t["name"]} | Flotech'
         assert len(title) < 60 and 140 <= len(t["desc"]) <= 160, (t["slug"], len(title), len(t["desc"]))
-        area = [{"@type": "Place", "name": f'{t["name"]}, {t["county"]}'}]
+        # A single Place (not a list), so scripts/areas.py doesn't swap it for the site-wide list
+        area = {"@type": "Place", "name": f'{t["name"]}, {t["county"]}'}
         crumbs = [("Home", BASE + "/"), ("Areas We Cover", hub), (t["name"], url)]
         out = page(tpl, url, title, t["desc"], t["county"], "Heating Engineers in", t["name"], t["lead"], t["hero"],
                    town_main(t), schema(url, title, t["desc"], crumbs, area, t["faqs"], business))
         os.makedirs(os.path.join(SITE, "areas", t["slug"]), exist_ok=True)
         open(os.path.join(SITE, "areas", t["slug"], "index.html"), "w", encoding="utf-8").write(out)
         urls.append(url)
-    desc = ("Flotech's Gas Safe engineers cover Bishop's Stortford, Sawbridgeworth, Great Dunmow, Takeley, Stansted, Saffron Walden, Harlow, Chelmsford and Cambridge.")
+    desc = ("Flotech's Gas Safe engineers cover Essex, Hertfordshire, Cambridgeshire and Suffolk, from Bishop's Stortford and Chelmsford to Ely and Bury St Edmunds.")
     assert 140 <= len(desc) <= 160, len(desc)
     title = "Areas We Cover | Flotech Heating and Plumbing"
     area = [{"@type": "Place", "name": f'{t["name"]}, {t["county"]}'} for t in TOWNS]
     hub_faqs_src = hub_main()
     faqs = re.findall(r"<details><summary>(.*?)</summary><p>(.*?)</p></details>", hub_faqs_src)
-    out = page(tpl, hub, title, desc, "Hertfordshire &amp; Essex", "Areas", "We Cover",
-               "Gas Safe heating engineers for boiler installation, servicing and repairs across Hertfordshire and Essex.", "system",
+    out = page(tpl, hub, title, desc, "Essex, Herts, Cambs &amp; Suffolk", "Areas", "We Cover",
+               "Gas Safe heating engineers for boiler installation, servicing and repairs across Essex, Hertfordshire, Cambridgeshire and Suffolk.", "system",
                hub_faqs_src, schema(hub, title, desc, [("Home", BASE + "/"), ("Areas We Cover", hub)], area, faqs, business))
     os.makedirs(os.path.join(SITE, "areas"), exist_ok=True)
     open(os.path.join(SITE, "areas", "index.html"), "w", encoding="utf-8").write(out)
