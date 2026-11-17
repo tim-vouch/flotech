@@ -2,5 +2,6 @@ out/*.png
 out/*.html
 out/logo.webp
 out/gas-safe*.png
+out/logo-*.png
 out/logo-noslogan.png
 out/qr-care-plans.svg
