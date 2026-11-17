@@ -614,6 +614,8 @@ def main():
         html = (leaflet_v2 if PLANS[key].get("v2") else leaflet)(key)
         open(os.path.join(B.OUT, f"flotech-care-plans-{key}.html"), "w", encoding="utf-8").write(html)
     subprocess.run(["node", os.path.join(B.HERE, "render.js"), B.OUT] + keys, check=True)
+    if set(keys) == set(PLANS):   # all three rebuilt: put the PDFs and their terms on the demo care plans page too
+        subprocess.run([sys.executable, os.path.join(os.path.dirname(B.HERE), "scripts", "care_plan_terms.py")], check=True)
 
 
 if __name__ == "__main__":
