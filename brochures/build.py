@@ -9,6 +9,7 @@ Homeowner pack = For Homeowners + Priority Plus. Landlord pack = Service & Certi
 Facts match site/boiler-care-plans/index.html; change both together.
 """
 import os, subprocess
+from title_svg import title_svg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
@@ -74,7 +75,9 @@ html, body { font-family: 'Urbanist', sans-serif; color: #14121c; -webkit-print-
 .band .web { text-align: right; font-size: 9pt; font-weight: 700; line-height: 1.45; }
 .gsb { flex: none; background: #000; border-radius: 2mm; padding: 1.6mm 1.8mm 1.7mm; }
 .gsb img { display: block; width: 11.2mm; height: auto; }
-.gsb span { display: block; width: 11.2mm; margin-top: .7mm; background: #FFED00; color: #000; border-radius: .7mm; font: 800 7pt/1 Arial, Helvetica, sans-serif; text-align: center; padding: .8mm 0 .7mm; letter-spacing: .3px; }
+.gsb span { display: block; width: 11.2mm; height: 3.3mm; margin-top: .7mm; background: #FFED00; color: #000; border-radius: .7mm; font: 800 7pt/2.83mm Arial, Helvetica, sans-serif; text-align: center; padding: .38mm 0 0 .17mm; letter-spacing: .3px; }
+.gsb span b { display: block; font-weight: inherit; transform: translateY(-.065mm); }   /* fine centring; padding alone snaps to whole pixels */
+.cover h1 .htitle { display: block; margin: {TITLE_TOP:.2f}pt auto 0; }
 
 /* plans side: choose */
 .plans-side { padding: 7mm 9mm 0; }
@@ -107,12 +110,15 @@ html, body { font-family: 'Urbanist', sans-serif; color: #14121c; -webkit-print-
 .join .j p { margin-top: 1.2mm; font-size: 9.4pt; font-weight: 700; color: #3b3848; }
 .small { margin-top: 3mm; font-size: 6.3pt; line-height: 1.4; color: #6b6680; font-weight: 600; }
 """
+TITLE, TITLE_TOP = title_svg()   # outlined gradient title; TITLE_TOP keeps the capitals where the old text line put them
+CSS = CSS.replace("{TITLE_TOP:.2f}", f"{TITLE_TOP:.2f}")
+
 
 
 def band():
     return (f'<div class="band grad"><div><div class="call">Call us</div><div class="num">{PHONE}</div></div>'
             f'<div class="web">{WEB}<br>{EMAIL}</div>'
-            f'<div class="gsb"><img src="gas-safe-mst.png" alt="Gas Safe Register"><span>{GAS_SAFE_NO}</span></div></div>')
+            f'<div class="gsb"><img src="gas-safe-mst.png" alt="Gas Safe Register"><span><b>{GAS_SAFE_NO}</b></span></div></div>')
 
 
 ICONS = {"pound": '<path d="M16 6.5a4 4 0 0 0-7.2 2.4V12H6m2.8 0v2.6c0 1.6-.9 3-2.3 3.9H17M6 12h7.5"/>',
@@ -135,7 +141,7 @@ def leaflet(key):
     cover = f"""<section class="page cover">
   <img class="logo" src="logo-centred.png" alt="Flotech Heating and Plumbing">
   <p class="for">{p['for']}</p>
-  <h1><span class="gtext">Boiler<br>Care Plans</span></h1>
+  <h1>{TITLE}</h1>
   <p class="sub">{p['sub']}</p>
   <div class="why">
     <div class="b">{icon("pound")}<div><b>Spread the cost</b><p>£{base['price']} a month instead of £{base['year']} in one go. The same price, with no big bill to plan for.</p></div></div>
