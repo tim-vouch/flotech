@@ -142,14 +142,15 @@ PLANS = {
         "intro": "Everything in Priority Certificate, plus a free call-out every year, an inhibitor top-up and your unvented cylinder checked.",
         "items": [SERVICE, CERT, CALLOUT, INHIBITOR, UNVENTED,
                   ("Priority booking", "Front of our queue when something goes wrong, in normal working hours."),
-                  ("Reminders", "When your service is due and before your certificate runs out."), WARRANTY],
+                  ("Reminders", "When your service is due and before your certificate runs out."),
+                  ("Warranty call-outs handled", "We arrange warranty visits with the manufacturer and follow them up for you.")],
         "box": "callout",
         "not": ["Parts, on any job (normal rates, and we always tell you the price first)",
                 "Labour after the first hour, and call-outs after your free one each year"],
         "terms": (" The free call-out is in normal working hours, can be used once your plan has been running for 30 days, doesn&rsquo;t carry "
                   "over, and doesn&rsquo;t cover faults that were already there when you joined."),
-        "v2": True, "terms_split": 2, "feature": {
-            "title": "Your free call-out", "box": "callout",
+        "v2": True, "terms_split": 2, "page2_box": "gas", "join": False, "feature": {
+            "title": "Your free call-out", "box": "callout", "layout": "callout",
             "intro": "If something stops working, your first call-out each plan year is free, including the first hour of labour. Fixed within that hour? You only pay for any parts.",
             "sections": [("How it works", [
                 ("Longer jobs", "If a fix takes more than an hour, we give you a price for the rest before we carry on. You decide."),
@@ -317,12 +318,48 @@ a { color: inherit; text-decoration: none; }
 .v2t .co { position: absolute; left: 9mm; bottom: 28mm; margin: 0; }
 .v2t.dense .tsec p { line-height: 1.32; margin-bottom: .8mm; }
 .v2t.dense .tsec { margin-bottom: 2.2mm; }
-.v2b.dense .inc { gap: 2.4mm 5mm; }
+.v2b.dense { gap: 2.6mm; }
+.v2b.dense .inc p { font-size: 7.9pt; }
+.v2b.dense .checks ul { gap: 1.8mm 3mm; }
+.v2b.dense .inc { gap: 2.2mm 5mm; }
 .v2b.dense .bx { padding: 3.4mm 4.8mm; }
 .v2b.dense .bx h4 { margin-bottom: 2.4mm; }
 .v2t.roomy .tsec p { font-size: 8.4pt; line-height: 1.45; margin-bottom: 1.8mm; }
 .v2t.roomy .tsec h4 { font-size: 10pt; margin-bottom: 1.8mm; }
 .v2t.roomy .tsec { margin-bottom: 4mm; }
+
+/* Priority Plus call-out page */
+.v2c { padding: 7mm 9mm 29mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; gap: 2.6mm; }
+.v2c .bx { margin-top: 0; padding: 3.2mm 4.6mm; }
+.v2c .bx h4 { font-size: 10.6pt; margin-bottom: 2.6mm; }
+.stats { border-radius: 4mm; color: #fff; display: grid; grid-template-columns: repeat(3, 1fr); padding: 3.4mm 2mm; }
+.stats div { text-align: center; padding: 0 2mm; }
+.stats div + div { border-left: 1px solid rgba(255,255,255,.35); }
+.stats b { display: block; font-size: 19pt; font-weight: 800; line-height: 1; }
+.stats span { display: block; margin-top: 1mm; font-size: 7.8pt; font-weight: 700; line-height: 1.25; opacity: .95; }
+.ric { width: 8mm; height: 8mm; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.ric svg { width: 4.6mm; height: 4.6mm; }
+.cvs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.cv b { display: block; margin: 1.8mm 0 1.4mm; font-size: 9.2pt; font-weight: 800; }
+.cv ul { list-style: none; display: grid; gap: 1.1mm; }
+.cv li { display: flex; gap: 1.3mm; font-size: 7.6pt; line-height: 1.28; font-weight: 600; color: #3b3848; }
+.cv li svg { width: 2.9mm; height: 2.9mm; flex: none; margin-top: .2mm; }
+.sts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.st .n { width: 6mm; height: 6mm; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 9pt; font-weight: 800; }
+.st b { display: block; margin-top: 1.6mm; font-size: 9.2pt; font-weight: 800; }
+.st p { margin-top: .6mm; font-size: 7.6pt; line-height: 1.32; font-weight: 600; color: #3b3848; }
+.good { list-style: none; margin-top: 2.6mm; padding-top: 2.2mm; border-top: 1px solid #e7e3f1; display: grid; grid-template-columns: 1fr 1fr; gap: 1.4mm 4mm; }
+.good li { display: flex; gap: 1.6mm; font-size: 7.6pt; line-height: 1.3; font-weight: 600; color: #3b3848; }
+.good i { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: #9B51FF; flex: none; margin-top: 1.1mm; }
+.als { display: grid; grid-template-columns: 1fr 1fr; gap: 3.4mm; }
+.al { display: flex; gap: 2.6mm; border: 1px solid #e7e3f1; border-radius: 3.5mm; padding: 3.4mm 3.8mm; background: #fbfaff; }
+.al b { display: block; font-size: 9.2pt; font-weight: 800; }
+.al p { margin-top: .6mm; font-size: 7.6pt; line-height: 1.32; font-weight: 600; color: #3b3848; }
+.v2c .join { margin-top: 0; gap: 5mm; }
+.v2c .join img { width: 20mm; height: 20mm; }
+.v2c .join .j b { font-size: 12.5pt; }
+.v2c .join .j p { font-size: 9.4pt; }
+.v2c .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
 /* feature page (Priority Certificate: the certificate; Priority Plus: the free call-out) */
 .v2f { padding: 7mm 9mm 33mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; }
 .v2f .bx { margin-top: 0; padding: 4mm 4.8mm; }
@@ -409,6 +446,49 @@ def box2(kind):
     return ""
 
 
+LINE_ICONS = {   # simple 24px line icons, drawn in the brand gradient circle like the cover icons
+    "boiler": '<rect x="6" y="3.5" width="12" height="17" rx="2"/><path d="M9 8h6M12 17.5c-1.6 0-2.6-1-2.6-2.4 0-1.6 1.4-2.3 1.7-3.8 1.9 1 3.5 2.4 3.5 3.9 0 1.3-1 2.3-2.6 2.3z"/>',
+    "radiator": '<path d="M5 6v12M9.5 6v12M14.5 6v12M19 6v12M3 9h18M3 15h18"/>',
+    "tap": '<path d="M4 8.5h8.5a3.5 3.5 0 0 1 3.5 3.5v1.5M8 8.5V5.5M5.5 5.5h5"/><path d="M16 16.5c.9 1.2 1.4 2 1.4 2.6a1.4 1.4 0 0 1-2.8 0c0-.6.5-1.4 1.4-2.6z"/>',
+    "drop": '<path d="M12 3.5c3 4 5.5 6.6 5.5 10a5.5 5.5 0 0 1-11 0c0-3.4 2.5-6 5.5-10z"/><path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5"/>',
+    "cylinder": '<rect x="7" y="3" width="10" height="18" rx="5"/><path d="M12 7v3M10.5 14h3"/>',
+}
+
+
+def ricon(n):
+    return (f'<span class="ric grad"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" '
+            f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{LINE_ICONS[n]}</svg></span>')
+
+
+def callout_page(name, price, url):
+    covers = [("boiler", "Boiler and controls", ["Your boiler and flue", "Programmer and thermostats", "Zone valves and pump"]),
+              ("radiator", "Central heating", ["Radiators and their valves", "Expansion tank and air vents", "Heating pipework", "Hot water cylinder and immersion"]),
+              ("tap", "Plumbing", ["Leaking pipes and joints", "Overflows, soil and vent pipes", "Water tanks", "Pipes from your stopcock to your taps and showers"])]
+    cov = "".join(f'<div class="cv">{ricon(i)}<b>{t}</b><ul>' + "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in items) + "</ul></div>"
+                  for i, t, items in covers)
+    steps = [("Call us", "Ring us in normal working hours and we&rsquo;ll book you in as a priority."),
+             ("First hour free", "Fixed within the hour? You only pay for any parts."),
+             ("Longer job?", "We give you a price for the rest before we carry on. You decide.")]
+    st = "".join(f'<div class="st"><span class="n grad">{k}</span><b>{t}</b><p>{d}</p></div>' for k, (t, d) in enumerate(steps, 1))
+    good = ["One free call-out each plan year. It doesn&rsquo;t carry over",
+            "Other call-outs are charged at our normal rate",
+            "Parts aren&rsquo;t included, on any job",
+            "Faults that were already there when you joined aren&rsquo;t covered"]
+    gd = "".join(f"<li><i></i><span>{g}</span></li>" for g in good)
+    also = [("drop", "Inhibitor top-up", "The liquid in your heating that stops rust and sludge weakens over the year. We test it at your service and top it up."),
+            ("cylinder", "Unvented cylinder check", "If you have an unvented hot water cylinder, we check it and its safety valves at the same visit.")]
+    al = "".join(f'<div class="al">{ricon(i)}<div><b>{t}</b><p>{d}</p></div></div>' for i, t, d in also)
+    return f"""<section class="page v2c">
+  <div class="thead"><div><p class="ey">{name} &middot; &pound;{price} a month</p><h2>Your free call-out</h2></div>
+    <img src="logo-noslogan-centred.png" alt="Flotech"></div>
+  <div class="stats grad"><div><b>1</b><span>free call-out<br>every plan year</span></div><div><b>1 hour</b><span>of labour<br>included</span></div><div><b>30 days</b><span>and it&rsquo;s ready<br>to use</span></div></div>
+  <div class="bx"><h4>What it covers</h4><div class="cvs">{cov}</div></div>
+  <div class="bx"><h4>How it works</h4><div class="sts">{st}</div><ul class="good">{gd}</ul></div>
+  <div class="als">{al}</div>
+  {band_links()}
+</section>"""
+
+
 def leaflet_v2(key):
     p = PLANS[key]
     title, top = title_svg(lines=p["lines"])
@@ -448,7 +528,9 @@ def leaflet_v2(key):
 </section>"""
     f = p.get("feature")
     feature_page = ""
-    if f:
+    if f and f.get("layout") == "callout":
+        feature_page = callout_page(name, PRICE[key], url)
+    elif f:
         secs = "".join(f'<div class="bx fsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
                        for h, items in f["sections"])
         feature_page = f"""<section class="page v2f">
