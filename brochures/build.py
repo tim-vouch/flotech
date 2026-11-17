@@ -5,7 +5,7 @@
 Two leave-behind packs, each one A5 sheet:
   side 1: why join (spread the cost, save time, seen first) and a "serviced on" box
   side 2: the two plans side by side, the 12-point service, QR code to the care plans page
-Homeowner pack = For Homeowners + Priority Plus. Landlord pack = Service & Certificate + Priority Plus.
+Homeowner pack = Priority Homeowner + Priority Plus. Landlord pack = Service & Certificate + Priority Plus.
 Facts match site/boiler-care-plans/index.html; change both together.
 """
 import os, subprocess
@@ -22,7 +22,7 @@ CHECKS = ["Visual inspection, inside and out", "Flue inspection", "Gas rate test
           "Visual inspection, inside and out", "Water leak check", "Thermostat and heating controls check"]
 CHECKS[0] = "Seal check"   # the two items that wrap sit on the bottom row of the 3-column box
 
-HOME = {"name": "For Homeowners", "price": 9, "year": 108,
+HOME = {"name": "Priority Homeowner", "price": 9, "year": 108,
         "items": ["12-point annual boiler service", "Priority booking when something goes wrong",
                   "A reminder when your service is due", "We deal with the manufacturer on warranty call-outs"],
         "same": "The same £108 as a yearly service booked separately, split into 12 payments."}
@@ -35,7 +35,7 @@ PLUS_EXTRAS = ["1 free call-out a year, first hour of labour included", "Inhibit
                "Unvented cylinder check (if you have one)"]
 PACKS = {
     "homeowner": {"for": "For homeowners", "base": HOME,
-                  "sub": "Spread the cost of your yearly boiler service: <b>£9 a month</b>, the same £108 as paying in one go.",
+                  "sub": "Miss your yearly service and most manufacturers can refuse a warranty claim. Spread the cost: <b>£9 a month</b>, the same £108 as paying in one go.",
                   "plus_items": ["Gas safety check and certificate (boiler and hob)"] + PLUS_EXTRAS},
     "landlord": {"for": "For landlords", "base": CERT, "plus_items": PLUS_EXTRAS,
                  "sub": "Spread the cost of your yearly service and gas safety certificate: <b>£13 a month</b>, the same £156 as booking them separately."},
@@ -162,7 +162,7 @@ def leaflet(key):
       {ul(base['items'])}
       <p class="same">{base['same']}</p>
     </div>
-    <div class="plan pop"><span class="tag grad">Most cover</span>
+    <div class="plan pop"><span class="tag grad">Best value</span>
       <h3>Priority Plus</h3>
       <div class="price"><b>£28</b><span>/month</span></div>
       <p class="vat">Including VAT · 12-month plan</p>
