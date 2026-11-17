@@ -304,12 +304,12 @@ a { color: inherit; text-decoration: none; }
 .v2b .join img { width: 24mm; height: 24mm; }
 .v2b .join .j b { font-size: 13.5pt; }
 .v2b .join .j p { font-size: 9.6pt; }
-.v2t { padding: 7mm 9mm 0; }
+.v2t { padding: 7mm 9mm 34mm; height: 210mm; display: flex; flex-direction: column; }
 .thead { display: flex; align-items: center; justify-content: space-between; }
 .thead .ey { font-size: 7.6pt; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #7a3fe0; }
 .thead h2 { margin-top: .6mm; font-size: 17pt; font-weight: 800; line-height: 1.05; }
 .thead img { height: 8.5mm; width: auto; }
-.tcols { margin-top: 3.4mm; column-count: 2; column-gap: 5mm; }
+.tcols { margin-top: 3.4mm; column-count: 2; column-gap: 5mm; column-fill: auto; flex: 1; min-height: 0; }   /* fill the left column first, then the right */
 .tsec { margin-bottom: 2.6mm; }
 .tsec h4 { break-after: avoid; font-size: 8.6pt; font-weight: 800; color: #6a2fe0; padding-bottom: .9mm; margin-bottom: 1.2mm; border-bottom: 1px solid #e3dcf5; }
 .tsec p { font-size: 7.2pt; line-height: 1.36; font-weight: 600; color: #3b3848; margin-bottom: 1.1mm; break-inside: avoid; }
