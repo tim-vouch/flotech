@@ -5,3 +5,4 @@ out/gas-safe*.png
 out/logo-*.png
 out/logo-noslogan.png
 out/qr-care-plans.svg
+__pycache__/
