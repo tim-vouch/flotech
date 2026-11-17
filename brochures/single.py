@@ -88,21 +88,13 @@ PLANS = {
         "base": B.CERT, "for": "For landlords", "lines": ("Priority", "Certificate"), "sub": LAND_SUB,
         "why": [("pound", "Spread the cost", "&pound;13 a month instead of &pound;156 in one go. The same price, with no big bill to plan for.")],
         "intro": "The same &pound;156 as a service and gas safety certificate booked separately, split into 12 payments, with priority booking and the admin done for you.",
-        "items": [SERVICE, CERT, CERT_REMIND, PRIORITY, REMINDER, WARRANTY],
+        "items": [SERVICE, CERT, CERT_REMIND, ("Priority booking", "Front of our queue when something goes wrong, in normal working hours."), REMINDER, WARRANTY],
         "box": "gas",
         "not": ["Call-outs, repairs and parts (normal rates, and we always tell you the price first)",
                 "Other gas appliances, such as a gas fire (tell us and we&rsquo;ll quote to add them)",
                 "More than one property (each property needs its own plan)"],
         "terms": " You must give your tenants a copy of the certificate within 28 days of the check, and keep your records.",
-        "v2": True, "feature": {
-            "title": "Your gas safety certificate", "box": "gas",
-            "intro": "By law, landlords need a gas safety check every year, and must give tenants a copy of the certificate. Your plan includes the check and the certificate, with your boiler service at the same visit.",
-            "sections": [("How it works", [
-                ("What it covers", "Your boiler and gas hob. A landlord&rsquo;s certificate must cover every gas appliance you provide, so if there are others, such as a gas fire, tell us when you join and we&rsquo;ll quote to include them."),
-                ("Your tenants", "Your certificate is emailed to you, ready to pass on. You must give your tenants a copy within 28 days of the check, and keep your records."),
-                ("Before it runs out", "We remind you before your certificate expires, so you can book the check in good time and stay legal."),
-                ("One plan per property", "Each rented property needs its own plan and its own certificate."),
-            ])]},
+        "v2": True, "page2_box": "gas", "join": False, "terms_split": 2,
         "terms_full": [
             ("Paying for your plan", [
                 ("Paying", "&pound;13 a month by Direct Debit, including VAT."),
@@ -112,6 +104,15 @@ PLANS = {
                 ("Missed payments", "If a payment is missed, we let you know and take it again. If it&rsquo;s still unpaid after 14 days, priority booking is paused until you&rsquo;re up to date. If two payments are missed, we may end your plan. If we&rsquo;ve already done your service and certificate, you then pay the rest of their normal price, less what you&rsquo;ve paid."),
                 ("Changing property", "Selling or no longer renting out the property? Your plan can move to another property of yours in our area, and we check that boiler is in good working order at its first visit. Otherwise your plan ends and you only pay for work already done."),
             ]),
+            ("Your gas safety certificate", [
+                ("What it covers", "Your boiler and gas hob. A landlord&rsquo;s certificate must cover every gas appliance and flue you provide, so if there are others, such as a gas fire, tell us when you join and we&rsquo;ll quote to include them."),
+                ("Your tenants&rsquo; own appliances", "Not covered. Your legal duty is for the appliances and flues you provide."),
+                ("Giving tenants a copy", "Your certificate is emailed to you. By law, you must give existing tenants a copy within 28 days of the check, and new tenants a copy before they move in."),
+                ("Keeping records", "You must keep each certificate for at least 2 years. We keep a copy too, so just ask if you need another."),
+                ("Before it runs out", "We remind you before your certificate expires. The check can be done up to 2 months early and your renewal date stays the same, so nothing is lost by booking in good time."),
+                ("If something fails the check", "We tell you what&rsquo;s needed and give you the price first. If an appliance is unsafe, we label it with a warning notice and it mustn&rsquo;t be used until it&rsquo;s fixed."),
+                ("One plan per property", "Each rented property needs its own plan and its own certificate."),
+            ]),
             ("Your yearly service", [
                 ("Booking", "We send you a reminder when your service and certificate are due. Call or message us and we&rsquo;ll book a time that suits you."),
                 ("Your boiler warranty", "Most manufacturers only keep the warranty valid if the boiler is serviced every year. Your plan includes that service, so please book it when we remind you."),
@@ -119,7 +120,6 @@ PLANS = {
                 ("Older boilers", "Boilers over 5 years old may need new burner seals at the service. This costs &pound;40, and we always tell you before we fit them."),
                 ("In winter", "We sometimes move service appointments, because our priority is getting people without heating or hot water warm and safe again."),
                 ("Access", "Please make sure we can get in at the appointment time (arranging it with your tenants) and that the area around the boiler is clear. If we can&rsquo;t get in twice in a row, we may charge for the extra visit."),
-                ("Your safety comes first", "If an appliance is unsafe and can&rsquo;t be made safe straight away, we label it with a warning notice and it mustn&rsquo;t be used until the fault is fixed."),
             ]),
             ("Repairs and priority booking", [
                 ("Priority booking", "You go to the front of our queue in normal working hours. We always get to you as soon as we can, but we can&rsquo;t promise a set response time."),
@@ -316,6 +316,9 @@ a { color: inherit; text-decoration: none; }
 .v2b.dense .inc { gap: 2.4mm 5mm; }
 .v2b.dense .bx { padding: 3.4mm 4.8mm; }
 .v2b.dense .bx h4 { margin-bottom: 2.4mm; }
+.v2t.roomy .tsec p { font-size: 8.4pt; line-height: 1.45; margin-bottom: 1.8mm; }
+.v2t.roomy .tsec h4 { font-size: 10pt; margin-bottom: 1.8mm; }
+.v2t.roomy .tsec { margin-bottom: 4mm; }
 /* feature page (Priority Certificate: the certificate; Priority Plus: the free call-out) */
 .v2f { padding: 7mm 9mm 33mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; }
 .v2f .bx { margin-top: 0; padding: 4mm 4.8mm; }
@@ -423,15 +426,20 @@ def leaflet_v2(key):
     a, b = order.index("Boiler operating pressure test"), order.index("Water leak check")
     order[a], order[b] = order[b], order[a]
     checks = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in order)
-    terms = "".join(f'<div class="tsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
-                    for h, items in p["terms_full"])
-    back = f"""<section class="page v2b{' dense' if len(p['items']) > 6 else ''}">
+    def secs_html(secs):
+        return "".join(f'<div class="tsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
+                       for h, items in secs)
+    split = p.get("terms_split")   # number of sections on the first terms page, when the terms need two pages
+    term_pages = [p["terms_full"][:split], p["terms_full"][split:]] if split else [p["terms_full"]]
+    join = (f'<div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>'
+            f'<div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>')
+    back = f"""<section class="page v2b{' dense' if len(p['items']) > 6 or p.get('page2_box') else ''}">
   <div class="hero-card grad"><div><p class="ey">Your boiler care plan</p><p class="nm">{name}</p></div>
     <div class="pr"><b>&pound;{PRICE[key]}<small> /month</small></b><p>Including VAT · 12-month plan</p></div></div>
   <div class="bx"><h4>What&rsquo;s included</h4><div class="inc">{inc}</div></div>
   <div class="bx checks"><h4>What&rsquo;s in your 12-point annual boiler service</h4><ul>{checks}</ul></div>
-  <div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>
-    <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
+  {box2(p.get("page2_box"))}
+  {join if p.get("join", True) else ""}
   {band_links()}
 </section>"""
     f = p.get("feature")
@@ -447,11 +455,17 @@ def leaflet_v2(key):
   {secs}
   {band_links()}
 </section>"""
-    terms_page = f"""<section class="page v2t{' dense' if key == 'priority-plus' else ''}">
-  <div class="thead"><div><p class="ey">{name} &middot; &pound;{PRICE[key]} a month</p><h2>Your plan terms</h2></div>
+    terms_page = ""
+    for n, secs in enumerate(term_pages):
+        last = n == len(term_pages) - 1
+        heading = "Your plan terms" if n == 0 else "Your plan terms, continued"
+        co = ('<p class="co">Flotech Heating &amp; Plumbing Ltd, company no. 08739272. These terms apply from the day your plan starts.</p>'
+              if last else '<p class="co">Continued on the next page.</p>')
+        terms_page += f"""<section class="page v2t{' dense' if key == 'priority-plus' else ''}{' roomy' if split else ''}">
+  <div class="thead"><div><p class="ey">{name} &middot; &pound;{PRICE[key]} a month</p><h2>{heading}</h2></div>
     <img src="logo-noslogan-centred.png" alt="Flotech"></div>
-  <div class="tcols">{terms}</div>
-  <p class="co">Flotech Heating &amp; Plumbing Ltd, company no. 08739272. These terms apply from the day your plan starts.</p>
+  <div class="tcols">{secs_html(secs)}</div>
+  {co}
   {band_links()}
 </section>"""
     css = B.CSS + CSS.replace("{TOP:.2f}", f"{top:.2f}")
