@@ -171,6 +171,7 @@ a { color: inherit; text-decoration: none; }
 .cover.v2 .join img { width: 17mm; height: 17mm; }
 .cover.v2 .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
 .v2b { padding: 7mm 9mm 0; }
+.v2b { height: 210mm; display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 33mm; }   /* spread the four blocks evenly down to the band */
 .v2b .logo-row { display: flex; align-items: center; justify-content: space-between; }
 .v2b .logo-row img { height: 8.5mm; width: auto; }
 .v2b .logo-row span { font-size: 8pt; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #7a3fe0; }
@@ -200,7 +201,7 @@ a { color: inherit; text-decoration: none; }
 .v2b .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
 .co { margin-top: 2.6mm; font-size: 6.4pt; font-weight: 600; color: #6b6680; }
 /* page 2 with room to breathe, and the terms page */
-.v2b .bx { margin-top: 4mm; padding: 4mm 4.8mm; }
+.v2b .bx { margin-top: 0; padding: 4mm 4.8mm; }
 .v2b .bx h4 { font-size: 11pt; margin-bottom: 3mm; }
 .v2b .inc { gap: 3.4mm 5mm; }
 .v2b .inc b { font-size: 10pt; }
@@ -209,7 +210,7 @@ a { color: inherit; text-decoration: none; }
 .v2b .checks ul { gap: 2.2mm 3mm; }
 .v2b .checks li { font-size: 8pt; }
 .v2b .checks li svg { width: 3.3mm; height: 3.3mm; }
-.v2b .join { margin-top: 5mm; gap: 5mm; }
+.v2b .join { margin-top: 0; gap: 5mm; }
 .v2b .join img { width: 24mm; height: 24mm; }
 .v2b .join .j b { font-size: 13.5pt; }
 .v2b .join .j p { font-size: 9.6pt; }
@@ -224,7 +225,7 @@ a { color: inherit; text-decoration: none; }
 .tsec p { font-size: 7.2pt; line-height: 1.36; font-weight: 600; color: #3b3848; margin-bottom: 1.1mm; break-inside: avoid; }
 .tsec p b { color: #14121c; font-weight: 800; }
 .tsec a { color: #6a2fe0; }
-.v2t .co { margin-top: 1mm; }
+.v2t .co { position: absolute; left: 9mm; bottom: 28mm; margin: 0; }
 """
 CROSS = ('<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#e6e1ef"/>'
          '<path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" stroke="#6b6680" stroke-width="1.7" stroke-linecap="round"/></svg>')
@@ -300,7 +301,10 @@ def leaflet_v2(key):
 </section>"""
     name = " ".join(p["lines"])
     inc = "".join(f"<div>{B.TICK}<div><b>{t}</b><p>{d}</p></div></div>" for t, d in p["items"])
-    checks = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in B.CHECKS)
+    order = list(B.CHECKS)   # at this width "Boiler operating pressure test" wraps: give it the bottom of column 2
+    a, b = order.index("Boiler operating pressure test"), order.index("Water leak check")
+    order[a], order[b] = order[b], order[a]
+    checks = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in order)
     terms = "".join(f'<div class="tsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
                     for h, items in p["terms_full"])
     back = f"""<section class="page v2b">
@@ -310,7 +314,6 @@ def leaflet_v2(key):
   <div class="bx checks"><h4>What&rsquo;s in your 12-point annual boiler service</h4><ul>{checks}</ul></div>
   <div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>
     <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
-  <p class="co">Your plan terms are on the next page.</p>
   {band_links()}
 </section>"""
     terms_page = f"""<section class="page v2t">
