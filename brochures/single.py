@@ -135,7 +135,7 @@ PLANS = {
         ],
     },
     "priority-plus": {
-        "base": None, "for": "For homeowners and landlords", "lines": ("Priority", "Plus"),
+        "base": None, "for": "Best value, most peace of mind", "lines": ("Priority", "Plus"),
         "sub": ("Miss your yearly service and most manufacturers can refuse a warranty claim. Priority Plus covers your service, "
                 "gas safety certificate and a free call-out every year, for <b>&pound;28 a month</b>."),
         "why": [("tool", "A free call-out every year", "If something stops working, your first call-out each year is free, with the first hour of labour included.")],
