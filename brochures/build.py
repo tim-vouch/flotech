@@ -5,7 +5,7 @@
 Two leave-behind packs, each one A5 sheet:
   side 1: why join (spread the cost, save time, seen first) and a "serviced on" box
   side 2: the two plans side by side, the 12-point service, QR code to the care plans page
-Homeowner pack = Priority Homeowner + Priority Plus. Landlord pack = Service & Certificate + Priority Plus.
+Homeowner pack = Priority Homeowner + Priority Plus. Landlord pack = Priority Certificate + Priority Plus.
 Facts match site/boiler-care-plans/index.html; change both together.
 """
 import os, subprocess
@@ -26,7 +26,7 @@ HOME = {"name": "Priority Homeowner", "price": 9, "year": 108,
         "items": ["12-point annual boiler service", "Priority booking when something goes wrong",
                   "A reminder when your service is due", "We deal with the manufacturer on warranty call-outs"],
         "same": "The same £108 as a yearly service booked separately, split into 12 payments."}
-CERT = {"name": "Service &amp; Certificate", "price": 13, "year": 156,
+CERT = {"name": "Priority Certificate", "price": 13, "year": 156,
         "items": ["12-point annual boiler service", "Gas safety certificate (boiler and hob)",
                   "Certificate emailed, ready for your tenants", "A reminder before it expires",
                   "Priority booking when something goes wrong"],
@@ -38,7 +38,7 @@ PACKS = {
                   "sub": "Miss your yearly service and most manufacturers can refuse a warranty claim. Spread the cost: <b>£9 a month</b>, the same £108 as paying in one go.",
                   "plus_items": ["Gas safety check and certificate (boiler and hob)"] + PLUS_EXTRAS},
     "landlord": {"for": "For landlords", "base": CERT, "plus_items": PLUS_EXTRAS,
-                 "sub": "Spread the cost of your yearly service and gas safety certificate: <b>£13 a month</b>, the same £156 as booking them separately."},
+                 "sub": "By law, landlords need a gas safety check every year. Spread the cost: <b>£13 a month</b> for the check and your boiler service, the same £156 as booking them separately."},
 }
 
 TICK = ('<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#1FA84F"/>'
