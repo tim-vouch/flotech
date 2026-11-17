@@ -51,7 +51,7 @@ PLANS = {
         "box": "checks",
         "not": ["Call-outs, repairs and parts (normal rates, and we always tell you the price first)",
                 "A gas safety certificate (that&rsquo;s Priority Certificate, &pound;13 a month)"],
-        "terms": "", "roomy": True, "v2": True,
+        "terms": "", "roomy": True, "v2": True, "terms_split": 2,
         "terms_full": [
             ("Paying for your plan", [
                 ("Paying", "&pound;9 a month by Direct Debit, including VAT."),
