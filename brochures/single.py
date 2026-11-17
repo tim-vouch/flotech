@@ -1,11 +1,13 @@
-"""One A5 leaflet per care plan, printed both sides (Tim, 17 Nov 2026). Draft for Darren to check.
+"""One PDF per care plan, A5 pages, emailed to customers (Tim, 17 Nov 2026). Draft for Darren to check.
 
-    python3 brochures/single.py     -> out/Flotech-Care-Plans-Priority-Homeowner.pdf, -Priority-Certificate.pdf, -Priority-Plus.pdf
+    python3 brochures/single.py [priority-homeowner ...]   -> out/Flotech-Care-Plans-Priority-*.pdf
 
-  side 1: the plan's name, why it matters (warranty or the law), three reasons to join, "serviced on" box
-  side 2: everything the plan includes, the detail box for that plan, what isn't included, QR code, terms
-Shares the look, band, 12-point list and plan facts with build.py (the two-plan packs). Facts match
-site/boiler-care-plans/index.html; change all three together.
+  page 1: the plan's name, why it matters (warranty or the law), three reasons to join
+  page 2: the plan box, what's included, the 12-point service, QR code / link to join
+  page 3 (Certificate and Plus only): the plan's own feature: the gas safety certificate, or the free call-out
+  last page: the full plan terms, written out (nothing points to the website)
+Phone, website, email and join link are clickable. Shares the look, band and plan facts with build.py (the
+printed two-plan leaflets). Facts and terms should match site/boiler-care-plans/index.html.
 """
 import os, subprocess, sys
 import build as B
@@ -92,6 +94,45 @@ PLANS = {
                 "Other gas appliances, such as a gas fire (tell us and we&rsquo;ll quote to add them)",
                 "More than one property (each property needs its own plan)"],
         "terms": " You must give your tenants a copy of the certificate within 28 days of the check, and keep your records.",
+        "v2": True, "feature": {
+            "title": "Your gas safety certificate", "box": "gas",
+            "intro": "By law, landlords need a gas safety check every year, and must give tenants a copy of the certificate. Your plan includes the check and the certificate, with your boiler service at the same visit.",
+            "sections": [("How it works", [
+                ("What it covers", "Your boiler and gas hob. A landlord&rsquo;s certificate must cover every gas appliance you provide, so if there are others, such as a gas fire, tell us when you join and we&rsquo;ll quote to include them."),
+                ("Your tenants", "Your certificate is emailed to you, ready to pass on. You must give your tenants a copy within 28 days of the check, and keep your records."),
+                ("Before it runs out", "We remind you before your certificate expires, so you can book the check in good time and stay legal."),
+                ("One plan per property", "Each rented property needs its own plan and its own certificate."),
+            ])]},
+        "terms_full": [
+            ("Paying for your plan", [
+                ("Paying", "&pound;13 a month by Direct Debit, including VAT."),
+                ("Your price", "Fixed for 12 months, even if our service or certificate prices go up during that time."),
+                ("Renewing", "Your plan renews each year. At renewal your price only changes if our standard service or certificate prices have changed, and we tell you at least 28 days before. You can choose not to renew."),
+                ("Cancelling", "You can cancel within 14 days of getting your agreement, and you only pay for work already done. After that, your plan runs to the end of its 12 months."),
+                ("Missed payments", "If a payment is missed, we let you know and take it again. If it&rsquo;s still unpaid after 14 days, priority booking is paused until you&rsquo;re up to date. If two payments are missed, we may end your plan. If we&rsquo;ve already done your service and certificate, you then pay the rest of their normal price, less what you&rsquo;ve paid."),
+                ("Changing property", "Selling or no longer renting out the property? Your plan can move to another property of yours in our area, and we check that boiler is in good working order at its first visit. Otherwise your plan ends and you only pay for work already done."),
+            ]),
+            ("Your yearly service", [
+                ("Booking", "We send you a reminder when your service and certificate are due. Call or message us and we&rsquo;ll book a time that suits you."),
+                ("Your boiler warranty", "Most manufacturers only keep the warranty valid if the boiler is serviced every year. Your plan includes that service, so please book it when we remind you."),
+                ("Your first service", "We also check your boiler is in good working order and can be serviced safely. If it needs a repair, we give you the price first."),
+                ("Older boilers", "Boilers over 5 years old may need new burner seals at the service. This costs &pound;40, and we always tell you before we fit them."),
+                ("In winter", "We sometimes move service appointments, because our priority is getting people without heating or hot water warm and safe again."),
+                ("Access", "Please make sure we can get in at the appointment time (arranging it with your tenants) and that the area around the boiler is clear. If we can&rsquo;t get in twice in a row, we may charge for the extra visit."),
+                ("Your safety comes first", "If an appliance is unsafe and can&rsquo;t be made safe straight away, we label it with a warning notice and it mustn&rsquo;t be used until the fault is fixed."),
+            ]),
+            ("Repairs and priority booking", [
+                ("Priority booking", "You go to the front of our queue in normal working hours. We always get to you as soon as we can, but we can&rsquo;t promise a set response time."),
+                ("Repairs and parts", "Not included. If something needs fixing, we give you the price first and only start once you&rsquo;re happy."),
+            ]),
+            ("Your agreement with us", [
+                ("Who can join", "Properties in our area with one natural gas or oil boiler designed for home use, up to 70kW. Each property needs its own plan."),
+                ("Not insurance", "This is a service and maintenance agreement provided directly by Flotech Heating and Plumbing Ltd. All work is carried out by our own Gas Safe registered engineers."),
+                ("Our responsibility", "We carry out all work with reasonable care and skill, and we&rsquo;re responsible for any damage our work causes. We&rsquo;re not responsible for faults that were already there, normal wear and tear, or parts and appliances we didn&rsquo;t fit or work on. Nothing here affects your legal rights."),
+                ("Your details", "We only use your details to run your plan: bookings, reminders and payments. We never sell them. See <a href=\"https://flotechheating.co.uk/privacy-policy/\">flotechheating.co.uk/privacy-policy</a>."),
+                ("Questions or complaints", "Just call us on <a href=\"tel:+441279598972\">01279 598 972</a> or email <a href=\"mailto:office@flotechheating.co.uk\">office@flotechheating.co.uk</a> and we&rsquo;ll sort it out."),
+            ]),
+        ],
     },
     "priority-plus": {
         "base": None, "for": "For homeowners and landlords", "lines": ("Priority", "Plus"),
@@ -99,12 +140,56 @@ PLANS = {
                 "gas safety certificate and a free call-out every year, for <b>&pound;28 a month</b>."),
         "why": [("tool", "A free call-out every year", "If something stops working, your first call-out each year is free, with the first hour of labour included.")],
         "intro": "Everything in Priority Certificate, plus a free call-out every year, an inhibitor top-up and your unvented cylinder checked.",
-        "items": [SERVICE, CERT, CALLOUT, INHIBITOR, UNVENTED, PRIORITY, ("Reminders", "When your service is due and before your certificate runs out."), WARRANTY],
+        "items": [SERVICE, CERT, CALLOUT, INHIBITOR, UNVENTED,
+                  ("Priority booking", "Front of our queue when something goes wrong, in normal working hours."),
+                  ("Reminders", "When your service is due and before your certificate runs out."), WARRANTY],
         "box": "callout",
         "not": ["Parts, on any job (normal rates, and we always tell you the price first)",
                 "Labour after the first hour, and call-outs after your free one each year"],
         "terms": (" The free call-out is in normal working hours, can be used once your plan has been running for 30 days, doesn&rsquo;t carry "
                   "over, and doesn&rsquo;t cover faults that were already there when you joined."),
+        "v2": True, "feature": {
+            "title": "Your free call-out", "box": "callout",
+            "intro": "If something stops working, your first call-out each plan year is free, including the first hour of labour. Fixed within that hour? You only pay for any parts.",
+            "sections": [("How it works", [
+                ("Longer jobs", "If a fix takes more than an hour, we give you a price for the rest before we carry on. You decide."),
+                ("When you can use it", "Once your plan has been running for 30 days, in normal working hours. It doesn&rsquo;t carry over if you don&rsquo;t use it."),
+                ("What it doesn&rsquo;t cover", "Parts, on any job, and faults that were already there when you joined. Other call-outs are charged at our normal rate."),
+            ]), ("Also on Priority Plus", [
+                ("Inhibitor top-up", "Inhibitor is a liquid in your heating that stops radiators, pipes and your boiler rusting and filling with sludge. It weakens over the year, so we test it at your service and top it up."),
+                ("Unvented cylinder check", "If you have an unvented hot water cylinder, we check it and its safety valves at the same visit."),
+            ])]},
+        "terms_full": [
+            ("Paying for your plan", [
+                ("Paying", "&pound;28 a month by Direct Debit, including VAT."),
+                ("Your price", "Fixed for 12 months, even if our prices go up during that time."),
+                ("Renewing", "Your plan renews each year. At renewal your price only changes if our standard prices have changed, and we tell you at least 28 days before. You can choose not to renew."),
+                ("Cancelling", "You can cancel within 14 days of getting your agreement, and you only pay for work already done. After that, your plan runs to the end of its 12 months."),
+                ("Missed payments", "If a payment is missed, we let you know and take it again. If it&rsquo;s still unpaid after 14 days, priority booking and your free call-out are paused until you&rsquo;re up to date. If two payments are missed, we may end your plan, and you pay the normal price of any work already done, less what you&rsquo;ve paid."),
+                ("Moving home", "Moving within our area? Your plan moves with you, and we check the boiler at your new home is in good working order at its first visit. If you move outside our area, your plan ends and you only pay for work already done."),
+            ]),
+            ("Your yearly service", [
+                ("Booking", "We send you a reminder when your service and certificate are due. Call or message us and we&rsquo;ll book a time that suits you."),
+                ("Your boiler warranty", "Most manufacturers only keep the warranty valid if the boiler is serviced every year. Your plan includes that service, so please book it when we remind you."),
+                ("Your first service", "We also check your boiler is in good working order and can be serviced safely. If it needs a repair, we give you the price first."),
+                ("Gas safety certificate", "Covers your boiler and gas hob, emailed to you. Landlords: tell us about any other gas appliances and we&rsquo;ll quote, and give tenants a copy within 28 days."),
+                ("Older boilers", "Boilers over 5 years old may need new burner seals at the service. This costs &pound;40, and we always tell you before we fit them."),
+                ("In winter", "We sometimes move service appointments, because our priority is getting people without heating or hot water warm and safe again."),
+                ("Access", "Please be in at the appointment time and keep the area around the boiler clear. If we can&rsquo;t get in twice in a row, we may charge for the extra visit."),
+                ("Your safety comes first", "If an appliance is unsafe and can&rsquo;t be made safe straight away, we label it with a warning notice and it mustn&rsquo;t be used until the fault is fixed."),
+            ]),
+            ("Repairs and priority booking", [
+                ("Priority booking", "You go to the front of our queue in normal working hours. We can&rsquo;t promise a set response time."),
+                ("Repairs and parts", "Parts are never included. Other repairs are charged at our normal rates, and we always give you the price first."),
+            ]),
+            ("Your agreement with us", [
+                ("Who can join", "Properties in our area with one natural gas or oil boiler designed for home use, up to 70kW. Landlords need one plan per property."),
+                ("Not insurance", "This is a service and maintenance agreement provided directly by Flotech Heating and Plumbing Ltd. All work is carried out by our own Gas Safe registered engineers."),
+                ("Our responsibility", "We carry out all work with reasonable care and skill, and we&rsquo;re responsible for any damage our work causes. We&rsquo;re not responsible for faults that were already there, normal wear and tear, or parts and appliances we didn&rsquo;t fit or work on. Nothing here affects your legal rights."),
+                ("Your details", "We only use your details to run your plan: bookings, reminders and payments. We never sell them. See <a href=\"https://flotechheating.co.uk/privacy-policy/\">flotechheating.co.uk/privacy-policy</a>."),
+                ("Questions or complaints", "Just call us on <a href=\"tel:+441279598972\">01279 598 972</a> or email <a href=\"mailto:office@flotechheating.co.uk\">office@flotechheating.co.uk</a> and we&rsquo;ll sort it out."),
+            ]),
+        ],
     },
 }
 PRICE = {"priority-homeowner": 9, "priority-certificate": 13, "priority-plus": 28}
@@ -171,7 +256,7 @@ a { color: inherit; text-decoration: none; }
 .cover.v2 .join img { width: 17mm; height: 17mm; }
 .cover.v2 .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
 .v2b { padding: 7mm 9mm 0; }
-.v2b { height: 210mm; display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 33mm; }   /* spread the four blocks evenly down to the band */
+.v2b { height: 210mm; display: flex; flex-direction: column; justify-content: space-between; gap: 3.5mm; padding-bottom: 30mm; }   /* spread the four blocks evenly down to the band */
 .v2b .logo-row { display: flex; align-items: center; justify-content: space-between; }
 .v2b .logo-row img { height: 8.5mm; width: auto; }
 .v2b .logo-row span { font-size: 8pt; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #7a3fe0; }
@@ -226,6 +311,25 @@ a { color: inherit; text-decoration: none; }
 .tsec p b { color: #14121c; font-weight: 800; }
 .tsec a { color: #6a2fe0; }
 .v2t .co { position: absolute; left: 9mm; bottom: 28mm; margin: 0; }
+.v2t.dense .tsec p { line-height: 1.32; margin-bottom: .8mm; }
+.v2t.dense .tsec { margin-bottom: 2.2mm; }
+.v2b.dense .inc { gap: 2.4mm 5mm; }
+.v2b.dense .bx { padding: 3.4mm 4.8mm; }
+.v2b.dense .bx h4 { margin-bottom: 2.4mm; }
+/* feature page (Priority Certificate: the certificate; Priority Plus: the free call-out) */
+.v2f { padding: 7mm 9mm 33mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; }
+.v2f .bx { margin-top: 0; padding: 4mm 4.8mm; }
+.v2f .bx h4 { font-size: 11pt; margin-bottom: 2.8mm; }
+.fintro { font-size: 10pt; line-height: 1.45; font-weight: 600; color: #3b3848; }
+.v2f .checks ul { gap: 2.4mm 4mm; }
+.v2f .checks li { font-size: 8.6pt; }
+.v2f .checks li svg { width: 3.5mm; height: 3.5mm; }
+.v2f .cov { gap: 4mm; }
+.v2f .cov b { font-size: 9.4pt; margin-bottom: 1mm; }
+.v2f .cov p { font-size: 8.2pt; line-height: 1.4; }
+.fsec p { font-size: 8.4pt; line-height: 1.42; font-weight: 600; color: #3b3848; margin-bottom: 1.8mm; }
+.fsec p:last-child { margin-bottom: 0; }
+.fsec p b { color: #14121c; font-weight: 800; }
 """
 CROSS = ('<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#e6e1ef"/>'
          '<path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" stroke="#6b6680" stroke-width="1.7" stroke-linecap="round"/></svg>')
@@ -284,6 +388,20 @@ def band_links():
             .replace(f'{B.WEB}<br>{B.EMAIL}', f'<a href="https://{B.WEB}/">{B.WEB}</a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a>'))
 
 
+def box2(kind):
+    """The plan's own second box on page 2: what the gas safety check covers, or what the free call-out covers."""
+    if kind == "gas":
+        order = list(GAS_CHECKS)   # the one item that wraps goes to the bottom of its column
+        i, j = order.index("Flue flow test, so fumes are removed safely"), order.index("Flame failure devices working properly")
+        order[i], order[j] = order[j], order[i]
+        items = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in order)
+        return f'<div class="bx checks two"><h4>What your gas safety check covers</h4><ul>{items}</ul></div>'
+    if kind == "callout":
+        cols = "".join(f"<div><b>{t}</b><p>{d}</p></div>" for t, d in CALLOUT_COVERS)
+        return f'<div class="bx"><h4>What your free call-out covers</h4><div class="cov">{cols}</div></div>'
+    return ""
+
+
 def leaflet_v2(key):
     p = PLANS[key]
     title, top = title_svg(lines=p["lines"])
@@ -307,7 +425,7 @@ def leaflet_v2(key):
     checks = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in order)
     terms = "".join(f'<div class="tsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
                     for h, items in p["terms_full"])
-    back = f"""<section class="page v2b">
+    back = f"""<section class="page v2b{' dense' if len(p['items']) > 6 else ''}">
   <div class="hero-card grad"><div><p class="ey">Your boiler care plan</p><p class="nm">{name}</p></div>
     <div class="pr"><b>&pound;{PRICE[key]}<small> /month</small></b><p>Including VAT · 12-month plan</p></div></div>
   <div class="bx"><h4>What&rsquo;s included</h4><div class="inc">{inc}</div></div>
@@ -316,7 +434,20 @@ def leaflet_v2(key):
     <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
   {band_links()}
 </section>"""
-    terms_page = f"""<section class="page v2t">
+    f = p.get("feature")
+    feature_page = ""
+    if f:
+        secs = "".join(f'<div class="bx fsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
+                       for h, items in f["sections"])
+        feature_page = f"""<section class="page v2f">
+  <div class="thead"><div><p class="ey">{name} &middot; &pound;{PRICE[key]} a month</p><h2>{f['title']}</h2></div>
+    <img src="logo-noslogan-centred.png" alt="Flotech"></div>
+  <p class="fintro">{f['intro']}</p>
+  {box2(f['box'])}
+  {secs}
+  {band_links()}
+</section>"""
+    terms_page = f"""<section class="page v2t{' dense' if key == 'priority-plus' else ''}">
   <div class="thead"><div><p class="ey">{name} &middot; &pound;{PRICE[key]} a month</p><h2>Your plan terms</h2></div>
     <img src="logo-noslogan-centred.png" alt="Flotech"></div>
   <div class="tcols">{terms}</div>
@@ -325,7 +456,7 @@ def leaflet_v2(key):
 </section>"""
     css = B.CSS + CSS.replace("{TOP:.2f}", f"{top:.2f}")
     return f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Flotech {name}</title>
-<link rel="stylesheet" href="file://{B.FONTS}"><style>{css}</style></head><body>{cover}{back}{terms_page}</body></html>"""
+<link rel="stylesheet" href="file://{B.FONTS}"><style>{css}</style></head><body>{cover}{back}{feature_page}{terms_page}</body></html>"""
 
 
 def main():
