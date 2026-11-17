@@ -329,8 +329,8 @@ a { color: inherit; text-decoration: none; }
 .v2t.roomy .tsec { margin-bottom: 4mm; }
 
 /* Priority Plus call-out page */
-.v2c { padding: 7mm 9mm 29mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; gap: 2.6mm; }
-.v2c .bx { margin-top: 0; padding: 3.2mm 4.6mm; }
+.v2c { padding: 7mm 9mm 33mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; gap: 4mm; }
+.v2c .bx { margin-top: 0; padding: 4.4mm 5mm; }
 .v2c .bx h4 { font-size: 10.6pt; margin-bottom: 2.6mm; }
 .stats { border-radius: 4mm; color: #fff; display: grid; grid-template-columns: repeat(3, 1fr); padding: 3.4mm 2mm; }
 .stats div { text-align: center; padding: 0 2mm; }
@@ -360,6 +360,26 @@ a { color: inherit; text-decoration: none; }
 .v2c .join .j b { font-size: 12.5pt; }
 .v2c .join .j p { font-size: 9.4pt; }
 .v2c .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
+
+/* Priority Plus extras page */
+.v2x { padding: 7mm 9mm 30mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; gap: 3mm; }
+.xc { border: 1px solid #e7e3f1; border-radius: 4mm; background: #fbfaff; padding: 3.8mm 5mm 4mm; }
+.xh { display: flex; align-items: center; gap: 3mm; }
+.xh .ric { width: 10mm; height: 10mm; }
+.xh .ric svg { width: 5.6mm; height: 5.6mm; }
+.xh b { font-size: 13pt; font-weight: 800; }
+.xg { margin-top: 2.6mm; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.xc h5 { font-size: 8.4pt; font-weight: 800; color: #6a2fe0; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 1mm; }
+.xc p { font-size: 8pt; line-height: 1.4; font-weight: 600; color: #3b3848; }
+.xc > h5 { margin-top: 2.8mm; }
+.xc ul { list-style: none; display: grid; gap: 1.4mm; }
+.xc li { display: flex; gap: 1.8mm; font-size: 8pt; line-height: 1.3; font-weight: 600; color: #14121c; }
+.xc li svg { width: 3.5mm; height: 3.5mm; flex: none; margin-top: .1mm; }
+.v2x .join { margin-top: 0; gap: 5mm; }
+.v2x .join img { width: 20mm; height: 20mm; }
+.v2x .join .j b { font-size: 13pt; }
+.v2x .join .j p { font-size: 9.6pt; }
+.v2x .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
 /* feature page (Priority Certificate: the certificate; Priority Plus: the free call-out) */
 .v2f { padding: 7mm 9mm 33mm; height: 210mm; display: flex; flex-direction: column; justify-content: space-between; }
 .v2f .bx { margin-top: 0; padding: 4mm 4.8mm; }
@@ -475,16 +495,40 @@ def callout_page(name, price, url):
             "Parts aren&rsquo;t included, on any job",
             "Faults that were already there when you joined aren&rsquo;t covered"]
     gd = "".join(f"<li><i></i><span>{g}</span></li>" for g in good)
-    also = [("drop", "Inhibitor top-up", "The liquid in your heating that stops rust and sludge weakens over the year. We test it at your service and top it up."),
-            ("cylinder", "Unvented cylinder check", "If you have an unvented hot water cylinder, we check it and its safety valves at the same visit.")]
-    al = "".join(f'<div class="al">{ricon(i)}<div><b>{t}</b><p>{d}</p></div></div>' for i, t, d in also)
     return f"""<section class="page v2c">
   <div class="thead"><div><p class="ey">{name} &middot; &pound;{price} a month</p><h2>Your free call-out</h2></div>
     <img src="logo-noslogan-centred.png" alt="Flotech"></div>
   <div class="stats grad"><div><b>1</b><span>free call-out<br>every plan year</span></div><div><b>1 hour</b><span>of labour<br>included</span></div><div><b>30 days</b><span>and it&rsquo;s ready<br>to use</span></div></div>
   <div class="bx"><h4>What it covers</h4><div class="cvs">{cov}</div></div>
   <div class="bx"><h4>How it works</h4><div class="sts">{st}</div><ul class="good">{gd}</ul></div>
-  <div class="als">{al}</div>
+  {band_links()}
+</section>"""
+
+
+def extras_page(name, price, url):
+    """Priority Plus: the two extra checks at the yearly service, with the QR code to join."""
+    cards = [("drop", "Inhibitor top-up",
+              "Inhibitor is a liquid in your central heating water. It protects the inside of your radiators, pipes and boiler from rust and sludge.",
+              "It gets weaker over the year. When it&rsquo;s low, sludge can build up, leading to cold spots on radiators, a noisy boiler and breakdowns.",
+              ["We test the inhibitor level at your yearly service", "We top it up if it&rsquo;s low, as part of your plan"]),
+             ("cylinder", "Unvented cylinder check",
+              "An unvented hot water cylinder stores hot water at mains pressure, so it has safety valves that release pressure and heat if something goes wrong.",
+              "Cylinder manufacturers recommend a check every year to keep those safety devices working, and many need it to keep the cylinder&rsquo;s warranty valid.",
+              ["We check the pressure and temperature relief valves", "We check the expansion vessel and the discharge pipe",
+               "All at the same visit as your boiler service. No unvented cylinder? Nothing to do."])]
+    html = ""
+    for i, t, what, why, do in cards:
+        dl = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in do)
+        html += (f'<div class="xc"><div class="xh">{ricon(i)}<b>{t}</b></div>'
+                 f'<div class="xg"><div><h5>What it is</h5><p>{what}</p></div><div><h5>Why it matters</h5><p>{why}</p></div></div>'
+                 f'<h5>What we do</h5><ul>{dl}</ul></div>')
+    return f"""<section class="page v2x">
+  <div class="thead"><div><p class="ey">{name} &middot; &pound;{price} a month</p><h2>Also included in your plan</h2></div>
+    <img src="logo-noslogan-centred.png" alt="Flotech"></div>
+  <p class="fintro">Two extra checks at your yearly service, to keep your heating healthy.</p>
+  {html}
+  <div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>
+    <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
   {band_links()}
 </section>"""
 
@@ -529,7 +573,7 @@ def leaflet_v2(key):
     f = p.get("feature")
     feature_page = ""
     if f and f.get("layout") == "callout":
-        feature_page = callout_page(name, PRICE[key], url)
+        feature_page = extras_page(name, PRICE[key], url) + callout_page(name, PRICE[key], url)
     elif f:
         secs = "".join(f'<div class="bx fsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
                        for h, items in f["sections"])
