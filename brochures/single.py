@@ -7,7 +7,7 @@
 Shares the look, band, 12-point list and plan facts with build.py (the two-plan packs). Facts match
 site/boiler-care-plans/index.html; change all three together.
 """
-import os, subprocess
+import os, subprocess, sys
 import build as B
 from title_svg import title_svg
 
@@ -16,7 +16,7 @@ LAND_SUB = B.PACKS["landlord"]["sub"]
 
 # What every plan includes (title, one line of detail)
 SERVICE = ("12-point annual boiler service", "By our Gas Safe engineers, to your boiler manufacturer&rsquo;s instructions.")
-PRIORITY = ("Priority booking", "When something goes wrong, you go to the front of our queue in normal working hours.")
+PRIORITY = ("Priority booking", "When something goes wrong, you go to the front of our queue in normal working hours. We can&rsquo;t promise a set response time.")
 REMINDER = ("A yearly reminder", "We remind you when your service is due. Then just call or message us to book.")
 WARRANTY = ("Warranty call-outs handled", "If the manufacturer&rsquo;s warranty covers a fault, we arrange the visit and follow it up for you.")
 CERT = ("Gas safety certificate", "For your boiler and gas hob, emailed to you, ready for your tenants.")
@@ -49,7 +49,15 @@ PLANS = {
         "box": "checks",
         "not": ["Call-outs, repairs and parts (normal rates, and we always tell you the price first)",
                 "A gas safety certificate (that&rsquo;s Priority Certificate, &pound;13 a month)"],
-        "terms": "", "roomy": True,
+        "terms": "", "roomy": True, "v2": True,
+        "how": [("Paying", "&pound;9 a month by Direct Debit, including VAT. The price is fixed for 12 months."),
+                ("Renewing", "Your plan runs for 12 months. We write to you at least 28 days before it renews, with the price."),
+                ("Cancelling", "You can cancel within 14 days of getting your agreement. You only pay for work already done."),
+                ("Repairs and parts", "Not included. If something needs fixing, we give you the price first and only start once you&rsquo;re happy."),
+                ("Booking your service", "We send you one reminder a year. Call or message us and we&rsquo;ll book a time that suits you."),
+                ("Your first service", "We also check your boiler is in good working order. If it needs a repair, we price it first."),
+                ("Older boilers", "Boilers over 5 years old may need new burner seals at the service: &pound;40, and we tell you first."),
+                ("Who can join", "Homes in our area with one gas or oil boiler, up to 70kW. It&rsquo;s a service plan, not insurance.")],
     },
     "priority-certificate": {
         "base": B.CERT, "for": "For landlords", "lines": ("Priority", "Certificate"), "sub": LAND_SUB,
@@ -132,6 +140,42 @@ CSS = """
 .one.roomy .join img { width: 23mm; height: 23mm; }
 .one.roomy .join .j b { font-size: 13pt; }
 .one.roomy .small { margin-top: 3mm; font-size: 6.4pt; }
+/* v2 layout (Priority Homeowner first; Tim, 17 Nov 2026): emailed, so no "serviced on" boxes, links clickable */
+a { color: inherit; text-decoration: none; }
+.cover.v2 .why { margin-top: 4.2mm; gap: 2.2mm; }
+.cover.v2 .why .b { padding: 2.7mm 4.5mm; }
+.cover.v2 .join { margin-top: 3mm; width: 100%; text-align: left; justify-content: center; }
+.cover.v2 .join img { width: 17mm; height: 17mm; }
+.cover.v2 .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
+.v2b { padding: 7mm 9mm 0; }
+.v2b .logo-row { display: flex; align-items: center; justify-content: space-between; }
+.v2b .logo-row img { height: 8.5mm; width: auto; }
+.v2b .logo-row span { font-size: 8pt; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #7a3fe0; }
+.hero-card { margin-top: 0; border-radius: 4mm; padding: 3.8mm 5.5mm; color: #fff; display: flex; align-items: center; justify-content: space-between; }
+.hero-card .ey { font-size: 7.4pt; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; opacity: .92; }
+.hero-card .nm { margin-top: .8mm; font-size: 21pt; font-weight: 800; line-height: 1.02; }
+.hero-card .pr { text-align: right; }
+.hero-card .pr b { font-size: 27pt; font-weight: 800; line-height: 1; }
+.hero-card .pr b small { font-size: 10pt; font-weight: 700; }
+.hero-card .pr p { margin-top: .8mm; font-size: 7.6pt; font-weight: 700; opacity: .92; }
+.bx { margin-top: 2.7mm; border: 1px solid #e7e3f1; border-radius: 3.5mm; padding: 3.2mm 4.2mm 3.4mm; background: #fbfaff; }
+.bx h4 { font-size: 10pt; font-weight: 800; margin-bottom: 2.4mm; }
+.inc { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2mm 4.5mm; }
+.inc > div { display: flex; gap: 1.8mm; }
+.inc svg { width: 3.8mm; height: 3.8mm; flex: none; margin-top: .1mm; }
+.inc b { display: block; font-size: 9pt; font-weight: 800; line-height: 1.2; }
+.inc p { margin-top: .4mm; font-size: 7.5pt; line-height: 1.3; font-weight: 600; color: #4b465c; }
+.bx.checks { margin-top: 2.7mm; padding: 3.2mm 4.2mm 3.4mm; }
+.bx.checks h4 { font-size: 10pt; }
+.how { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2mm 4.5mm; }
+.how b { display: block; font-size: 8pt; font-weight: 800; line-height: 1.2; }
+.how p { margin-top: .3mm; font-size: 7.2pt; line-height: 1.32; font-weight: 600; color: #3b3848; }
+.v2b .join { margin-top: 3.2mm; gap: 4mm; }
+.v2b .join img { width: 17mm; height: 17mm; }
+.v2b .join .j b { font-size: 12pt; }
+.v2b .join .j p { font-size: 9pt; }
+.v2b .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
+.co { margin-top: 2.6mm; font-size: 6.4pt; font-weight: 600; color: #6b6680; }
 """
 CROSS = ('<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#e6e1ef"/>'
          '<path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" stroke="#6b6680" stroke-width="1.7" stroke-linecap="round"/></svg>')
@@ -184,15 +228,59 @@ def leaflet(key):
 <link rel="stylesheet" href="file://{B.FONTS}"><style>{css}</style></head><body>{cover}{back}</body></html>"""
 
 
+def band_links():
+    """The shared band, with the phone, website and email clickable (these PDFs are emailed)."""
+    return (B.band().replace(f'<div class="num">{B.PHONE}</div>', f'<div class="num"><a href="tel:{B.TEL}">{B.PHONE}</a></div>')
+            .replace(f'{B.WEB}<br>{B.EMAIL}', f'<a href="https://{B.WEB}/">{B.WEB}</a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a>'))
+
+
+def leaflet_v2(key):
+    p = PLANS[key]
+    title, top = title_svg(lines=p["lines"])
+    why = p["why"] + [("clock", "Save time", "We remind you when your service is due and deal with the manufacturer if you need a warranty call-out."),
+                      ("bolt", "Seen first", "If something goes wrong, plan members are booked in before customers who aren&rsquo;t on a plan.")]
+    why_html = "".join(f'<div class="b">{B.icon(i)}<div><b>{t}</b><p>{d}</p></div></div>' for i, t, d in why)
+    url = f"https://{B.WEB}/boiler-care-plans/"
+    cover = f"""<section class="page cover v2">
+  <img class="logo" src="logo-centred.png" alt="Flotech Heating and Plumbing">
+  <p class="for">{p['for']}</p>
+  <h1>{title}</h1>
+  <p class="sub">{p['sub']}</p>
+  <div class="why">{why_html}</div>
+  <div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>
+    <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
+  {band_links()}
+</section>"""
+    name = " ".join(p["lines"])
+    inc = "".join(f"<div>{B.TICK}<div><b>{t}</b><p>{d}</p></div></div>" for t, d in p["items"])
+    checks = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in B.CHECKS)
+    how = "".join(f"<div><b>{t}</b><p>{d}</p></div>" for t, d in p["how"])
+    url = f"https://{B.WEB}/boiler-care-plans/"
+    back = f"""<section class="page v2b">
+  <div class="hero-card grad"><div><p class="ey">Your boiler care plan</p><p class="nm">{name}</p></div>
+    <div class="pr"><b>&pound;{PRICE[key]}<small> /month</small></b><p>Including VAT · 12-month plan</p></div></div>
+  <div class="bx"><h4>What&rsquo;s included</h4><div class="inc">{inc}</div></div>
+  <div class="bx checks"><h4>What&rsquo;s in your 12-point annual boiler service</h4><ul>{checks}</ul></div>
+  <div class="bx"><h4>How your plan works</h4><div class="how">{how}</div></div>
+  <p class="co">Full terms at <a href="{url}">{B.WEB}/boiler-care-plans</a>. Flotech Heating &amp; Plumbing Ltd, company no. 08739272.</p>
+  {band_links()}
+</section>"""
+    css = B.CSS + CSS.replace("{TOP:.2f}", f"{top:.2f}")
+    return f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Flotech {name}</title>
+<link rel="stylesheet" href="file://{B.FONTS}"><style>{css}</style></head><body>{cover}{back}</body></html>"""
+
+
 def main():
     os.makedirs(B.OUT, exist_ok=True)
     for f in ("logo-centred.png", "logo-noslogan-centred.png", "gas-safe-mst.png", "qr-care-plans.svg"):
         src, dst = os.path.join(B.HERE, f), os.path.join(B.OUT, f)
         if not os.path.exists(dst):
             os.symlink(src, dst)
-    for key in PLANS:
-        open(os.path.join(B.OUT, f"flotech-care-plans-{key}.html"), "w", encoding="utf-8").write(leaflet(key))
-    subprocess.run(["node", os.path.join(B.HERE, "render.js"), B.OUT] + list(PLANS), check=True)
+    keys = sys.argv[1:] or list(PLANS)   # e.g. python3 single.py priority-homeowner
+    for key in keys:
+        html = (leaflet_v2 if PLANS[key].get("v2") else leaflet)(key)
+        open(os.path.join(B.OUT, f"flotech-care-plans-{key}.html"), "w", encoding="utf-8").write(html)
+    subprocess.run(["node", os.path.join(B.HERE, "render.js"), B.OUT] + keys, check=True)
 
 
 if __name__ == "__main__":
