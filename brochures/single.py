@@ -50,14 +50,37 @@ PLANS = {
         "not": ["Call-outs, repairs and parts (normal rates, and we always tell you the price first)",
                 "A gas safety certificate (that&rsquo;s Priority Certificate, &pound;13 a month)"],
         "terms": "", "roomy": True, "v2": True,
-        "how": [("Paying", "&pound;9 a month by Direct Debit, including VAT. The price is fixed for 12 months."),
-                ("Renewing", "Your plan runs for 12 months. We write to you at least 28 days before it renews, with the price."),
-                ("Cancelling", "You can cancel within 14 days of getting your agreement. You only pay for work already done."),
-                ("Repairs and parts", "Not included. If something needs fixing, we give you the price first and only start once you&rsquo;re happy."),
+        "terms_full": [
+            ("Paying for your plan", [
+                ("Paying", "&pound;9 a month by Direct Debit, including VAT."),
+                ("Your price", "Fixed for 12 months, even if our service price goes up during that time."),
+                ("Renewing", "Your plan renews each year. At renewal your price only changes if our standard service price has changed, and we tell you at least 28 days before. You can choose not to renew."),
+                ("Cancelling", "You can cancel within 14 days of getting your agreement, and you only pay for work already done. After that, your plan runs to the end of its 12 months."),
+                ("Missed payments", "If a payment is missed, we let you know and take it again. If it&rsquo;s still unpaid after 14 days, priority booking is paused until you&rsquo;re up to date. If two payments are missed, we may end your plan. If we&rsquo;ve already done your service, you then pay the rest of its normal price, less what you&rsquo;ve paid."),
+                ("Moving home", "Moving within our area? Your plan moves with you, and we check the boiler at your new home is in good working order at its first visit. If you move outside our area, your plan ends and you only pay for work already done."),
+            ]),
+            ("Your yearly service", [
                 ("Booking your service", "We send you one reminder a year. Call or message us and we&rsquo;ll book a time that suits you."),
-                ("Your first service", "We also check your boiler is in good working order. If it needs a repair, we price it first."),
-                ("Older boilers", "Boilers over 5 years old may need new burner seals at the service: &pound;40, and we tell you first."),
-                ("Who can join", "Homes in our area with one gas or oil boiler, up to 70kW. It&rsquo;s a service plan, not insurance.")],
+                ("Your boiler warranty", "Most manufacturers only keep the warranty valid if the boiler is serviced every year. Your plan includes that service, so please book it when we remind you."),
+                ("Your first service", "We also check your boiler is in good working order and can be serviced safely. If it needs a repair, we give you the price first."),
+                ("Older boilers", "Boilers over 5 years old may need new burner seals at the service. This costs &pound;40, and we always tell you before we fit them."),
+                ("In winter", "We sometimes move service appointments, because our priority is getting people without heating or hot water warm and safe again."),
+                ("Access", "Please be in at the appointment time and keep the area around the boiler clear. If we can&rsquo;t get in twice in a row, we may charge for the extra visit."),
+                ("Your safety comes first", "If an appliance is unsafe and can&rsquo;t be made safe straight away, we label it with a warning notice and it mustn&rsquo;t be used until the fault is fixed."),
+            ]),
+            ("Repairs and priority booking", [
+                ("Priority booking", "You go to the front of our queue in normal working hours. We always get to you as soon as we can, but we can&rsquo;t promise a set response time."),
+                ("Repairs and parts", "Not included. If something needs fixing, we give you the price first and only start once you&rsquo;re happy."),
+                ("Gas safety certificate", "Not included. If you need one, Priority Certificate is &pound;13 a month."),
+            ]),
+            ("The small print", [
+                ("Who can join", "Homes in our area with one natural gas or oil boiler designed for home use, up to 70kW."),
+                ("Not insurance", "This is a service and maintenance agreement provided directly by Flotech Heating and Plumbing Ltd. All work is carried out by our own Gas Safe registered engineers."),
+                ("Our responsibility", "We carry out all work with reasonable care and skill, and we&rsquo;re responsible for any damage our work causes. We&rsquo;re not responsible for faults that were already there, normal wear and tear, or parts and appliances we didn&rsquo;t fit or work on. Nothing here affects your legal rights."),
+                ("Your details", "We only use your details to run your plan: bookings, reminders and payments. We never sell them. See <a href=\"https://flotechheating.co.uk/privacy-policy/\">flotechheating.co.uk/privacy-policy</a>."),
+                ("Questions or complaints", "Just call us on <a href=\"tel:+441279598972\">01279 598 972</a> or email <a href=\"mailto:office@flotechheating.co.uk\">office@flotechheating.co.uk</a> and we&rsquo;ll sort it out."),
+            ]),
+        ],
     },
     "priority-certificate": {
         "base": B.CERT, "for": "For landlords", "lines": ("Priority", "Certificate"), "sub": LAND_SUB,
@@ -142,8 +165,8 @@ CSS = """
 .one.roomy .small { margin-top: 3mm; font-size: 6.4pt; }
 /* v2 layout (Priority Homeowner first; Tim, 17 Nov 2026): emailed, so no "serviced on" boxes, links clickable */
 a { color: inherit; text-decoration: none; }
-.cover.v2 .why { margin-top: 4.2mm; gap: 2.2mm; }
-.cover.v2 .why .b { padding: 2.7mm 4.5mm; }
+.cover.v2 .why { margin-top: 7mm; gap: 3.6mm; }
+.cover.v2 .why .b { padding: 4.4mm 5mm; }
 .cover.v2 .join { margin-top: 3mm; width: 100%; text-align: left; justify-content: center; }
 .cover.v2 .join img { width: 17mm; height: 17mm; }
 .cover.v2 .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
@@ -176,6 +199,32 @@ a { color: inherit; text-decoration: none; }
 .v2b .join .j p { font-size: 9pt; }
 .v2b .join .j p a { color: #6a2fe0; text-decoration: underline; text-underline-offset: 1.5px; }
 .co { margin-top: 2.6mm; font-size: 6.4pt; font-weight: 600; color: #6b6680; }
+/* page 2 with room to breathe, and the terms page */
+.v2b .bx { margin-top: 4mm; padding: 4mm 4.8mm; }
+.v2b .bx h4 { font-size: 11pt; margin-bottom: 3mm; }
+.v2b .inc { gap: 3.4mm 5mm; }
+.v2b .inc b { font-size: 10pt; }
+.v2b .inc p { font-size: 8.2pt; margin-top: .6mm; }
+.v2b .inc svg { width: 4.2mm; height: 4.2mm; }
+.v2b .checks ul { gap: 2.2mm 3mm; }
+.v2b .checks li { font-size: 8pt; }
+.v2b .checks li svg { width: 3.3mm; height: 3.3mm; }
+.v2b .join { margin-top: 5mm; gap: 5mm; }
+.v2b .join img { width: 24mm; height: 24mm; }
+.v2b .join .j b { font-size: 13.5pt; }
+.v2b .join .j p { font-size: 9.6pt; }
+.v2t { padding: 7mm 9mm 0; }
+.thead { display: flex; align-items: center; justify-content: space-between; }
+.thead .ey { font-size: 7.6pt; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #7a3fe0; }
+.thead h2 { margin-top: .6mm; font-size: 17pt; font-weight: 800; line-height: 1.05; }
+.thead img { height: 8.5mm; width: auto; }
+.tcols { margin-top: 3.4mm; column-count: 2; column-gap: 5mm; }
+.tsec { margin-bottom: 2.6mm; }
+.tsec h4 { break-after: avoid; font-size: 8.6pt; font-weight: 800; color: #6a2fe0; padding-bottom: .9mm; margin-bottom: 1.2mm; border-bottom: 1px solid #e3dcf5; }
+.tsec p { font-size: 7.2pt; line-height: 1.36; font-weight: 600; color: #3b3848; margin-bottom: 1.1mm; break-inside: avoid; }
+.tsec p b { color: #14121c; font-weight: 800; }
+.tsec a { color: #6a2fe0; }
+.v2t .co { margin-top: 1mm; }
 """
 CROSS = ('<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#e6e1ef"/>'
          '<path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" stroke="#6b6680" stroke-width="1.7" stroke-linecap="round"/></svg>')
@@ -247,27 +296,33 @@ def leaflet_v2(key):
   <h1>{title}</h1>
   <p class="sub">{p['sub']}</p>
   <div class="why">{why_html}</div>
-  <div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>
-    <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
   {band_links()}
 </section>"""
     name = " ".join(p["lines"])
     inc = "".join(f"<div>{B.TICK}<div><b>{t}</b><p>{d}</p></div></div>" for t, d in p["items"])
     checks = "".join(f"<li>{B.TICK}<span>{x}</span></li>" for x in B.CHECKS)
-    how = "".join(f"<div><b>{t}</b><p>{d}</p></div>" for t, d in p["how"])
-    url = f"https://{B.WEB}/boiler-care-plans/"
+    terms = "".join(f'<div class="tsec"><h4>{h}</h4>' + "".join(f"<p><b>{t}.</b> {d}</p>" for t, d in items) + "</div>"
+                    for h, items in p["terms_full"])
     back = f"""<section class="page v2b">
   <div class="hero-card grad"><div><p class="ey">Your boiler care plan</p><p class="nm">{name}</p></div>
     <div class="pr"><b>&pound;{PRICE[key]}<small> /month</small></b><p>Including VAT · 12-month plan</p></div></div>
   <div class="bx"><h4>What&rsquo;s included</h4><div class="inc">{inc}</div></div>
   <div class="bx checks"><h4>What&rsquo;s in your 12-point annual boiler service</h4><ul>{checks}</ul></div>
-  <div class="bx"><h4>How your plan works</h4><div class="how">{how}</div></div>
-  <p class="co">Full terms at <a href="{url}">{B.WEB}/boiler-care-plans</a>. Flotech Heating &amp; Plumbing Ltd, company no. 08739272.</p>
+  <div class="join"><a href="{url}"><img src="qr-care-plans.svg" alt="QR code to the care plans page"></a>
+    <div class="j"><b>Join online, or give us a call</b><p><a href="{url}">{B.WEB}/boiler-care-plans</a></p></div></div>
+  <p class="co">Your plan terms are on the next page.</p>
+  {band_links()}
+</section>"""
+    terms_page = f"""<section class="page v2t">
+  <div class="thead"><div><p class="ey">{name} &middot; &pound;{PRICE[key]} a month</p><h2>Your plan terms</h2></div>
+    <img src="logo-noslogan-centred.png" alt="Flotech"></div>
+  <div class="tcols">{terms}</div>
+  <p class="co">Flotech Heating &amp; Plumbing Ltd, company no. 08739272. These terms apply from the day your plan starts.</p>
   {band_links()}
 </section>"""
     css = B.CSS + CSS.replace("{TOP:.2f}", f"{top:.2f}")
     return f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Flotech {name}</title>
-<link rel="stylesheet" href="file://{B.FONTS}"><style>{css}</style></head><body>{cover}{back}</body></html>"""
+<link rel="stylesheet" href="file://{B.FONTS}"><style>{css}</style></head><body>{cover}{back}{terms_page}</body></html>"""
 
 
 def main():
