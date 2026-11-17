@@ -18,7 +18,8 @@ GAS_SAFE_NO = "554995"   # Flotech Heating and Plumbing Ltd on the Gas Safe Regi
 
 CHECKS = ["Visual inspection, inside and out", "Flue inspection", "Gas rate test", "Radiator check", "Filter clean",
           "System function check", "Boiler operating pressure test", "Pilot and burner check", "Flue gas analysis",
-          "Seal check", "Water leak check", "Thermostat and heating controls check"]   # longest last, so it wraps on the bottom row
+          "Visual inspection, inside and out", "Water leak check", "Thermostat and heating controls check"]
+CHECKS[0] = "Seal check"   # the two items that wrap sit on the bottom row of the 3-column box
 
 HOME = {"name": "For Homeowners", "price": 9, "year": 108,
         "items": ["12-point annual boiler service", "Priority booking when something goes wrong",
@@ -71,9 +72,9 @@ html, body { font-family: 'Urbanist', sans-serif; color: #14121c; -webkit-print-
 .band .call { font-size: 8.5pt; font-weight: 700; opacity: .92; }
 .band .num { font-size: 17pt; font-weight: 800; letter-spacing: .3px; line-height: 1.1; }
 .band .web { text-align: right; font-size: 9pt; font-weight: 700; line-height: 1.45; }
-.gsb { width: 12.5mm; flex: none; }
-.gsb img { display: block; width: 100%; height: auto; }
-.gsb span { display: block; margin: .7mm 0 0 32.5%; background: #FFCD00; color: #000; font: 800 6.4pt/1 Arial, Helvetica, sans-serif; text-align: center; padding: .9mm 0 .8mm; letter-spacing: .2px; }
+.gsb { flex: none; background: #000; border-radius: 2mm; padding: 1.6mm 1.8mm 1.7mm; }
+.gsb img { display: block; width: 11.2mm; height: auto; }
+.gsb span { display: block; width: 11.2mm; margin-top: .7mm; background: #FFED00; color: #000; border-radius: .7mm; font: 800 7pt/1 Arial, Helvetica, sans-serif; text-align: center; padding: .8mm 0 .7mm; letter-spacing: .3px; }
 
 /* plans side: choose */
 .plans-side { padding: 7mm 9mm 0; }
@@ -95,7 +96,7 @@ html, body { font-family: 'Urbanist', sans-serif; color: #14121c; -webkit-print-
 .plan .every { margin-top: 3.2mm; font-size: 8.6pt; font-weight: 800; line-height: 1.3; color: #14121c; padding: 2mm 2.6mm; border-radius: 2.4mm; background: #f3eeff; }
 .plan .every + ul { margin-top: 2.6mm; }
 .same { margin-top: 3mm; font-size: 7.8pt; line-height: 1.35; color: #4b465c; font-weight: 600; }
-.checks { margin-top: 3.6mm; border: 1px solid #e7e3f1; border-radius: 3.5mm; padding: 2.8mm 3.6mm 2.6mm; background: #fbfaff; }
+.checks { margin-top: 3.4mm; border: 1px solid #e7e3f1; border-radius: 3.5mm; padding: 2.8mm 3.6mm 2.6mm; background: #fbfaff; }
 .checks h4 { font-size: 9.6pt; font-weight: 800; margin-bottom: 2mm; }
 .checks ul { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3mm 3mm; }
 .checks li { display: flex; gap: 1.4mm; font-size: 7.2pt; line-height: 1.22; font-weight: 600; }
@@ -111,7 +112,7 @@ html, body { font-family: 'Urbanist', sans-serif; color: #14121c; -webkit-print-
 def band():
     return (f'<div class="band grad"><div><div class="call">Call us</div><div class="num">{PHONE}</div></div>'
             f'<div class="web">{WEB}<br>{EMAIL}</div>'
-            f'<div class="gsb"><img src="gas-safe-badge.png" alt="Gas Safe Register"><span>{GAS_SAFE_NO}</span></div></div>')
+            f'<div class="gsb"><img src="gas-safe-mst.png" alt="Gas Safe Register"><span>{GAS_SAFE_NO}</span></div></div>')
 
 
 ICONS = {"pound": '<path d="M16 6.5a4 4 0 0 0-7.2 2.4V12H6m2.8 0v2.6c0 1.6-.9 3-2.3 3.9H17M6 12h7.5"/>',
@@ -163,9 +164,9 @@ def leaflet(key):
       {ul(p['plus_items'])}
     </div>
   </div>
-  <div class="checks"><h4>What&rsquo;s in your 12-point annual boiler service</h4><ul>{checks}</ul></div>
   <div class="join"><img src="qr-care-plans.svg" alt="QR code to the care plans page">
     <div class="j"><b>Scan to join, or ask your engineer</b><p>{WEB}/boiler-care-plans</p></div></div>
+  <div class="checks"><h4>What&rsquo;s in your 12-point annual boiler service</h4><ul>{checks}</ul></div>
   <p class="small">Monthly payments by Direct Debit. Plans run for 12 months and renew each year. Parts and repairs are charged at our normal rates and we
     always tell you the price first. The Priority Plus free call-out can be used once your plan has been running for 30 days and doesn&rsquo;t cover faults that
     were already there when you joined. Boilers over 5 years old may need new burner seals at the service, at an extra £40. Full terms at {WEB}/boiler-care-plans.
@@ -178,7 +179,7 @@ def leaflet(key):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    for f in ("logo-centred.png", "logo-noslogan-centred.png", "gas-safe-badge.png", "qr-care-plans.svg"):
+    for f in ("logo-centred.png", "logo-noslogan-centred.png", "gas-safe-mst.png", "qr-care-plans.svg"):
         src, dst = os.path.join(HERE, f), os.path.join(OUT, f)
         if not os.path.exists(dst):
             os.symlink(src, dst)
