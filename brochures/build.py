@@ -45,10 +45,10 @@ TICK = ('<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"
         '<path d="M4.6 8.3l2.2 2.2 4.6-4.8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
 CSS = """
-@page { size: 148mm 210mm; margin: 0; }
+@page { size: 420pt 210mm; margin: 0; }   /* A5 (148mm is 419.5pt). Chrome rounds the PDF page to 420 x 594.96pt, so the layout is 420pt wide and a touch taller than the PDF page: the band always reaches the edges, no white hairline when zooming */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { font-family: 'Urbanist', sans-serif; color: #14121c; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.page { width: 148mm; height: 210mm; position: relative; overflow: hidden; page-break-after: always; background: #fff; }
+.page { width: 420pt; height: 210mm; position: relative; overflow: hidden; page-break-after: always; background: #fff; }
 .grad { background: linear-gradient(100deg, #9B51FF 0%, #1BA5FF 100%); }
 .gtext { background: linear-gradient(100deg, #8a3ff5, #1592e6); -webkit-background-clip: text; background-clip: text; color: transparent; }
 

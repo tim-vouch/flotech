@@ -8,7 +8,7 @@ const path = require('path');
     const p = await b.newPage({ viewport: { width: 560, height: 794 }, deviceScaleFactor: 2 });
     await p.goto('file://' + path.join(out, `flotech-care-plans-${k}.html`), { waitUntil: 'load' });
     await p.evaluate(() => document.fonts.ready);
-    await p.pdf({ path: path.join(out, `Flotech-Care-Plans-${k[0].toUpperCase() + k.slice(1)}.pdf`), width: '148mm', height: '210mm', printBackground: true, preferCSSPageSize: true });
+    await p.pdf({ path: path.join(out, `Flotech-Care-Plans-${k[0].toUpperCase() + k.slice(1)}.pdf`), width: '560px', height: '210mm', printBackground: true, preferCSSPageSize: true });
     const pages = await p.locator('.page').all();
     for (let i = 0; i < pages.length; i++) await pages[i].screenshot({ path: path.join(out, `${k}-side${i + 1}.png`) });
     // flag anything that spills off the page
