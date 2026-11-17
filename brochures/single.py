@@ -73,7 +73,7 @@ PLANS = {
                 ("Repairs and parts", "Not included. If something needs fixing, we give you the price first and only start once you&rsquo;re happy."),
                 ("Gas safety certificate", "Not included. If you need one, Priority Certificate is &pound;13 a month."),
             ]),
-            ("The small print", [
+            ("Your agreement with us", [
                 ("Who can join", "Homes in our area with one natural gas or oil boiler designed for home use, up to 70kW."),
                 ("Not insurance", "This is a service and maintenance agreement provided directly by Flotech Heating and Plumbing Ltd. All work is carried out by our own Gas Safe registered engineers."),
                 ("Our responsibility", "We carry out all work with reasonable care and skill, and we&rsquo;re responsible for any damage our work causes. We&rsquo;re not responsible for faults that were already there, normal wear and tear, or parts and appliances we didn&rsquo;t fit or work on. Nothing here affects your legal rights."),
