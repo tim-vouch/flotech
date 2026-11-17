@@ -148,7 +148,7 @@ PLANS = {
                 "Labour after the first hour, and call-outs after your free one each year"],
         "terms": (" The free call-out is in normal working hours, can be used once your plan has been running for 30 days, doesn&rsquo;t carry "
                   "over, and doesn&rsquo;t cover faults that were already there when you joined."),
-        "v2": True, "feature": {
+        "v2": True, "terms_split": 2, "feature": {
             "title": "Your free call-out", "box": "callout",
             "intro": "If something stops working, your first call-out each plan year is free, including the first hour of labour. Fixed within that hour? You only pay for any parts.",
             "sections": [("How it works", [
@@ -168,15 +168,19 @@ PLANS = {
                 ("Missed payments", "If a payment is missed, we let you know and take it again. If it&rsquo;s still unpaid after 14 days, priority booking and your free call-out are paused until you&rsquo;re up to date. If two payments are missed, we may end your plan, and you pay the normal price of any work already done, less what you&rsquo;ve paid."),
                 ("Moving home", "Moving within our area? Your plan moves with you, and we check the boiler at your new home is in good working order at its first visit. If you move outside our area, your plan ends and you only pay for work already done."),
             ]),
+            ("Your gas safety certificate", [
+                ("What it covers", "Your boiler and gas hob, emailed to you after the check. A landlord&rsquo;s certificate must cover every gas appliance and flue you provide, so if there are others, such as a gas fire, tell us when you join and we&rsquo;ll quote to include them."),
+                ("Landlords", "Your tenants&rsquo; own appliances aren&rsquo;t covered. By law, you must give existing tenants a copy within 28 days of the check and new tenants a copy before they move in, and keep each certificate for at least 2 years. We keep a copy too, so just ask if you need another."),
+                ("Before it runs out", "We remind you before your certificate expires. The check can be done up to 2 months early and your renewal date stays the same, so nothing is lost by booking in good time."),
+                ("If something fails the check", "We tell you what&rsquo;s needed and give you the price first. If an appliance is unsafe, we label it with a warning notice and it mustn&rsquo;t be used until it&rsquo;s fixed."),
+            ]),
             ("Your yearly service", [
                 ("Booking", "We send you a reminder when your service and certificate are due. Call or message us and we&rsquo;ll book a time that suits you."),
                 ("Your boiler warranty", "Most manufacturers only keep the warranty valid if the boiler is serviced every year. Your plan includes that service, so please book it when we remind you."),
                 ("Your first service", "We also check your boiler is in good working order and can be serviced safely. If it needs a repair, we give you the price first."),
-                ("Gas safety certificate", "Covers your boiler and gas hob, emailed to you. Landlords: tell us about any other gas appliances and we&rsquo;ll quote, and give tenants a copy within 28 days."),
                 ("Older boilers", "Boilers over 5 years old may need new burner seals at the service. This costs &pound;40, and we always tell you before we fit them."),
                 ("In winter", "We sometimes move service appointments, because our priority is getting people without heating or hot water warm and safe again."),
                 ("Access", "Please be in at the appointment time and keep the area around the boiler clear. If we can&rsquo;t get in twice in a row, we may charge for the extra visit."),
-                ("Your safety comes first", "If an appliance is unsafe and can&rsquo;t be made safe straight away, we label it with a warning notice and it mustn&rsquo;t be used until the fault is fixed."),
             ]),
             ("Repairs and priority booking", [
                 ("Priority booking", "You go to the front of our queue in normal working hours. We can&rsquo;t promise a set response time."),
@@ -461,7 +465,7 @@ def leaflet_v2(key):
         heading = "Your plan terms" if n == 0 else "Your plan terms, continued"
         co = ('<p class="co">Flotech Heating &amp; Plumbing Ltd, company no. 08739272. These terms apply from the day your plan starts.</p>'
               if last else '<p class="co">Continued on the next page.</p>')
-        terms_page += f"""<section class="page v2t{' dense' if key == 'priority-plus' else ''}{' roomy' if split else ''}">
+        terms_page += f"""<section class="page v2t{' roomy' if split else ''}">
   <div class="thead"><div><p class="ey">{name} &middot; &pound;{PRICE[key]} a month</p><h2>{heading}</h2></div>
     <img src="logo-noslogan-centred.png" alt="Flotech"></div>
   <div class="tcols">{secs_html(secs)}</div>
